@@ -14,5 +14,12 @@
     <priority>0.8</priority>
   </url>
   
-  <!-- Note: Blog posts and project detail pages should be dynamically generated in a production environment -->
+  <!-- Example Project Detail Page -->
+  <url>
+    <loc>https://nerochaze.replit.app/project/1</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <!-- Note: For production, you should dynamically generate entries for all blog posts and project detail pages -->
 </urlset>

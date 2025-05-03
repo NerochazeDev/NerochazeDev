@@ -161,14 +161,16 @@ export function ProjectManagement() {
                       </div>
                     </div>
                     <div className="mt-2">
-                      <a
-                        href={project.liveLink}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-[#172A45] hover:underline text-xs"
-                      >
-                        View Live Project
-                      </a>
+                      {project.liveLink && (
+                        <a
+                          href={project.liveLink}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-[#172A45] hover:underline text-xs"
+                        >
+                          View Live Project
+                        </a>
+                      )}
                     </div>
                   </div>
                 </div>

@@ -159,7 +159,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.put("/api/projects/:id", async (req, res) => {
     try {
       const id = parseInt(req.params.id);
+      console.log(`Updating project with ID: ${id}`, req.body);
+      
       if (isNaN(id)) {
+        console.error("Invalid project ID provided:", req.params.id);
         return res.status(400).json({
           success: false,
           message: "Invalid project ID"
@@ -168,24 +171,31 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       // Validate request body
       const projectData = projectSchema.partial().parse(req.body);
+      console.log("Project data validated successfully:", projectData);
       
       // Update the project
       const updatedProject = await storage.updateProject(id, projectData);
+      console.log("Project update result:", updatedProject);
       
       if (!updatedProject) {
+        console.error(`Project with ID ${id} not found`);
         return res.status(404).json({
           success: false,
           message: "Project not found"
         });
       }
       
+      console.log(`Project ${id} updated successfully:`, updatedProject);
       return res.status(200).json({
         success: true,
         message: "Project updated successfully",
         data: updatedProject
       });
     } catch (error) {
+      console.error("Error updating project:", error);
+      
       if (error instanceof ZodError) {
+        console.error("Validation errors:", error.errors);
         return res.status(400).json({
           success: false,
           message: "Invalid project data",

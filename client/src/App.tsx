@@ -11,14 +11,15 @@ import Footer from "@/components/footer";
 
 function Router() {
   const [location] = useLocation();
-  const isAdminPage = location === "/admin";
+  const isAdminPage = location === "/Hello10122"; // Changed from "/admin"
   
   return (
     <>
       {!isAdminPage && <Header />}
       <Switch>
         <Route path="/" component={Home} />
-        <Route path="/admin" component={AdminPage} />
+        <Route path="/Hello10122" component={AdminPage} /> {/* Changed from "/admin" */}
+        <Route path="/admin" component={NotFound} /> {/* Redirect old admin path to 404 */}
         <Route component={NotFound} />
       </Switch>
       {!isAdminPage && <Footer />}

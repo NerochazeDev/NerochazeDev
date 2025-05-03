@@ -125,7 +125,7 @@ const ProjectsSection = () => {
         ) : projects.length === 0 ? (
           <div className="text-center py-10">
             <p className="text-[#6c757d] mb-4">No projects have been added yet.</p>
-            <Link to="/admin" className="text-[#64FFDA] hover:underline">Add your first project</Link>
+            <p className="text-[#64FFDA]">Check back soon for new projects!</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -307,9 +307,9 @@ const ProjectsSection = () => {
               className="border-2 border-[#64FFDA] text-[#64FFDA] hover:bg-[#64FFDA] hover:text-[#172A45] px-6 py-3 rounded font-medium transition-colors bg-transparent" 
               asChild
             >
-              <Link to="/admin">
-                See More Projects
-              </Link>
+              <a href="#projects">
+                View All Projects
+              </a>
             </Button>
           </motion.div>
         </div>

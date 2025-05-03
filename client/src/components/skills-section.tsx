@@ -1,29 +1,30 @@
 import { motion } from "framer-motion";
+import { useQuery } from "@tanstack/react-query";
 
 const SkillsSection = () => {
-  const technicalSkills = [
-    { name: "JavaScript", percentage: 95 },
-    { name: "React", percentage: 90 },
-    { name: "TypeScript", percentage: 88 },
-    { name: "Node.js", percentage: 85 },
-    { name: "Next.js", percentage: 82 },
-    { name: "Tailwind CSS", percentage: 80 },
-  ];
+  // Fetch skills from API
+  const { data: skills } = useQuery({
+    queryKey: ['/api/skills'],
+    queryFn: async () => {
+      const response = await fetch('/api/skills');
+      const data = await response.json();
+      if (!data.success) {
+        throw new Error(data.message || "Failed to fetch skills");
+      }
+      return data.data;
+    }
+  });
 
-  const expertiseAreas = [
-    "Full-Stack Development",
-    "Modern Frontend Frameworks",
-    "Responsive Design",
-    "Server-Side Rendering",
-    "REST & GraphQL APIs",
-    "Database Design & ORM",
-    "Cloud Deployment",
-    "Performance Optimization",
-    "CI/CD Workflows",
-    "Authentication & Security",
-    "State Management",
-    "Microservices Architecture",
-  ];
+  // Group skills by category
+  const skillsByCategory = skills ? skills.reduce((acc: any, skill: any) => {
+    if (!acc[skill.category]) {
+      acc[skill.category] = [];
+    }
+    acc[skill.category].push(skill);
+    return acc;
+  }, {}) : {};
+
+  const expertiseAreas = Object.keys(skillsByCategory);
 
   return (
     <section id="skills" className="py-20 bg-gray-900">
@@ -40,73 +41,49 @@ const SkillsSection = () => {
             <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-400 to-blue-500 rounded"></div>
           </h2>
         </motion.div>
-        
+
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          <motion.div 
-            className="tech-card"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-          >
-            <h3 className="tech-heading mb-8">Technical Proficiency</h3>
-            
-            <div className="space-y-6">
-              {technicalSkills.map((skill, index) => (
-                <motion.div 
-                  key={index} 
-                  className="mb-4"
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: 0.1 * index }}
-                >
-                  <div className="flex justify-between mb-2">
-                    <span className="font-semibold text-white">{skill.name}</span>
-                    <span className="text-cyan-400 font-mono">{skill.percentage}%</span>
-                  </div>
-                  <div className="progress-bar">
-                    <motion.div 
-                      className="progress-bar-fill"
-                      initial={{ width: 0 }}
-                      whileInView={{ width: `${skill.percentage}%` }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 1, delay: 0.2 + 0.1 * index, ease: "easeOut" }}
-                    ></motion.div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
-          
-          <motion.div
-            className="tech-card"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-          >
-            <h3 className="tech-heading mb-8">Areas of Expertise</h3>
-            
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-              {expertiseAreas.map((area, index) => (
-                <motion.div 
-                  key={index} 
-                  className="flex"
-                  initial={{ opacity: 0, y: 10 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.3, delay: 0.05 * index }}
-                >
-                  <div className="skill-tag w-full flex items-center justify-center text-center">
-                    <span>{area}</span>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
+          {Object.entries(skillsByCategory).map(([category, categorySkills]: [string, any]) => (
+            <motion.div 
+              key={category}
+              className="tech-card"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            >
+              <h3 className="tech-heading mb-8 capitalize">{category}</h3>
+
+              <div className="space-y-6">
+                {categorySkills.map((skill: any, index: number) => (
+                  <motion.div 
+                    key={skill.id} 
+                    className="mb-4"
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: 0.1 * index }}
+                  >
+                    <div className="flex justify-between mb-2">
+                      <span className="font-semibold text-white">{skill.name}</span>
+                      <span className="text-cyan-400 font-mono">{skill.percentage}%</span>
+                    </div>
+                    <div className="progress-bar">
+                      <motion.div 
+                        className="progress-bar-fill"
+                        initial={{ width: 0 }}
+                        whileInView={{ width: `${skill.percentage}%` }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 1, delay: 0.2 + 0.1 * index, ease: "easeOut" }}
+                      ></motion.div>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+          ))}
         </div>
-        
+
         <motion.div
           className="mt-16 p-6 bg-gradient-to-br from-gray-800/70 to-gray-900/70 border border-gray-700 rounded-lg shadow-lg"
           initial={{ opacity: 0, y: 20 }}

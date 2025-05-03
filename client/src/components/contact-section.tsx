@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { FaEnvelope, FaPhone } from "react-icons/fa";
+import { useQuery } from "@tanstack/react-query";
 
 const contactFormSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters" }),
@@ -19,6 +20,10 @@ const contactFormSchema = z.object({
 });
 
 type ContactFormValues = z.infer<typeof contactFormSchema>;
+interface WebsiteInfo {
+  key: string;
+  value: string;
+}
 
 const ContactSection = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -61,6 +66,42 @@ const ContactSection = () => {
     }
   };
 
+  const [contactInfo, setContactInfo] = useState({
+    email: "",
+    phone: "",
+    intro_text: ""
+  });
+
+  // Fetch contact section data
+  const { data: contactData, isLoading } = useQuery({
+    queryKey: ['/api/website-info/contact'],
+    queryFn: async () => {
+      const response = await fetch('/api/website-info/contact');
+      const data = await response.json();
+      if (!data.success) {
+        throw new Error(data.message || "Failed to fetch contact information");
+      }
+      return data.data as WebsiteInfo[];
+    },
+    refetchOnMount: true,
+    refetchOnWindowFocus: true
+  });
+
+  // Update contact info when data is loaded
+  useEffect(() => {
+    if (contactData) {
+      const newContactInfo = {
+        email: contactData.find(item => item.key === 'email')?.value || "contact@example.com",
+        phone: contactData.find(item => item.key === 'phone')?.value || "+1 (555) 123-4567",
+        intro_text: contactData.find(item => item.key === 'intro_text')?.value || 
+          "I'm always interested in exciting projects and collaborative opportunities. Whether you need a complete web application, technical consultation, or just want to connect, don't hesitate to reach out!"
+      };
+      setContactInfo(newContactInfo);
+    }
+  }, [contactData]);
+
+  if (isLoading) return <p>Loading...</p>;
+
   return (
     <section id="contact" className="py-20 bg-gradient-to-b from-gray-900 to-gray-950 text-white">
       <div className="container mx-auto px-4">
@@ -77,8 +118,7 @@ const ContactSection = () => {
           </h2>
           <div className="mt-6 max-w-2xl mx-auto">
             <p className="text-gray-300 leading-relaxed">
-              I'm always interested in exciting projects and collaborative opportunities. Whether you need a complete web application, 
-              technical consultation, or just want to connect, don't hesitate to reach out!
+              {contactInfo.intro_text}
             </p>
           </div>
         </motion.div>
@@ -210,8 +250,8 @@ const ContactSection = () => {
                   </div>
                   <div>
                     <p className="text-gray-400 text-sm mb-1">Email</p>
-                    <a href="mailto:contact@nerochaze.com" className="text-white hover:text-cyan-400 transition-colors">
-                      contact@nerochaze.com
+                    <a href={`mailto:${contactInfo.email}`} className="text-white hover:text-cyan-400 transition-colors">
+                      {contactInfo.email}
                     </a>
                   </div>
                 </div>
@@ -222,8 +262,8 @@ const ContactSection = () => {
                   </div>
                   <div>
                     <p className="text-gray-400 text-sm mb-1">Phone</p>
-                    <a href="tel:+15551234567" className="text-white hover:text-cyan-400 transition-colors">
-                      +1 (555) 123-4567
+                    <a href={`tel:${contactInfo.phone}`} className="text-white hover:text-cyan-400 transition-colors">
+                      {contactInfo.phone}
                     </a>
                   </div>
                 </div>

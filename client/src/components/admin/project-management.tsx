@@ -182,14 +182,16 @@ export function ProjectManagement() {
 
       {/* Add Project Dialog */}
       <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
-        <DialogContent className="sm:max-w-[600px]">
-          <DialogHeader>
+        <DialogContent className="sm:max-w-[600px] max-h-[90vh] p-4 overflow-y-auto">
+          <DialogHeader className="sticky top-0 bg-white z-10 pb-4">
             <DialogTitle>Add New Project</DialogTitle>
             <DialogDescription>
               Fill in the details to add a new project to your portfolio.
             </DialogDescription>
           </DialogHeader>
-          <ProjectForm onSuccess={handleFormSuccess} />
+          <div className="overflow-y-auto">
+            <ProjectForm onSuccess={handleFormSuccess} />
+          </div>
         </DialogContent>
       </Dialog>
 
@@ -198,19 +200,21 @@ export function ProjectManagement() {
         open={!!editProject} 
         onOpenChange={(open) => !open && setEditProject(null)}
       >
-        <DialogContent className="sm:max-w-[600px]">
-          <DialogHeader>
+        <DialogContent className="sm:max-w-[600px] max-h-[90vh] p-4 overflow-y-auto">
+          <DialogHeader className="sticky top-0 bg-white z-10 pb-4">
             <DialogTitle>Edit Project</DialogTitle>
             <DialogDescription>
               Update your project information.
             </DialogDescription>
           </DialogHeader>
-          {editProject && (
-            <ProjectForm 
-              initialData={editProject} 
-              onSuccess={handleFormSuccess} 
-            />
-          )}
+          <div className="overflow-y-auto">
+            {editProject && (
+              <ProjectForm 
+                initialData={editProject} 
+                onSuccess={handleFormSuccess} 
+              />
+            )}
+          </div>
         </DialogContent>
       </Dialog>
 

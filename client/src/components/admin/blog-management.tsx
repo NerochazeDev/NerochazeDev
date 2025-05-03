@@ -317,9 +317,9 @@ export function BlogManagement() {
       )}
 
       {/* Blog post form dialog */}
-      <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
-        <DialogContent className="sm:max-w-[800px] max-h-[90vh]">
-          <DialogHeader>
+      <Dialog open={isFormOpen} onOpenChange={(open) => !open && handleCloseForm()}>
+        <DialogContent className="sm:max-w-[800px] max-h-[90vh] overflow-y-auto p-4">
+          <DialogHeader className="sticky top-0 bg-white z-10 pb-4">
             <DialogTitle>
               {editingPost ? "Edit Blog Post" : "Create New Blog Post"}
             </DialogTitle>
@@ -330,7 +330,7 @@ export function BlogManagement() {
             </DialogDescription>
           </DialogHeader>
           
-          <ScrollArea className="max-h-[70vh] pr-4">
+          <div className="overflow-y-auto">
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                 <FormField
@@ -479,7 +479,7 @@ export function BlogManagement() {
                 </DialogFooter>
               </form>
             </Form>
-          </ScrollArea>
+          </div>
         </DialogContent>
       </Dialog>
     </div>

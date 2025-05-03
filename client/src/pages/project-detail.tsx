@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { FaArrowLeft, FaExternalLinkAlt, FaTag, FaCalendarAlt } from "react-icons/fa";
 import { Link } from "wouter";
+import { Breadcrumbs, useBreadcrumbs } from "@/components/breadcrumbs";
 
 // Create a simple date formatter function
 const formatDate = (dateString: string) => {
@@ -34,6 +35,9 @@ export default function ProjectDetail() {
   const { id } = useParams();
   const [_, navigate] = useLocation();
   const projectId = parseInt(id as string);
+  
+  // Get breadcrumbs for current path
+  const breadcrumbs = useBreadcrumbs();
 
   // Fetch project data
   const { data, isLoading, isError } = useQuery({
@@ -91,6 +95,32 @@ export default function ProjectDetail() {
     "image": data.image,
     "datePublished": data.createdAt
   };
+  
+  // Breadcrumb structured data
+  const breadcrumbStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://nerochaze.replit.app/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Projects",
+        "item": "https://nerochaze.replit.app/#projects"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": data.title,
+        "item": `https://nerochaze.replit.app/project/${data.id}`
+      }
+    ]
+  };
 
   return (
     <>
@@ -119,14 +149,26 @@ export default function ProjectDetail() {
         <meta name="twitter:image" content={data.image} />
         <meta name="twitter:creator" content="@Nerochaze" />
 
-        {/* Structured Data */}
+        {/* Structured Data - Project */}
         <script type="application/ld+json">
           {JSON.stringify(structuredData)}
+        </script>
+        
+        {/* Structured Data - Breadcrumbs */}
+        <script type="application/ld+json">
+          {JSON.stringify(breadcrumbStructuredData)}
         </script>
       </Helmet>
       
       <div className="min-h-screen bg-gradient-to-b from-gray-900 to-gray-950 text-white pt-32 pb-20">
         <div className="container mx-auto px-4 max-w-5xl">
+          {/* Breadcrumbs for SEO and navigation */}
+          {breadcrumbs.length > 0 && (
+            <div className="mb-6">
+              <Breadcrumbs items={breadcrumbs} className="text-sm" />
+            </div>
+          )}
+          
           <Link href="/">
             <Button variant="ghost" className="text-cyan-400 hover:text-cyan-500 mb-8 -ml-4 hover:bg-gray-800/50">
               <FaArrowLeft className="mr-2" />

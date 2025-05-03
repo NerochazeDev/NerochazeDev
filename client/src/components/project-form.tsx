@@ -84,9 +84,10 @@ export function ProjectForm({ onSuccess, initialData }: ProjectFormProps) {
       
       if (initialData?.id) {
         // Update existing project
-        await apiRequest(`/api/projects/${initialData.id}`, {
+        await apiRequest({
+          url: `/api/projects/${initialData.id}`,
           method: "PUT",
-          body: JSON.stringify(projectData),
+          body: JSON.stringify(projectData)
         });
         toast({
           title: "Project Updated",
@@ -94,9 +95,10 @@ export function ProjectForm({ onSuccess, initialData }: ProjectFormProps) {
         });
       } else {
         // Create new project
-        await apiRequest("/api/projects", {
+        await apiRequest({
+          url: "/api/projects",
           method: "POST",
-          body: JSON.stringify(projectData),
+          body: JSON.stringify(projectData)
         });
         toast({
           title: "Project Added",

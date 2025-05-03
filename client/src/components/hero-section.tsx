@@ -98,12 +98,16 @@ const HeroSection = () => {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5 }}
           >
-            <div className="w-48 h-48 md:w-64 md:h-64 rounded-full bg-gradient-to-r from-[#64FFDA] to-[#172A45] p-1 shadow-lg">
+            <div className="w-full h-64 md:h-80 relative overflow-hidden rounded-lg shadow-xl">
+              <div className="absolute inset-0 bg-gradient-to-r from-[#172A45] to-[#0A192F] opacity-80"></div>
               <img 
-                src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" 
-                alt="Nerochaze - Professional Developer"
-                className="w-full h-full object-cover rounded-full"
+                src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1600&q=80" 
+                alt="Professional Development Environment"
+                className="w-full h-full object-cover"
               />
+              <div className="absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-[#0A192F] to-transparent">
+                <div className="text-white font-medium">Bringing ideas to life through elegant code</div>
+              </div>
             </div>
           </motion.div>
         </div>

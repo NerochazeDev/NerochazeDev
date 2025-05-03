@@ -37,8 +37,9 @@ export function ProjectManagement() {
   // Delete project mutation
   const deleteMutation = useMutation({
     mutationFn: async (id: number) => {
-      return apiRequest(`/api/projects/${id}`, {
-        method: "DELETE",
+      return apiRequest({
+        url: `/api/projects/${id}`,
+        method: "DELETE"
       });
     },
     onSuccess: () => {

@@ -87,23 +87,11 @@ const ContactSection = () => {
 
   // Update contact info when data is loaded
   useEffect(() => {
-    if (contactData && contactData.length > 0) {
-      const newContactInfo = {
-        email: contactData.find((item: WebsiteInfo) => item.key.toLowerCase() === 'email')?.value || contactInfo.email,
-        phone: contactData.find((item: WebsiteInfo) => item.key.toLowerCase() === 'phone')?.value || contactInfo.phone,
-        intro_text: contactData.find((item: WebsiteInfo) => item.key.toLowerCase() === 'intro_text')?.value || contactInfo.intro_text
-      };
-      setContactInfo(newContactInfo);
-    }
-  }, [contactData]);
-
-  // Update contact info when data is loaded
-  useEffect(() => {
     if (contactData) {
       const newContactInfo = {
-        email: contactData.find((item: WebsiteInfo) => item.key.toLowerCase() === 'email')?.value || "contact@example.com",
-        phone: contactData.find((item: WebsiteInfo) => item.key.toLowerCase() === 'phone')?.value || "+1 (555) 123-4567",
-        intro_text: contactData.find((item: WebsiteInfo) => item.key.toLowerCase() === 'intro_text')?.value || 
+        email: contactData.find((item: WebsiteInfo) => item.key.toLowerCase().trim() === 'email')?.value || "contact@example.com",
+        phone: contactData.find((item: WebsiteInfo) => item.key.toLowerCase().trim() === 'phone')?.value || "+1 (555) 123-4567",
+        intro_text: contactData.find((item: WebsiteInfo) => item.key.toLowerCase().trim() === 'intro_text')?.value || 
           "I'm always interested in exciting projects and collaborative opportunities. Whether you need a complete web application, technical consultation, or just want to connect, don't hesitate to reach out!"
       };
       setContactInfo(newContactInfo);

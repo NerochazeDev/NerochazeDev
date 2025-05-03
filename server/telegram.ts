@@ -4,6 +4,16 @@ import TelegramBot from 'node-telegram-bot-api';
 const TELEGRAM_BOT_TOKEN = '7890871059:AAHlDEkfJxsq1bKwqthUBiI1f5dqu8IFavM';
 const TELEGRAM_CHAT_ID = '6360165707';
 
+// HTML escaping function for telegram message formatting
+function escapeHtml(text: string): string {
+  if (!text) return '';
+  return text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
 let bot: TelegramBot | null = null;
 
 try {
@@ -43,18 +53,24 @@ export async function sendContactMessage(message: {
   try {
     console.log(`Attempting to send contact message to Telegram chat ID: ${TELEGRAM_CHAT_ID}`);
     
+    // Escape HTML characters in message fields
+    const escapedName = escapeHtml(message.name);
+    const escapedEmail = escapeHtml(message.email);
+    const escapedSubject = escapeHtml(message.subject);
+    const escapedMessage = escapeHtml(message.message);
+    
+    // Using HTML formatting for better display in Telegram
     const text = `
-📬 New Contact Message:
------------------------
-👤 From: ${message.name}
-📧 Email: ${message.email}
-📝 Subject: ${message.subject}
-💬 Message:
-${message.message}
------------------------
+<b>📬 NEW CONTACT MESSAGE</b>
+
+<b>👤 From:</b> ${escapedName}
+<b>📧 Email:</b> ${escapedEmail}
+<b>📝 Subject:</b> ${escapedSubject}
+<b>💬 Message:</b>
+${escapedMessage}
 `;
 
-    const result = await bot.sendMessage(TELEGRAM_CHAT_ID, text);
+    const result = await bot.sendMessage(TELEGRAM_CHAT_ID, text, { parse_mode: 'HTML' });
     console.log('Telegram contact message sent successfully:', result.message_id);
     return true;
   } catch (error) {
@@ -84,20 +100,28 @@ export async function sendProjectInterestMessage(message: {
   try {
     console.log(`Attempting to send project interest message to Telegram chat ID: ${TELEGRAM_CHAT_ID}`);
     
+    // Escape HTML characters in message fields
+    const escapedTitle = escapeHtml(message.projectTitle);
+    const escapedName = escapeHtml(message.name);
+    const escapedEmail = escapeHtml(message.email);
+    const escapedPhone = message.phone ? escapeHtml(message.phone) : null;
+    const escapedMessage = escapeHtml(message.message);
+    
+    // Using HTML formatting for better display in Telegram
     const text = `
-🚀 New Project Interest:
------------------------
-📂 Project: ${message.projectTitle} (ID: ${message.projectId})
-👤 From: ${message.name}
-📧 Email: ${message.email}
-${message.phone ? `📱 Phone: ${message.phone}` : ''}
-💬 Message:
-${message.message}
------------------------
-Payment Method: USDT TRC20 only
+<b>🚀 NEW PROJECT INTEREST</b>
+
+<b>📂 Project:</b> ${escapedTitle} (ID: ${message.projectId})
+<b>👤 From:</b> ${escapedName}
+<b>📧 Email:</b> ${escapedEmail}
+${escapedPhone ? `<b>📱 Phone:</b> ${escapedPhone}` : ''}
+<b>💬 Message:</b>
+${escapedMessage}
+
+<i>Payment Method: USDT TRC20 only</i>
 `;
 
-    const result = await bot.sendMessage(TELEGRAM_CHAT_ID, text);
+    const result = await bot.sendMessage(TELEGRAM_CHAT_ID, text, { parse_mode: 'HTML' });
     console.log('Telegram project interest message sent successfully:', result.message_id);
     return true;
   } catch (error) {

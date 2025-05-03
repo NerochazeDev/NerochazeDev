@@ -99,6 +99,46 @@ export class MemStorage implements IStorage {
   
   private initializeDefaultData() {
     // Add default website info if needed
+    
+    // Hero section
+    this.upsertWebsiteInfo({
+      section: "hero",
+      key: "title",
+      value: "Nerochaze"
+    });
+    
+    this.upsertWebsiteInfo({
+      section: "hero",
+      key: "subtitle",
+      value: "Full Stack Developer & Blockchain Specialist"
+    });
+    
+    this.upsertWebsiteInfo({
+      section: "hero",
+      key: "introduction",
+      value: "Experienced developer specializing in cutting-edge web applications, blockchain solutions, and responsive user interfaces."
+    });
+    
+    // About section with professional introduction
+    this.upsertWebsiteInfo({
+      section: "about",
+      key: "professional_summary",
+      value: "I am a highly skilled full-stack developer with deep expertise in modern web technologies, blockchain development, and secure application architecture. With years of professional experience, I specialize in creating robust, scalable applications that deliver exceptional user experiences while meeting the highest standards of security and performance. My technical proficiency spans React, Node.js, and blockchain technologies, enabling me to build comprehensive solutions for complex business challenges."
+    });
+    
+    this.upsertWebsiteInfo({
+      section: "about",
+      key: "expertise",
+      value: "Blockchain Development, Full-Stack Web Applications, API Integration, UI/UX Design, Smart Contract Development, System Architecture, Security Implementation"
+    });
+    
+    this.upsertWebsiteInfo({
+      section: "about",
+      key: "experience",
+      value: "5+ years of professional development experience working with startups and established companies to deliver cutting-edge digital solutions."
+    });
+    
+    // Contact info
     this.upsertWebsiteInfo({
       section: "contact",
       key: "email",
@@ -109,6 +149,12 @@ export class MemStorage implements IStorage {
       section: "contact",
       key: "phone",
       value: "+1 (123) 456-7890"
+    });
+    
+    this.upsertWebsiteInfo({
+      section: "contact",
+      key: "intro_text",
+      value: "I'm available for freelance work and consulting. Let's discuss your project and turn your vision into reality. I only accept USDT TRC20 as payment method."
     });
   }
 
@@ -388,10 +434,14 @@ export class MemStorage implements IStorage {
   async saveProjectInterest(insertInterest: InsertProjectInterest): Promise<ProjectInterest> {
     const id = this.interestCurrentId++;
     const createdAt = new Date();
+    // Ensure projectId is present and is a number
+    const projectId = Number(insertInterest.projectId);
     const interest: ProjectInterest = { 
       ...insertInterest, 
+      projectId,
       id, 
-      createdAt 
+      createdAt,
+      phone: insertInterest.phone || null
     };
     this.projectInterests.set(id, interest);
     return interest;

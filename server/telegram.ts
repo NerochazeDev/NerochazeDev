@@ -49,7 +49,7 @@ export async function sendProjectInterestMessage(message: {
   projectTitle: string;
   name: string;
   email: string;
-  phone?: string;
+  phone?: string | null;
   message: string;
 }): Promise<boolean> {
   if (!bot) {

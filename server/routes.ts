@@ -687,8 +687,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Validate request body
       const interestData = projectInterestSchema.parse(req.body);
       
-      // Get the project to include its title in the notification
-      const project = await storage.getProject(interestData.projectId);
+      // Ensure projectId is a number and get the project to include its title
+      const projectId = Number(interestData.projectId);
+      const project = await storage.getProject(projectId);
       if (!project) {
         return res.status(404).json({
           success: false,
@@ -697,13 +698,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
       
       // Store the interest message
-      const savedInterest = await storage.saveProjectInterest(interestData);
+      const savedInterest = await storage.saveProjectInterest({
+        ...interestData,
+        projectId // Ensure projectId is a number
+      });
       
       // Send notification to Telegram
       try {
+        // Prepare data with correct types
         await sendProjectInterestMessage({
-          ...interestData,
-          projectTitle: project.title
+          projectId,
+          projectTitle: project.title,
+          name: interestData.name,
+          email: interestData.email,
+          phone: interestData.phone || undefined,
+          message: interestData.message
         });
       } catch (telegramError) {
         console.error("Telegram project interest notification failed:", telegramError);

@@ -16,7 +16,9 @@ const projectFormSchema = z.object({
   description: z.string().min(10, { message: "Description must be at least 10 characters" }),
   image: z.string().url({ message: "Please enter a valid image URL" }),
   technologies: z.string().min(3, { message: "Please enter at least one technology" }), // We'll split this into an array
-  githubLink: z.string().url({ message: "Please enter a valid GitHub URL" }),
+  tags: z.string().min(3, { message: "Please enter at least one tag" }), // We'll split this into an array
+  category: z.string().min(2, { message: "Please enter a category" }),
+  price: z.string().min(1, { message: "Please enter the project price" }),
   liveLink: z.string().url({ message: "Please enter a valid project URL" }),
 });
 
@@ -30,7 +32,9 @@ interface ProjectFormProps {
     description: string;
     image: string;
     technologies: string[];
-    githubLink: string;
+    tags: string[];
+    category: string;
+    price: string;
     liveLink: string;
   };
 }
@@ -46,7 +50,9 @@ export function ProjectForm({ onSuccess, initialData }: ProjectFormProps) {
         description: initialData.description,
         image: initialData.image,
         technologies: initialData.technologies.join(", "),
-        githubLink: initialData.githubLink,
+        tags: initialData.tags.join(", "),
+        category: initialData.category,
+        price: initialData.price,
         liveLink: initialData.liveLink,
       }
     : {
@@ -54,7 +60,9 @@ export function ProjectForm({ onSuccess, initialData }: ProjectFormProps) {
         description: "",
         image: "",
         technologies: "",
-        githubLink: "",
+        tags: "",
+        category: "",
+        price: "",
         liveLink: "",
       };
 

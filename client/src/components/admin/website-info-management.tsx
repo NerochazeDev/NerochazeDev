@@ -75,6 +75,12 @@ export function WebsiteInfoManagement() {
               { section: 'contact', key: 'phone', value: '+1 (555) 123-4567' },
               { section: 'contact', key: 'intro_text', value: 'Get in touch for collaboration opportunities' }
             ];
+          case 'resume':
+            return [
+              { section: 'resume', key: 'education', value: 'Bachelor of Science in Computer Science' },
+              { section: 'resume', key: 'experience', value: 'Senior Full Stack Developer' },
+              { section: 'resume', key: 'skills', value: 'React, Node.js, TypeScript, PostgreSQL' }
+            ];
           default:
             return [];
         }

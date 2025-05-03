@@ -54,13 +54,6 @@ const ContactSection = () => {
     refetchOnMount: true,
     refetchOnWindowFocus: true
   });
-        throw new Error(data.message || "Failed to fetch contact information");
-      }
-      return data.data as WebsiteInfo[];
-    },
-    refetchOnMount: true,
-    refetchOnWindowFocus: true
-  });
   
   // Update contact content when data is loaded
   useEffect(() => {

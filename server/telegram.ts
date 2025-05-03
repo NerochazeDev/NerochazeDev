@@ -7,10 +7,26 @@ const TELEGRAM_CHAT_ID = '6360165707';
 let bot: TelegramBot | null = null;
 
 try {
+  console.log(`Initializing Telegram bot with token: ${TELEGRAM_BOT_TOKEN.substring(0, 5)}...`);
   bot = new TelegramBot(TELEGRAM_BOT_TOKEN, { polling: false });
-  console.log('Telegram bot initialized successfully');
+  
+  // Test the bot to ensure it's working
+  bot.getMe()
+    .then(me => {
+      console.log(`Telegram bot initialized successfully: @${me.username} (${me.first_name})`);
+    })
+    .catch(error => {
+      console.error('Error verifying Telegram bot:', error);
+      if (error instanceof Error) {
+        console.error('Error details:', error.message);
+      }
+    });
 } catch (error) {
   console.error('Error initializing Telegram bot:', error);
+  if (error instanceof Error) {
+    console.error('Error details:', error.message);
+    console.error('Error stack:', error.stack);
+  }
 }
 
 export async function sendContactMessage(message: {
@@ -25,6 +41,8 @@ export async function sendContactMessage(message: {
   }
 
   try {
+    console.log(`Attempting to send contact message to Telegram chat ID: ${TELEGRAM_CHAT_ID}`);
+    
     const text = `
 📬 New Contact Message:
 -----------------------
@@ -36,10 +54,16 @@ ${message.message}
 -----------------------
 `;
 
-    await bot.sendMessage(TELEGRAM_CHAT_ID, text);
+    const result = await bot.sendMessage(TELEGRAM_CHAT_ID, text);
+    console.log('Telegram contact message sent successfully:', result.message_id);
     return true;
   } catch (error) {
     console.error('Error sending message to Telegram:', error);
+    // Log more detailed error information
+    if (error instanceof Error) {
+      console.error('Error details:', error.message);
+      console.error('Error stack:', error.stack);
+    }
     return false;
   }
 }
@@ -58,6 +82,8 @@ export async function sendProjectInterestMessage(message: {
   }
 
   try {
+    console.log(`Attempting to send project interest message to Telegram chat ID: ${TELEGRAM_CHAT_ID}`);
+    
     const text = `
 🚀 New Project Interest:
 -----------------------
@@ -71,10 +97,16 @@ ${message.message}
 Payment Method: USDT TRC20 only
 `;
 
-    await bot.sendMessage(TELEGRAM_CHAT_ID, text);
+    const result = await bot.sendMessage(TELEGRAM_CHAT_ID, text);
+    console.log('Telegram project interest message sent successfully:', result.message_id);
     return true;
   } catch (error) {
     console.error('Error sending project interest to Telegram:', error);
+    // Log more detailed error information
+    if (error instanceof Error) {
+      console.error('Error details:', error.message);
+      console.error('Error stack:', error.stack);
+    }
     return false;
   }
 }

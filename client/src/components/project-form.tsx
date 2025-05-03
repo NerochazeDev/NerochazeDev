@@ -75,18 +75,25 @@ export function ProjectForm({ onSuccess, initialData }: ProjectFormProps) {
     try {
       setIsSubmitting(true);
       
-      // Convert comma-separated technologies to array
+      // Convert comma-separated strings to arrays
       const technologiesArray = data.technologies
         .split(",")
         .map(tech => tech.trim())
         .filter(tech => tech !== "");
+        
+      const tagsArray = data.tags
+        .split(",")
+        .map(tag => tag.trim())
+        .filter(tag => tag !== "");
       
       const projectData = {
         title: data.title,
         description: data.description,
         image: data.image,
         technologies: technologiesArray,
-        githubLink: data.githubLink,
+        tags: tagsArray,
+        category: data.category,
+        price: data.price,
         liveLink: data.liveLink,
       };
       
@@ -199,13 +206,47 @@ export function ProjectForm({ onSuccess, initialData }: ProjectFormProps) {
         
         <FormField
           control={form.control}
-          name="githubLink"
+          name="tags"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>GitHub Repository URL</FormLabel>
+              <FormLabel>Search Tags</FormLabel>
               <FormControl>
                 <Input 
-                  placeholder="https://github.com/yourusername/project-repo" 
+                  placeholder="web, mobile, blockchain (comma separated)" 
+                  {...field} 
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        
+        <FormField
+          control={form.control}
+          name="category"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Project Category</FormLabel>
+              <FormControl>
+                <Input 
+                  placeholder="Web Development, Mobile App, etc." 
+                  {...field} 
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        
+        <FormField
+          control={form.control}
+          name="price"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Project Price (USDT TRC20)</FormLabel>
+              <FormControl>
+                <Input 
+                  placeholder="e.g. 500 USDT" 
                   {...field} 
                 />
               </FormControl>

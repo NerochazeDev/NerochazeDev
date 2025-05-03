@@ -38,13 +38,20 @@ const ContactSection = () => {
   const onSubmit = async (data: ContactFormValues) => {
     setIsSubmitting(true);
     try {
-      await apiRequest("POST", "/api/contact", data);
+      await apiRequest("/api/contact", {
+        method: "POST",
+        body: JSON.stringify(data)
+      });
+      
       toast({
         title: "Message sent!",
         description: "Thank you for your message! I will get back to you soon.",
       });
+      
       form.reset();
     } catch (error) {
+      console.error("Contact form submission error:", error);
+      
       toast({
         title: "Error",
         description: "Something went wrong. Please try again later.",

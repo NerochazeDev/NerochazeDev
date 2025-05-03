@@ -17,17 +17,31 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Contact form endpoint
   app.post("/api/contact", async (req, res) => {
     try {
+      console.log("Contact form submission received:", req.body);
+      
       // Validate the request body
       const contactData = contactMessageSchema.parse(req.body);
+      console.log("Contact data validated successfully");
       
       // Store the contact message
       const savedMessage = await storage.saveContactMessage(contactData);
+      console.log("Contact message saved to storage with ID:", savedMessage.id);
       
       // Send notification to Telegram
       try {
-        await sendContactMessage(contactData);
+        console.log("Attempting to send contact message to Telegram");
+        const telegramResult = await sendContactMessage(contactData);
+        if (telegramResult) {
+          console.log("Telegram notification sent successfully");
+        } else {
+          console.error("Telegram notification function returned false");
+        }
       } catch (telegramError) {
-        console.error("Telegram notification failed:", telegramError);
+        console.error("Telegram notification failed with error:", telegramError);
+        if (telegramError instanceof Error) {
+          console.error("Error message:", telegramError.message);
+          console.error("Error stack:", telegramError.stack);
+        }
         // Continue execution even if Telegram notification fails
       }
       
@@ -38,7 +52,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
         data: { id: savedMessage.id }
       });
     } catch (error) {
+      console.error("Error in contact form endpoint:", error);
+      
       if (error instanceof ZodError) {
+        console.error("Validation error:", error.errors);
         return res.status(400).json({
           success: false,
           message: "Invalid form data",
@@ -685,29 +702,38 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Submit project interest
   app.post("/api/project-interest", async (req, res) => {
     try {
+      console.log("Project interest submission received:", req.body);
+      
       // Validate request body
       const interestData = projectInterestSchema.parse(req.body);
+      console.log("Project interest data validated successfully");
       
       // Ensure projectId is a number and get the project to include its title
       const projectId = Number(interestData.projectId);
+      console.log("Getting project with ID:", projectId);
+      
       const project = await storage.getProject(projectId);
       if (!project) {
+        console.error("Project not found with ID:", projectId);
         return res.status(404).json({
           success: false,
           message: "Project not found"
         });
       }
+      console.log("Project found:", project.title);
       
       // Store the interest message
       const savedInterest = await storage.saveProjectInterest({
         ...interestData,
         projectId // Ensure projectId is a number
       });
+      console.log("Project interest saved to storage with ID:", savedInterest.id);
       
       // Send notification to Telegram
       try {
+        console.log("Attempting to send project interest message to Telegram");
         // Prepare data with correct types
-        await sendProjectInterestMessage({
+        const telegramResult = await sendProjectInterestMessage({
           projectId,
           projectTitle: project.title,
           name: interestData.name,
@@ -715,8 +741,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
           phone: interestData.phone || undefined,
           message: interestData.message
         });
+        
+        if (telegramResult) {
+          console.log("Telegram project interest notification sent successfully");
+        } else {
+          console.error("Telegram project interest notification function returned false");
+        }
       } catch (telegramError) {
-        console.error("Telegram project interest notification failed:", telegramError);
+        console.error("Telegram project interest notification failed with error:", telegramError);
+        if (telegramError instanceof Error) {
+          console.error("Error message:", telegramError.message);
+          console.error("Error stack:", telegramError.stack);
+        }
         // Continue execution even if Telegram notification fails
       }
       
@@ -727,7 +763,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
         data: { id: savedInterest.id }
       });
     } catch (error) {
+      console.error("Error in project interest endpoint:", error);
+      
       if (error instanceof ZodError) {
+        console.error("Validation error:", error.errors);
         return res.status(400).json({
           success: false,
           message: "Invalid project interest data",

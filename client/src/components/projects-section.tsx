@@ -57,10 +57,13 @@ const ProjectsSection = () => {
     setIsSubmitting(true);
     
     try {
-      await apiRequest("POST", "/api/project-interest", {
-        ...formState,
-        projectId: selectedProject.id
-      } as any);
+      await apiRequest("/api/project-interest", { 
+        method: "POST", 
+        body: JSON.stringify({
+          ...formState,
+          projectId: selectedProject.id
+        })
+      });
       
       toast({
         title: "Interest submitted!",

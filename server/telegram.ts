@@ -1,8 +1,8 @@
 import TelegramBot from 'node-telegram-bot-api';
 
-// Hardcoded Telegram credentials as requested
-const TELEGRAM_BOT_TOKEN = '7890871059:AAHlDEkfJxsq1bKwqthUBiI1f5dqu8IFavM';
-const TELEGRAM_CHAT_ID = '6360165707';
+// Environment variables for Telegram credentials with fallback to hardcoded values
+const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || '7890871059:AAHlDEkfJxsq1bKwqthUBiI1f5dqu8IFavM';
+const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID || '6360165707';
 
 // HTML escaping function for telegram message formatting
 function escapeHtml(text: string): string {

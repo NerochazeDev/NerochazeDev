@@ -25,12 +25,12 @@ const Header = () => {
   }, []);
 
   const navLinks = [
-    { href: "#home", label: "Home" },
-    { href: "#about", label: "About" },
-    { href: "#skills", label: "Skills" },
-    { href: "#projects", label: "Projects" },
-    { href: "#blog", label: "Blog" },
-    { href: "#contact", label: "Contact" },
+    { href: "/", label: "Home" },
+    { href: "/#about", label: "About" },
+    { href: "/#skills", label: "Skills" },
+    { href: "/#projects", label: "Projects" },
+    { href: "/blog", label: "Blog" },
+    { href: "/#contact", label: "Contact" },
   ];
 
   return (
@@ -54,20 +54,27 @@ const Header = () => {
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-6">
           {navLinks.map((link, index) => (
-            <a 
-              key={link.href} 
-              href={link.href} 
-              className="relative text-gray-300 hover:text-cyan-400 px-1 py-2 text-sm font-medium transition-colors group"
-              onClick={() => {
-                if (location !== "/") {
-                  window.location.href = "/" + link.href;
-                }
-              }}
-            >
-              <span className="text-cyan-400 font-mono mr-1 text-xs opacity-70">{(index + 1).toString().padStart(2, '0')}.</span>
-              {link.label}
-              <span className="absolute left-0 bottom-0 h-[2px] w-0 bg-cyan-400 transition-all duration-300 group-hover:w-full"></span>
-            </a>
+            link.href.includes('#') ? (
+              <a 
+                key={link.href} 
+                href={link.href} 
+                className="relative text-gray-300 hover:text-cyan-400 px-1 py-2 text-sm font-medium transition-colors group"
+              >
+                <span className="text-cyan-400 font-mono mr-1 text-xs opacity-70">{(index + 1).toString().padStart(2, '0')}.</span>
+                {link.label}
+                <span className="absolute left-0 bottom-0 h-[2px] w-0 bg-cyan-400 transition-all duration-300 group-hover:w-full"></span>
+              </a>
+            ) : (
+              <Link 
+                key={link.href} 
+                href={link.href}
+                className={`relative ${location === link.href ? 'text-cyan-400' : 'text-gray-300'} hover:text-cyan-400 px-1 py-2 text-sm font-medium transition-colors group`}
+              >
+                <span className="text-cyan-400 font-mono mr-1 text-xs opacity-70">{(index + 1).toString().padStart(2, '0')}.</span>
+                {link.label}
+                <span className="absolute left-0 bottom-0 h-[2px] w-0 bg-cyan-400 transition-all duration-300 group-hover:w-full"></span>
+              </Link>
+            )
           ))}
           <a 
             href="/resume.pdf" 
@@ -90,15 +97,27 @@ const Header = () => {
         <nav className="h-full flex flex-col p-6">
           <div className="flex flex-col space-y-6 mt-4">
             {navLinks.map((link, index) => (
-              <a 
-                key={link.href} 
-                href={link.href} 
-                className="text-gray-300 hover:text-cyan-400 text-lg font-medium transition-colors transform hover:translate-x-2 duration-300 flex items-center"
-                onClick={closeMenu}
-              >
-                <span className="text-cyan-400 font-mono mr-2 text-sm opacity-80">{(index + 1).toString().padStart(2, '0')}.</span>
-                {link.label}
-              </a>
+              link.href.includes('#') ? (
+                <a 
+                  key={link.href} 
+                  href={link.href} 
+                  className="text-gray-300 hover:text-cyan-400 text-lg font-medium transition-colors transform hover:translate-x-2 duration-300 flex items-center"
+                  onClick={closeMenu}
+                >
+                  <span className="text-cyan-400 font-mono mr-2 text-sm opacity-80">{(index + 1).toString().padStart(2, '0')}.</span>
+                  {link.label}
+                </a>
+              ) : (
+                <Link 
+                  key={link.href} 
+                  href={link.href}
+                  className={`${location === link.href ? 'text-cyan-400' : 'text-gray-300'} hover:text-cyan-400 text-lg font-medium transition-colors transform hover:translate-x-2 duration-300 flex items-center`}
+                  onClick={closeMenu}
+                >
+                  <span className="text-cyan-400 font-mono mr-2 text-sm opacity-80">{(index + 1).toString().padStart(2, '0')}.</span>
+                  {link.label}
+                </Link>
+              )
             ))}
             <div className="pt-6 mt-6 border-t border-gray-800">
               <a 

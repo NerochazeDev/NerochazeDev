@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Allow all pages to be crawled
+Disallow: /Hello10122 # Do not index the admin area
+
+# Sitemap declaration
+Sitemap: https://nerochaze.replit.app/sitemap.xml

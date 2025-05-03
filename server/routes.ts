@@ -6,9 +6,11 @@ import {
   projectSchema, 
   websiteInfoSchema, 
   skillSchema, 
-  socialLinkSchema 
+  socialLinkSchema,
+  projectInterestSchema
 } from "@shared/schema";
 import { ZodError } from "zod";
+import { sendContactMessage, sendProjectInterestMessage } from "./telegram";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Contact form endpoint
@@ -19,6 +21,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       // Store the contact message
       const savedMessage = await storage.saveContactMessage(contactData);
+      
+      // Send notification to Telegram
+      try {
+        await sendContactMessage(contactData);
+      } catch (telegramError) {
+        console.error("Telegram notification failed:", telegramError);
+        // Continue execution even if Telegram notification fails
+      }
       
       // Return success response
       return res.status(200).json({
@@ -666,6 +676,130 @@ export async function registerRoutes(app: Express): Promise<Server> {
       return res.status(500).json({
         success: false,
         message: "Server error while deleting the contact message"
+      });
+    }
+  });
+
+  // Project interest routes
+  // Submit project interest
+  app.post("/api/project-interest", async (req, res) => {
+    try {
+      // Validate request body
+      const interestData = projectInterestSchema.parse(req.body);
+      
+      // Get the project to include its title in the notification
+      const project = await storage.getProject(interestData.projectId);
+      if (!project) {
+        return res.status(404).json({
+          success: false,
+          message: "Project not found"
+        });
+      }
+      
+      // Store the interest message
+      const savedInterest = await storage.saveProjectInterest(interestData);
+      
+      // Send notification to Telegram
+      try {
+        await sendProjectInterestMessage({
+          ...interestData,
+          projectTitle: project.title
+        });
+      } catch (telegramError) {
+        console.error("Telegram project interest notification failed:", telegramError);
+        // Continue execution even if Telegram notification fails
+      }
+      
+      // Return success response
+      return res.status(200).json({
+        success: true,
+        message: "Project interest submitted successfully",
+        data: { id: savedInterest.id }
+      });
+    } catch (error) {
+      if (error instanceof ZodError) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid project interest data",
+          errors: error.errors
+        });
+      }
+      
+      return res.status(500).json({
+        success: false,
+        message: "Server error while processing your request"
+      });
+    }
+  });
+  
+  // Get project interests by project ID
+  app.get("/api/project-interest/project/:id", async (req, res) => {
+    try {
+      const projectId = parseInt(req.params.id);
+      if (isNaN(projectId)) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid project ID"
+        });
+      }
+      
+      const interests = await storage.getProjectInterestsByProject(projectId);
+      return res.status(200).json({
+        success: true,
+        data: interests
+      });
+    } catch (error) {
+      return res.status(500).json({
+        success: false,
+        message: "Server error while fetching project interests"
+      });
+    }
+  });
+  
+  // Get all project interests
+  app.get("/api/project-interest", async (req, res) => {
+    try {
+      const interests = await storage.getAllProjectInterests();
+      return res.status(200).json({
+        success: true,
+        data: interests
+      });
+    } catch (error) {
+      return res.status(500).json({
+        success: false,
+        message: "Server error while fetching project interests"
+      });
+    }
+  });
+  
+  // Delete project interest
+  app.delete("/api/project-interest/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      if (isNaN(id)) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid project interest ID"
+        });
+      }
+      
+      const deleted = await storage.deleteProjectInterest(id);
+      
+      if (!deleted) {
+        return res.status(404).json({
+          success: false,
+          message: "Project interest not found"
+        });
+      }
+      
+      return res.status(200).json({
+        success: true,
+        message: "Project interest deleted successfully"
+      });
+    } catch (error) {
+      return res.status(500).json({
+        success: false,
+        message: "Server error while deleting the project interest"
       });
     }
   });

@@ -4,7 +4,8 @@ import {
   type Project, type InsertProject,
   type WebsiteInfo, type InsertWebsiteInfo,
   type Skill, type InsertSkill,
-  type SocialLink, type InsertSocialLink
+  type SocialLink, type InsertSocialLink,
+  type ProjectInterest, type InsertProjectInterest
 } from "@shared/schema";
 
 // Extended storage interface with all methods
@@ -82,6 +83,7 @@ export class MemStorage implements IStorage {
     this.skills = new Map();
     this.socialLinks = new Map();
     this.contactMessages = new Map();
+    this.projectInterests = new Map();
     
     this.userCurrentId = 1;
     this.projectCurrentId = 1;
@@ -89,6 +91,7 @@ export class MemStorage implements IStorage {
     this.skillCurrentId = 1;
     this.socialLinkCurrentId = 1;
     this.messageCurrentId = 1;
+    this.interestCurrentId = 1;
     
     // Initialize with default website info
     this.initializeDefaultData();
@@ -305,7 +308,8 @@ export class MemStorage implements IStorage {
     const link: SocialLink = {
       ...insertLink,
       id,
-      order
+      order,
+      isActive: insertLink.isActive || 'true'
     };
     
     this.socialLinks.set(id, link);
@@ -365,6 +369,56 @@ export class MemStorage implements IStorage {
     }
     
     return this.contactMessages.delete(id);
+  }
+
+  // Project categorization methods
+  async getProjectsByCategory(category: string): Promise<Project[]> {
+    return Array.from(this.projects.values())
+      .filter(project => project.category === category)
+      .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+  }
+
+  async getProjectsByTag(tag: string): Promise<Project[]> {
+    return Array.from(this.projects.values())
+      .filter(project => project.tags.includes(tag))
+      .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+  }
+
+  // Project interest methods
+  async saveProjectInterest(insertInterest: InsertProjectInterest): Promise<ProjectInterest> {
+    const id = this.interestCurrentId++;
+    const createdAt = new Date();
+    const interest: ProjectInterest = { 
+      ...insertInterest, 
+      id, 
+      createdAt 
+    };
+    this.projectInterests.set(id, interest);
+    return interest;
+  }
+
+  async getProjectInterest(id: number): Promise<ProjectInterest | undefined> {
+    return this.projectInterests.get(id);
+  }
+
+  async getAllProjectInterests(): Promise<ProjectInterest[]> {
+    return Array.from(this.projectInterests.values()).sort((a, b) => 
+      b.createdAt.getTime() - a.createdAt.getTime()
+    );
+  }
+
+  async getProjectInterestsByProject(projectId: number): Promise<ProjectInterest[]> {
+    return Array.from(this.projectInterests.values())
+      .filter(interest => interest.projectId === projectId)
+      .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+  }
+
+  async deleteProjectInterest(id: number): Promise<boolean> {
+    if (!this.projectInterests.has(id)) {
+      return false;
+    }
+    
+    return this.projectInterests.delete(id);
   }
 }
 

@@ -1,7 +1,8 @@
-import { pgTable, text, serial, timestamp, boolean } from "drizzle-orm/pg-core";
+import { pgTable, text, serial, timestamp, boolean, integer } from "drizzle-orm/pg-core";
 import { sql } from "drizzle-orm";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
+import { relations } from "drizzle-orm";
 
 // User schema - keeping this from the original
 export const users = pgTable("users", {
@@ -123,13 +124,20 @@ export type ContactMessage = typeof contactMessages.$inferSelect;
 // Project interest messages schema
 export const projectInterestMessages = pgTable("project_interest_messages", {
   id: serial("id").primaryKey(),
-  projectId: serial("project_id").notNull(),
+  projectId: integer("project_id").notNull(),
   name: text("name").notNull(),
   email: text("email").notNull(),
   phone: text("phone"),
   message: text("message").notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
+
+export const projectInterestRelations = relations(projectInterestMessages, ({ one }) => ({
+  project: one(projects, {
+    fields: [projectInterestMessages.projectId],
+    references: [projects.id],
+  }),
+}));
 
 export const projectInterestSchema = createInsertSchema(projectInterestMessages).pick({
   projectId: true,

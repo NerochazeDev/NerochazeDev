@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -11,6 +11,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { FaEnvelope, FaPhone } from "react-icons/fa";
+import { useQuery } from "@tanstack/react-query";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const contactFormSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters" }),
@@ -21,9 +23,54 @@ const contactFormSchema = z.object({
 
 type ContactFormValues = z.infer<typeof contactFormSchema>;
 
+type WebsiteInfo = {
+  id: number;
+  section: string;
+  key: string;
+  value: string;
+  updatedAt: string;
+};
+
 const ContactSection = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
+  const [contactInfo, setContactInfo] = useState({
+    email: "contact@nerochaze.com",
+    phone: "+1 (555) 123-4567",
+    intro_text: "I'm always interested in exciting projects and collaborative opportunities. Whether you need a complete web application, technical consultation, or just want to connect, don't hesitate to reach out!"
+  });
+  
+  // Fetch contact section data
+  const { data: contactData, isLoading: isContactDataLoading } = useQuery({
+    queryKey: ['/api/website-info/contact'],
+    queryFn: async () => {
+      const response = await fetch('/api/website-info/contact');
+      const data = await response.json();
+      if (!data.success) {
+        throw new Error(data.message || "Failed to fetch contact information");
+      }
+      return data.data as WebsiteInfo[];
+    },
+    refetchOnMount: true,
+    refetchOnWindowFocus: true
+  });
+  
+  // Update contact content when data is loaded
+  useEffect(() => {
+    if (contactData) {
+      const contentMap: Record<string, string> = {};
+      
+      contactData.forEach(item => {
+        contentMap[item.key] = item.value;
+      });
+      
+      setContactInfo({
+        email: contentMap.email || "contact@nerochaze.com",
+        phone: contentMap.phone || "+1 (555) 123-4567",
+        intro_text: contentMap.intro_text || "I'm always interested in exciting projects and collaborative opportunities."
+      });
+    }
+  }, [contactData]);
   
   const form = useForm<ContactFormValues>({
     resolver: zodResolver(contactFormSchema),

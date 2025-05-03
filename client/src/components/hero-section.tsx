@@ -1,8 +1,57 @@
 import { motion } from "framer-motion";
 import { FaGithub, FaLinkedin, FaTwitter, FaCodepen } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
+import { useQuery } from "@tanstack/react-query";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useState, useEffect } from "react";
+
+type WebsiteInfo = {
+  id: number;
+  section: string;
+  key: string;
+  value: string;
+  updatedAt: string;
+};
 
 const HeroSection = () => {
+  const [heroContent, setHeroContent] = useState({
+    title: "",
+    subtitle: "",
+    introduction: ""
+  });
+  
+  // Fetch hero section data
+  const { data: heroData, isLoading } = useQuery({
+    queryKey: ['/api/website-info/hero'],
+    queryFn: async () => {
+      const response = await fetch('/api/website-info/hero');
+      const data = await response.json();
+      if (!data.success) {
+        throw new Error(data.message || "Failed to fetch hero information");
+      }
+      return data.data as WebsiteInfo[];
+    },
+    refetchOnMount: true,
+    refetchOnWindowFocus: true
+  });
+  
+  // Update hero content when data is loaded
+  useEffect(() => {
+    if (heroData) {
+      const contentMap: Record<string, string> = {};
+      
+      heroData.forEach(item => {
+        contentMap[item.key] = item.value;
+      });
+      
+      setHeroContent({
+        title: contentMap.title || "Nerochaze",
+        subtitle: contentMap.subtitle || "Full-Stack Developer & Digital Innovator",
+        introduction: contentMap.introduction || "I'm an experienced full-stack developer specializing in creating exceptional digital experiences with modern technologies."
+      });
+    }
+  }, [heroData]);
+  
   const socialLinks = [
     { icon: <FaGithub className="text-2xl" />, href: "https://github.com/nerochaze", label: "GitHub" },
     { icon: <FaLinkedin className="text-2xl" />, href: "https://linkedin.com/in/nerochaze", label: "LinkedIn" },
@@ -28,31 +77,41 @@ const HeroSection = () => {
             >
               Hello, my name is
             </motion.p>
-            <motion.h1 
-              className="text-4xl md:text-6xl font-bold mb-2 bg-gradient-to-r from-[#64FFDA] to-[#172A45] text-transparent bg-clip-text"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.3, duration: 0.5 }}
-            >
-              Nerochaze
-            </motion.h1>
-            <motion.h2 
-              className="text-3xl md:text-5xl font-bold text-[#6c757d] mb-6"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.4, duration: 0.5 }}
-            >
-              Full-Stack Developer & Digital Innovator
-            </motion.h2>
-            <motion.p 
-              className="text-lg text-[#6c757d] max-w-xl mb-8"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.5, duration: 0.5 }}
-            >
-              I'm an experienced full-stack developer specializing in creating exceptional digital experiences with modern technologies. 
-              My passion is building elegant, responsive, and user-focused applications that solve real-world problems.
-            </motion.p>
+            
+            {isLoading ? (
+              <>
+                <Skeleton className="h-16 w-3/4 mb-2" />
+                <Skeleton className="h-12 w-full mb-6" />
+                <Skeleton className="h-24 w-full mb-8" />
+              </>
+            ) : (
+              <>
+                <motion.h1 
+                  className="text-4xl md:text-6xl font-bold mb-2 bg-gradient-to-r from-[#64FFDA] to-[#172A45] text-transparent bg-clip-text"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.3, duration: 0.5 }}
+                >
+                  {heroContent.title}
+                </motion.h1>
+                <motion.h2 
+                  className="text-3xl md:text-5xl font-bold text-[#6c757d] mb-6"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.4, duration: 0.5 }}
+                >
+                  {heroContent.subtitle}
+                </motion.h2>
+                <motion.p 
+                  className="text-lg text-[#6c757d] max-w-xl mb-8"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.5, duration: 0.5 }}
+                >
+                  {heroContent.introduction}
+                </motion.p>
+              </>
+            )}
             <motion.div 
               className="flex flex-wrap gap-4"
               initial={{ opacity: 0 }}

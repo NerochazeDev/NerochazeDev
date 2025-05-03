@@ -1,6 +1,23 @@
 import { motion } from "framer-motion";
+import { useQuery } from "@tanstack/react-query";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useState, useEffect } from "react";
+
+type WebsiteInfo = {
+  id: number;
+  section: string;
+  key: string;
+  value: string;
+  updatedAt: string;
+};
 
 const AboutSection = () => {
+  const [aboutContent, setAboutContent] = useState({
+    professional_summary: "",
+    expertise: "",
+    experience: ""
+  });
+  
   const technologies = [
     "JavaScript (ES6+)",
     "React",
@@ -12,6 +29,38 @@ const AboutSection = () => {
     "MongoDB",
     "Tailwind CSS",
   ];
+  
+  // Fetch about section data
+  const { data: aboutData, isLoading } = useQuery({
+    queryKey: ['/api/website-info/about'],
+    queryFn: async () => {
+      const response = await fetch('/api/website-info/about');
+      const data = await response.json();
+      if (!data.success) {
+        throw new Error(data.message || "Failed to fetch about information");
+      }
+      return data.data as WebsiteInfo[];
+    },
+    refetchOnMount: true,
+    refetchOnWindowFocus: true
+  });
+  
+  // Update about content when data is loaded
+  useEffect(() => {
+    if (aboutData) {
+      const contentMap: Record<string, string> = {};
+      
+      aboutData.forEach(item => {
+        contentMap[item.key] = item.value;
+      });
+      
+      setAboutContent({
+        professional_summary: contentMap.professional_summary || "",
+        expertise: contentMap.expertise || "",
+        experience: contentMap.experience || ""
+      });
+    }
+  }, [aboutData]);
 
   return (
     <section id="about" className="py-20 bg-white">
@@ -36,20 +85,29 @@ const AboutSection = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            <p className="text-lg mb-4">
-              Hello! I'm <span className="font-semibold text-[#172A45]">Nerochaze</span>, a passionate full-stack developer with expertise in building
-              modern, scalable web applications. My journey in software development has allowed me to
-              master both frontend and backend technologies to create seamless digital experiences.
-            </p>
-            <p className="text-lg mb-4">
-              I specialize in crafting elegant solutions for complex problems, with a focus on clean code,
-              performance optimization, and intuitive user interfaces. My goal is to build software that
-              not only works flawlessly but also delivers exceptional user experiences.
-            </p>
-            <p className="text-lg mb-4">
-              Whether it's developing responsive frontends with React or building robust APIs with Node.js,
-              I'm committed to delivering high-quality software that meets business objectives and delights users.
-            </p>
+            {isLoading ? (
+              <>
+                <Skeleton className="h-24 w-full mb-4" />
+                <Skeleton className="h-24 w-full mb-4" />
+                <Skeleton className="h-24 w-full mb-4" />
+              </>
+            ) : (
+              <>
+                <p className="text-lg mb-4">
+                  Hello! I'm <span className="font-semibold text-[#172A45]">Nerochaze</span>, {aboutContent.professional_summary || "a passionate full-stack developer with expertise in building modern, scalable web applications."}
+                </p>
+                {aboutContent.expertise && (
+                  <p className="text-lg mb-4">
+                    <span className="font-semibold">Expertise:</span> {aboutContent.expertise}
+                  </p>
+                )}
+                {aboutContent.experience && (
+                  <p className="text-lg mb-4">
+                    <span className="font-semibold">Experience:</span> {aboutContent.experience}
+                  </p>
+                )}
+              </>
+            )}
             <p className="text-lg mb-6">
               Here are a few technologies I've been working with recently:
             </p>

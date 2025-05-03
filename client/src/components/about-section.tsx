@@ -86,9 +86,9 @@ const AboutSection = () => {
           >
             <div className="relative rounded-md overflow-hidden group">
               <img 
-                src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=80" 
-                alt="Developer working on code"
-                className="w-full rounded-md"
+                src="https://images.unsplash.com/photo-1571171637578-41bc2dd41cd2?ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=80" 
+                alt="Modern development workspace"
+                className="w-full rounded-md shadow-lg"
               />
               <div className="absolute inset-0 border-4 border-[#64FFDA] rounded-md transform translate-x-4 translate-y-4 group-hover:translate-x-2 group-hover:translate-y-2 transition-transform"></div>
             </div>

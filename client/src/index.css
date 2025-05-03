@@ -84,26 +84,26 @@
   }
 
   .progress-bar {
-    @apply h-2 bg-gray-200 rounded-full overflow-hidden;
+    @apply h-2.5 bg-gray-200 rounded-full overflow-hidden shadow-inner;
   }
 
   .progress-bar-fill {
-    @apply h-full bg-[#64FFDA] transition-all duration-1000 ease-in-out;
+    @apply h-full bg-gradient-to-r from-[#64FFDA] to-[#172A45] transition-all duration-1000 ease-in-out;
   }
 
   .project-card {
-    @apply bg-white rounded-lg overflow-hidden shadow-md transition-all duration-300;
+    @apply bg-white rounded-lg overflow-hidden shadow-md transition-all duration-300 border border-gray-100;
   }
 
   .project-card:hover {
-    @apply transform -translate-y-1 shadow-lg;
+    @apply transform -translate-y-1 shadow-lg border-gray-200;
   }
 
   .skill-tag {
-    @apply bg-white shadow-sm px-4 py-2 rounded-full text-[#172A45] border border-gray-200 transition-transform duration-200;
+    @apply bg-white shadow-sm px-4 py-2 rounded-full text-[#172A45] border border-gray-200 transition-all duration-200;
   }
 
   .skill-tag:hover {
-    @apply transform -translate-y-0.5;
+    @apply transform -translate-y-0.5 border-[#64FFDA] text-[#203a61] shadow;
   }
 }

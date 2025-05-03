@@ -67,7 +67,7 @@ const SkillsSection = () => {
                   <div 
                     className="progress-bar-fill"
                     data-width={skill.percentage}
-                    style={{ width: "0%" }}
+                    style={{ width: `${skill.percentage}%` }}
                   ></div>
                 </div>
               </motion.div>

@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Link } from 'wouter';
 import { marked } from 'marked';
+import { Helmet } from 'react-helmet-async';
 
 type BlogPost = {
   id: number;

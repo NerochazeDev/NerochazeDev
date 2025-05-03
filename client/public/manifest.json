@@ -1,0 +1,17 @@
+{
+  "name": "Nerochaze Portfolio",
+  "short_name": "Nerochaze",
+  "description": "Professional portfolio of a full-stack developer showcasing projects and expertise",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#111827",
+  "theme_color": "#111827",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "48x48 72x72 96x96 128x128 256x256 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

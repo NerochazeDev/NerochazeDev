@@ -7,29 +7,35 @@
     <!-- Primary Meta Tags -->
     <title>Nerochaze | Full-Stack Developer & Digital Innovator</title>
     <meta name="title" content="Nerochaze | Full-Stack Developer & Digital Innovator">
-    <meta name="description" content="Professional portfolio showcasing modern web applications, technical expertise, and innovative digital solutions for businesses of all sizes. Expert in React, Node.js, and cloud technologies.">
+    <meta name="description" content="Nerochaze - Professional portfolio showcasing modern web applications, technical expertise, and innovative digital solutions for businesses of all sizes. Expert in React, Node.js, and cloud technologies.">
     <meta name="author" content="Nerochaze">
-    <meta name="keywords" content="web development, full stack developer, react developer, node.js developer, portfolio, web applications, software engineer, digital innovation">
+    <meta name="keywords" content="Nerochaze, Nerochaze Tech, Nerochaze developer, Nerochaze portfolio, Nerochaze website, Nerochaze solutions, web development, full stack developer, react developer, node.js developer, portfolio, web applications, software engineer, digital innovation, AI development, blockchain solutions">
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://nerochaze.replit.app/">
+    <meta property="og:site_name" content="Nerochaze Tech">
     <meta property="og:title" content="Nerochaze | Full-Stack Developer & Digital Innovator">
-    <meta property="og:description" content="Professional portfolio showcasing modern web applications, technical expertise, and innovative digital solutions for businesses of all sizes.">
+    <meta property="og:description" content="Nerochaze - Professional portfolio showcasing modern web applications, technical expertise, and innovative digital solutions. Expert in React, Node.js, and cloud technologies.">
     <meta property="og:image" content="https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80">
+    <meta property="og:locale" content="en_US">
     
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://nerochaze.replit.app/">
+    <meta property="twitter:site" content="@NerochazeTech">
+    <meta property="twitter:creator" content="@Nerochaze">
     <meta property="twitter:title" content="Nerochaze | Full-Stack Developer & Digital Innovator">
-    <meta property="twitter:description" content="Professional portfolio showcasing modern web applications, technical expertise, and innovative digital solutions for businesses of all sizes.">
+    <meta property="twitter:description" content="Nerochaze - Professional portfolio showcasing modern web applications, technical expertise, and innovative digital solutions. Expert in React, Node.js, and cloud technologies.">
     <meta property="twitter:image" content="https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80">
     
     <!-- Canonical URL -->
     <link rel="canonical" href="https://nerochaze.replit.app/" />
     
     <!-- Favicon -->
-    <link rel="icon" type="image/png" href="/favicon.ico">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="alternate icon" type="image/png" href="/favicon.ico">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
     
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -41,11 +47,47 @@
     
     <!-- Mobile theme color -->
     <meta name="theme-color" content="#111827">
+    
+    <!-- Web Manifest -->
+    <link rel="manifest" href="/manifest.json">
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
     <!-- This is a replit script which adds a banner on the top of the page when opened in development mode outside the replit environment -->
     <script type="text/javascript" src="https://replit.com/public/js/replit-dev-banner.js"></script>
+    
+    <!-- Structured Data - Person -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Nerochaze",
+      "url": "https://nerochaze.replit.app/",
+      "jobTitle": "Full-Stack Developer",
+      "description": "Professional full-stack developer with expertise in modern web technologies including React, Node.js, and cloud solutions.",
+      "knowsAbout": ["Web Development", "React", "Node.js", "JavaScript", "TypeScript", "PostgreSQL", "Cloud Computing"],
+      "worksFor": {
+        "@type": "Organization",
+        "name": "NerochazeTech"
+      }
+    }
+    </script>
+    
+    <!-- Structured Data - WebSite -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Nerochaze Portfolio",
+      "url": "https://nerochaze.replit.app/",
+      "description": "Professional portfolio showcasing modern web applications, technical expertise, and innovative digital solutions.",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://nerochaze.replit.app/blog?search={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
   </body>
 </html>

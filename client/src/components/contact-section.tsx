@@ -54,11 +54,6 @@ const ContactSection = () => {
     refetchOnMount: true,
     refetchOnWindowFocus: true
   });
-    queryKey: ['/api/website-info/contact'],
-    queryFn: async () => {
-      const response = await fetch('/api/website-info/contact');
-      const data = await response.json();
-      if (!data.success) {
         throw new Error(data.message || "Failed to fetch contact information");
       }
       return data.data as WebsiteInfo[];

@@ -17,6 +17,30 @@ export const insertUserSchema = createInsertSchema(users).pick({
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type User = typeof users.$inferSelect;
 
+// Projects schema
+export const projects = pgTable("projects", {
+  id: serial("id").primaryKey(),
+  title: text("title").notNull(),
+  description: text("description").notNull(),
+  image: text("image").notNull(),
+  technologies: text("technologies").array().notNull(),
+  githubLink: text("github_link").notNull(),
+  liveLink: text("live_link").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export const projectSchema = createInsertSchema(projects).pick({
+  title: true,
+  description: true,
+  image: true,
+  technologies: true,
+  githubLink: true,
+  liveLink: true,
+});
+
+export type InsertProject = z.infer<typeof projectSchema>;
+export type Project = typeof projects.$inferSelect;
+
 // Contact messages schema
 export const contactMessages = pgTable("contact_messages", {
   id: serial("id").primaryKey(),

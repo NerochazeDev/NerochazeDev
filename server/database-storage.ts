@@ -55,8 +55,13 @@ export class DatabaseStorage implements IStorage {
   }
 
   async deleteProject(id: number): Promise<boolean> {
-    const result = await db.delete(projects).where(eq(projects.id, id));
-    return result.count > 0;
+    try {
+      await db.delete(projects).where(eq(projects.id, id));
+      return true;
+    } catch (error) {
+      console.error("Error deleting project:", error);
+      return false;
+    }
   }
 
   async getProjectsByCategory(category: string): Promise<Project[]> {
@@ -162,8 +167,13 @@ export class DatabaseStorage implements IStorage {
   }
 
   async deleteSkill(id: number): Promise<boolean> {
-    const result = await db.delete(skills).where(eq(skills.id, id));
-    return result.count > 0;
+    try {
+      await db.delete(skills).where(eq(skills.id, id));
+      return true;
+    } catch (error) {
+      console.error("Error deleting skill:", error);
+      return false;
+    }
   }
 
   // Social link methods
@@ -202,8 +212,13 @@ export class DatabaseStorage implements IStorage {
   }
 
   async deleteSocialLink(id: number): Promise<boolean> {
-    const result = await db.delete(socialLinks).where(eq(socialLinks.id, id));
-    return result.count > 0;
+    try {
+      await db.delete(socialLinks).where(eq(socialLinks.id, id));
+      return true;
+    } catch (error) {
+      console.error("Error deleting social link:", error);
+      return false;
+    }
   }
 
   // Contact message methods
@@ -225,8 +240,13 @@ export class DatabaseStorage implements IStorage {
   }
 
   async deleteContactMessage(id: number): Promise<boolean> {
-    const result = await db.delete(contactMessages).where(eq(contactMessages.id, id));
-    return result.count > 0;
+    try {
+      await db.delete(contactMessages).where(eq(contactMessages.id, id));
+      return true;
+    } catch (error) {
+      console.error("Error deleting contact message:", error);
+      return false;
+    }
   }
 
   // Project interest methods
@@ -256,8 +276,13 @@ export class DatabaseStorage implements IStorage {
   }
 
   async deleteProjectInterest(id: number): Promise<boolean> {
-    const result = await db.delete(projectInterestMessages).where(eq(projectInterestMessages.id, id));
-    return result.count > 0;
+    try {
+      await db.delete(projectInterestMessages).where(eq(projectInterestMessages.id, id));
+      return true;
+    } catch (error) {
+      console.error("Error deleting project interest:", error);
+      return false;
+    }
   }
 
   // Blog methods
@@ -298,8 +323,13 @@ export class DatabaseStorage implements IStorage {
   }
 
   async deleteBlogPost(id: number): Promise<boolean> {
-    const result = await db.delete(blogPosts).where(eq(blogPosts.id, id));
-    return result.count > 0;
+    try {
+      await db.delete(blogPosts).where(eq(blogPosts.id, id));
+      return true;
+    } catch (error) {
+      console.error("Error deleting blog post:", error);
+      return false;
+    }
   }
 
   async getBlogPostsByTag(tag: string): Promise<BlogPost[]> {

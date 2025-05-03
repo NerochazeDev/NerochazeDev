@@ -73,7 +73,7 @@ export function WebsiteInfoManagement() {
             return [
               { section: 'contact', key: 'email', value: 'contact@example.com' },
               { section: 'contact', key: 'phone', value: '+1 (555) 123-4567' },
-              { section: 'contact', key: 'intro_text', value: 'Get in touch for collaboration opportunities' }
+              { section: 'contact', key: 'intro_text', value: "I'm always interested in exciting projects and collaborative opportunities. Whether you need a complete web application, technical consultation, or just want to connect, don't hesitate to reach out!" }
             ];
           case 'resume':
             return [

@@ -34,16 +34,26 @@ type WebsiteInfo = {
 const ContactSection = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
-  const defaultContactInfo = {
-    email: "contact@nerochaze.com",
-    phone: "+1 (555) 123-4567",
-    intro_text: "I'm always interested in exciting projects and collaborative opportunities. Whether you need a complete web application, technical consultation, or just want to connect, don't hesitate to reach out!"
-  };
-  
-  const [contactInfo, setContactInfo] = useState(defaultContactInfo);
+  const [contactInfo, setContactInfo] = useState({
+    email: "",
+    phone: "",
+    intro_text: ""
+  });
   
   // Fetch contact section data
   const { data: contactData, isLoading: isContactDataLoading } = useQuery({
+    queryKey: ['/api/website-info/contact'],
+    queryFn: async () => {
+      const response = await fetch('/api/website-info/contact');
+      const data = await response.json();
+      if (!data.success) {
+        throw new Error(data.message || "Failed to fetch contact information");
+      }
+      return data.data as WebsiteInfo[];
+    },
+    refetchOnMount: true,
+    refetchOnWindowFocus: true
+  });
     queryKey: ['/api/website-info/contact'],
     queryFn: async () => {
       const response = await fetch('/api/website-info/contact');

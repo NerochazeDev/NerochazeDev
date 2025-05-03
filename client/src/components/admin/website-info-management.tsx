@@ -70,22 +70,12 @@ export function WebsiteInfoManagement() {
               { section: 'about', key: 'experience', value: '5+ years of professional development experience' }
             ];
           case 'contact':
-            const defaultContactInfo = {
-              email: 'contact@example.com',
-              phone: '+1 (555) 123-4567',
-              intro_text: "I'm always interested in exciting projects and collaborative opportunities. Whether you need a complete web application, technical consultation, or just want to connect, don't hesitate to reach out!"
-            };
-
-            // Check if there's existing data, if not use defaults
-            if (data.data && data.data.length > 0) {
-              return data.data;
-            }
-
-            return Object.entries(defaultContactInfo).map(([key, value]) => ({
-              section: 'contact',
-              key,
-              value
-            }));
+            // Return database structure matching contact-section.tsx
+            return [
+              { section: 'contact', key: 'email', value: data.data?.find(item => item.key === 'email')?.value || 'contact@example.com' },
+              { section: 'contact', key: 'phone', value: data.data?.find(item => item.key === 'phone')?.value || '+1 (555) 123-4567' },
+              { section: 'contact', key: 'intro_text', value: data.data?.find(item => item.key === 'intro_text')?.value || "I'm always interested in exciting projects and collaborative opportunities. Don't hesitate to reach out!" }
+            ];
           case 'resume':
             return [
               { section: 'resume', key: 'education', value: 'Bachelor of Science in Computer Science' },

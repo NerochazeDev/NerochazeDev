@@ -939,13 +939,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
         });
       }
       
-      // Convert tags to array if sent as string
-      if (typeof postData.tags === 'string') {
-        postData.tags = postData.tags
+      // Ensure tags is always an array
+      let tagsArray: string[] = [];
+      if (Array.isArray(postData.tags)) {
+        tagsArray = postData.tags;
+      } else if (typeof postData.tags === 'string') {
+        tagsArray = postData.tags
           .split(',')
-          .map(tag => tag.trim())
-          .filter(tag => tag !== '');
+          .map((tag: string) => tag.trim())
+          .filter((tag: string) => tag !== '');
       }
+      postData.tags = tagsArray;
       
       const post = await storage.createBlogPost(postData);
       
@@ -983,12 +987,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       const postData = blogPostSchema.partial().parse(req.body);
       
-      // Convert tags to array if sent as string
-      if (typeof postData.tags === 'string') {
-        postData.tags = postData.tags
-          .split(',')
-          .map(tag => tag.trim())
-          .filter(tag => tag !== '');
+      // Ensure tags is always an array if provided
+      if (postData.tags !== undefined) {
+        let tagsArray: string[] = [];
+        if (Array.isArray(postData.tags)) {
+          tagsArray = postData.tags;
+        } else if (typeof postData.tags === 'string') {
+          tagsArray = postData.tags
+            .split(',')
+            .map((tag: string) => tag.trim())
+            .filter((tag: string) => tag !== '');
+        }
+        postData.tags = tagsArray;
       }
       
       // Check if the new slug (if provided) is already taken by another post

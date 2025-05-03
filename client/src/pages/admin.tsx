@@ -4,11 +4,12 @@ import { WebsiteInfoManagement } from "@/components/admin/website-info-managemen
 import { SkillsManagement } from "@/components/admin/skills-management";
 import { SocialLinksManagement } from "@/components/admin/social-links-management";
 import { ContactMessagesManagement } from "@/components/admin/contact-messages";
+import { BlogManagement } from "@/components/admin/blog-management";
 import { TelegramTest } from "@/components/telegram-test";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
-import { Folders, InfoIcon, BookOpen, ListChecks, Share2, Mail, MessageSquareShare } from "lucide-react";
+import { Folders, InfoIcon, BookOpen, ListChecks, Share2, Mail, MessageSquareShare, FileText } from "lucide-react";
 
 export default function AdminPage() {
   const [activeTab, setActiveTab] = useState("content");
@@ -24,7 +25,7 @@ export default function AdminPage() {
         </div>
         
         <Tabs defaultValue="content" value={activeTab} onValueChange={setActiveTab} className="space-y-4">
-          <TabsList className="grid grid-cols-7 md:w-auto w-full">
+          <TabsList className="grid grid-cols-8 md:w-auto w-full">
             <TabsTrigger value="content" className="flex items-center gap-2">
               <InfoIcon className="h-4 w-4" />
               <span className="hidden md:inline">Content</span>
@@ -32,6 +33,10 @@ export default function AdminPage() {
             <TabsTrigger value="projects" className="flex items-center gap-2">
               <Folders className="h-4 w-4" />
               <span className="hidden md:inline">Projects</span>
+            </TabsTrigger>
+            <TabsTrigger value="blog" className="flex items-center gap-2">
+              <FileText className="h-4 w-4" />
+              <span className="hidden md:inline">Blog</span>
             </TabsTrigger>
             <TabsTrigger value="skills" className="flex items-center gap-2">
               <ListChecks className="h-4 w-4" />
@@ -63,6 +68,14 @@ export default function AdminPage() {
             <Card>
               <CardContent className="p-0">
                 <ProjectManagement />
+              </CardContent>
+            </Card>
+          </TabsContent>
+          
+          <TabsContent value="blog" className="space-y-4">
+            <Card>
+              <CardContent className="p-0">
+                <BlogManagement />
               </CardContent>
             </Card>
           </TabsContent>

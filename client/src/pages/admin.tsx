@@ -1,15 +1,91 @@
+import { useState } from "react";
 import { ProjectManagement } from "@/components/admin/project-management";
+import { WebsiteInfoManagement } from "@/components/admin/website-info-management";
+import { SkillsManagement } from "@/components/admin/skills-management";
+import { SocialLinksManagement } from "@/components/admin/social-links-management";
+import { ContactMessagesManagement } from "@/components/admin/contact-messages";
+
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Card, CardContent } from "@/components/ui/card";
+import { Folders, InfoIcon, BookOpen, ListChecks, Share2, Mail } from "lucide-react";
 
 export default function AdminPage() {
+  const [activeTab, setActiveTab] = useState("content");
+  
   return (
-    <div className="min-h-screen bg-gray-50 pt-16">
-      <div className="container mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold mb-1">Admin Dashboard</h1>
-        <p className="text-gray-500 mb-8">Manage your portfolio content</p>
-        
-        <div className="bg-white shadow-md rounded-lg overflow-hidden">
-          <ProjectManagement />
+    <div className="min-h-screen bg-gray-50">
+      <div className="container mx-auto px-4 py-8 pt-16">
+        <div className="flex justify-between items-center mb-8">
+          <div>
+            <h1 className="text-3xl font-bold mb-1 bg-gradient-to-r from-purple-600 to-blue-400 bg-clip-text text-transparent">Admin Dashboard</h1>
+            <p className="text-gray-500">Complete control over your portfolio website</p>
+          </div>
         </div>
+        
+        <Tabs defaultValue="content" value={activeTab} onValueChange={setActiveTab} className="space-y-4">
+          <TabsList className="grid grid-cols-6 md:w-auto w-full">
+            <TabsTrigger value="content" className="flex items-center gap-2">
+              <InfoIcon className="h-4 w-4" />
+              <span className="hidden md:inline">Content</span>
+            </TabsTrigger>
+            <TabsTrigger value="projects" className="flex items-center gap-2">
+              <Folders className="h-4 w-4" />
+              <span className="hidden md:inline">Projects</span>
+            </TabsTrigger>
+            <TabsTrigger value="skills" className="flex items-center gap-2">
+              <ListChecks className="h-4 w-4" />
+              <span className="hidden md:inline">Skills</span>
+            </TabsTrigger>
+            <TabsTrigger value="social" className="flex items-center gap-2">
+              <Share2 className="h-4 w-4" />
+              <span className="hidden md:inline">Social</span>
+            </TabsTrigger>
+            <TabsTrigger value="messages" className="flex items-center gap-2">
+              <Mail className="h-4 w-4" />
+              <span className="hidden md:inline">Messages</span>
+            </TabsTrigger>
+          </TabsList>
+          
+          <TabsContent value="content" className="space-y-4">
+            <Card>
+              <CardContent className="p-0">
+                <WebsiteInfoManagement />
+              </CardContent>
+            </Card>
+          </TabsContent>
+          
+          <TabsContent value="projects" className="space-y-4">
+            <Card>
+              <CardContent className="p-0">
+                <ProjectManagement />
+              </CardContent>
+            </Card>
+          </TabsContent>
+          
+          <TabsContent value="skills" className="space-y-4">
+            <Card>
+              <CardContent className="p-0">
+                <SkillsManagement />
+              </CardContent>
+            </Card>
+          </TabsContent>
+          
+          <TabsContent value="social" className="space-y-4">
+            <Card>
+              <CardContent className="p-0">
+                <SocialLinksManagement />
+              </CardContent>
+            </Card>
+          </TabsContent>
+          
+          <TabsContent value="messages" className="space-y-4">
+            <Card>
+              <CardContent className="p-0">
+                <ContactMessagesManagement />
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );

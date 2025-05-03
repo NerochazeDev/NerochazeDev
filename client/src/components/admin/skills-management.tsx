@@ -1,6 +1,6 @@
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { z } from "zod";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -72,7 +72,7 @@ export function SkillsManagement() {
   });
   
   // Reset form when editing skill changes
-  React.useEffect(() => {
+  useEffect(() => {
     if (editingSkill) {
       form.reset({
         name: editingSkill.name,

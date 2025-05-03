@@ -1,7 +1,13 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { contactMessageSchema, projectSchema } from "@shared/schema";
+import { 
+  contactMessageSchema, 
+  projectSchema, 
+  websiteInfoSchema, 
+  skillSchema, 
+  socialLinkSchema 
+} from "@shared/schema";
 import { ZodError } from "zod";
 
 export async function registerRoutes(app: Express): Promise<Server> {

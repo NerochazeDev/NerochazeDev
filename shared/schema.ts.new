@@ -41,6 +41,26 @@ export const projectSchema = createInsertSchema(projects).pick({
 export type InsertProject = z.infer<typeof projectSchema>;
 export type Project = typeof projects.$inferSelect;
 
+// Contact messages schema
+export const contactMessages = pgTable("contact_messages", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(),
+  email: text("email").notNull(),
+  subject: text("subject").notNull(),
+  message: text("message").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export const contactMessageSchema = createInsertSchema(contactMessages).pick({
+  name: true,
+  email: true,
+  subject: true,
+  message: true,
+});
+
+export type InsertContactMessage = z.infer<typeof contactMessageSchema>;
+export type ContactMessage = typeof contactMessages.$inferSelect;
+
 // Website information schema for editable content
 export const websiteInfo = pgTable("website_info", {
   id: serial("id").primaryKey(),
@@ -49,6 +69,9 @@ export const websiteInfo = pgTable("website_info", {
   value: text("value").notNull(), // the actual content
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
+
+// Automatically create a unique constraint on section and key
+// This ensures we can easily lookup content by section and key combination
 
 export const websiteInfoSchema = createInsertSchema(websiteInfo).pick({
   section: true,
@@ -71,6 +94,7 @@ export const socialLinks = pgTable("social_links", {
 export const socialLinkSchema = createInsertSchema(socialLinks).pick({
   platform: true,
   url: true,
+  order: true,
   isActive: true,
 });
 
@@ -90,27 +114,8 @@ export const skillSchema = createInsertSchema(skills).pick({
   name: true,
   percentage: true,
   category: true,
+  order: true,
 });
 
 export type InsertSkill = z.infer<typeof skillSchema>;
 export type Skill = typeof skills.$inferSelect;
-
-// Contact messages schema
-export const contactMessages = pgTable("contact_messages", {
-  id: serial("id").primaryKey(),
-  name: text("name").notNull(),
-  email: text("email").notNull(),
-  subject: text("subject").notNull(),
-  message: text("message").notNull(),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-});
-
-export const contactMessageSchema = createInsertSchema(contactMessages).pick({
-  name: true,
-  email: true,
-  subject: true,
-  message: true,
-});
-
-export type InsertContactMessage = z.infer<typeof contactMessageSchema>;
-export type ContactMessage = typeof contactMessages.$inferSelect;

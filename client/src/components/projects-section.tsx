@@ -13,28 +13,28 @@ interface Project {
 const ProjectsSection = () => {
   const projects: Project[] = [
     {
-      title: "E-commerce Platform",
-      description: "A complete e-commerce solution with product management, cart functionality, and payment processing.",
-      image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-      technologies: ["React", "Node.js", "MongoDB", "Stripe"],
-      githubLink: "https://github.com",
-      liveLink: "https://example.com",
+      title: "Modern E-commerce Platform",
+      description: "A high-performance e-commerce application with advanced product filtering, user authentication, and secure payment processing.",
+      image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+      technologies: ["Next.js", "TypeScript", "PostgreSQL", "Stripe", "Tailwind CSS"],
+      githubLink: "https://github.com/nerochaze",
+      liveLink: "https://shop.nerochaze.com",
     },
     {
-      title: "Task Management App",
-      description: "A productivity app with drag-and-drop functionality, user authentication, and real-time updates.",
-      image: "https://images.unsplash.com/photo-1432888622747-4eb9a8f5f989?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-      technologies: ["React", "Redux", "Firebase", "Material UI"],
-      githubLink: "https://github.com",
-      liveLink: "https://example.com",
+      title: "AI-Powered Task Manager",
+      description: "A productivity application leveraging AI to categorize, prioritize and manage tasks with real-time collaboration features and smart notifications.",
+      image: "https://images.unsplash.com/photo-1586281380117-5a60ae2050cc?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+      technologies: ["React", "Node.js", "OpenAI API", "WebSockets", "Redux"],
+      githubLink: "https://github.com/nerochaze",
+      liveLink: "https://taskmaster.nerochaze.com",
     },
     {
-      title: "Weather Dashboard",
-      description: "Interactive weather application with location search, forecasts, and responsive data visualization.",
-      image: "https://images.unsplash.com/photo-1542744094-3a31f272c490?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-      technologies: ["JavaScript", "OpenWeather API", "Chart.js", "CSS Grid"],
-      githubLink: "https://github.com",
-      liveLink: "https://example.com",
+      title: "Real-time Analytics Dashboard",
+      description: "A comprehensive analytics platform with customizable widgets, real-time data tracking, and interactive visualizations for business intelligence.",
+      image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+      technologies: ["React", "D3.js", "Express", "MongoDB", "WebSockets"],
+      githubLink: "https://github.com/nerochaze",
+      liveLink: "https://analytics.nerochaze.com",
     },
   ];
 
@@ -114,7 +114,7 @@ const ProjectsSection = () => {
         
         <div className="text-center mt-12">
           <motion.a 
-            href="https://github.com" 
+            href="https://github.com/nerochaze" 
             className="border-2 border-[#64FFDA] text-[#64FFDA] hover:bg-[#64FFDA] hover:text-[#172A45] px-6 py-3 rounded font-medium inline-block transition-colors"
             target="_blank"
             rel="noopener noreferrer"

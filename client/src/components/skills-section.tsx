@@ -2,25 +2,27 @@ import { motion } from "framer-motion";
 
 const SkillsSection = () => {
   const technicalSkills = [
-    { name: "JavaScript", percentage: 90 },
-    { name: "React", percentage: 85 },
-    { name: "CSS/SCSS", percentage: 80 },
-    { name: "Node.js", percentage: 75 },
-    { name: "TypeScript", percentage: 70 },
-    { name: "GraphQL", percentage: 65 },
+    { name: "JavaScript", percentage: 95 },
+    { name: "React", percentage: 90 },
+    { name: "TypeScript", percentage: 88 },
+    { name: "Node.js", percentage: 85 },
+    { name: "Next.js", percentage: 82 },
+    { name: "Tailwind CSS", percentage: 80 },
   ];
 
   const expertiseAreas = [
-    "Frontend Development",
+    "Full-Stack Development",
+    "Modern Frontend Frameworks",
     "Responsive Design",
-    "UI/UX Implementation",
-    "RESTful APIs",
-    "Backend Development",
-    "Database Design",
-    "Web Performance",
-    "Testing & Debugging",
-    "CI/CD Pipelines",
-    "Code Optimization",
+    "Server-Side Rendering",
+    "REST & GraphQL APIs",
+    "Database Design & ORM",
+    "Cloud Deployment",
+    "Performance Optimization",
+    "CI/CD Workflows",
+    "Authentication & Security",
+    "State Management",
+    "Microservices Architecture",
   ];
 
   return (

@@ -4,10 +4,10 @@ import { Button } from "@/components/ui/button";
 
 const HeroSection = () => {
   const socialLinks = [
-    { icon: <FaGithub className="text-2xl" />, href: "https://github.com", label: "GitHub" },
-    { icon: <FaLinkedin className="text-2xl" />, href: "https://linkedin.com", label: "LinkedIn" },
-    { icon: <FaTwitter className="text-2xl" />, href: "https://twitter.com", label: "Twitter" },
-    { icon: <FaCodepen className="text-2xl" />, href: "https://codepen.io", label: "CodePen" },
+    { icon: <FaGithub className="text-2xl" />, href: "https://github.com/nerochaze", label: "GitHub" },
+    { icon: <FaLinkedin className="text-2xl" />, href: "https://linkedin.com/in/nerochaze", label: "LinkedIn" },
+    { icon: <FaTwitter className="text-2xl" />, href: "https://twitter.com/nerochaze", label: "Twitter" },
+    { icon: <FaCodepen className="text-2xl" />, href: "https://codepen.io/nerochaze", label: "CodePen" },
   ];
   
   return (

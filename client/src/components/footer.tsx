@@ -3,10 +3,10 @@ import { FaGithub, FaLinkedin, FaTwitter, FaCodepen } from "react-icons/fa";
 
 const Footer = () => {
   const socialLinks = [
-    { icon: <FaGithub className="text-xl" />, href: "https://github.com", label: "GitHub" },
-    { icon: <FaLinkedin className="text-xl" />, href: "https://linkedin.com", label: "LinkedIn" },
-    { icon: <FaTwitter className="text-xl" />, href: "https://twitter.com", label: "Twitter" },
-    { icon: <FaCodepen className="text-xl" />, href: "https://codepen.io", label: "CodePen" },
+    { icon: <FaGithub className="text-xl" />, href: "https://github.com/nerochaze", label: "GitHub" },
+    { icon: <FaLinkedin className="text-xl" />, href: "https://linkedin.com/in/nerochaze", label: "LinkedIn" },
+    { icon: <FaTwitter className="text-xl" />, href: "https://twitter.com/nerochaze", label: "Twitter" },
+    { icon: <FaCodepen className="text-xl" />, href: "https://codepen.io/nerochaze", label: "CodePen" },
   ];
 
   return (

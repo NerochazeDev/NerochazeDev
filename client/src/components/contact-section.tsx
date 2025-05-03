@@ -68,8 +68,8 @@ const ContactSection = () => {
           <span className="text-[#64FFDA] font-mono mb-2 block">04. What's Next?</span>
           <h2 className="text-3xl md:text-4xl font-bold mb-4">Get In Touch</h2>
           <p className="text-gray-300 mb-8">
-            I'm currently looking for new opportunities and my inbox is always open. 
-            Whether you have a question or just want to say hi, I'll try my best to get back to you!
+            I'm always interested in exciting projects and collaborative opportunities. Whether you need a complete web application, 
+            technical consultation, or just want to connect, don't hesitate to reach out!
           </p>
         </motion.div>
         
@@ -183,13 +183,13 @@ const ContactSection = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.4 }}
         >
-          <a href="mailto:email@example.com" className="flex items-center text-gray-300 hover:text-[#64FFDA] mb-4 md:mb-0 transition-colors">
+          <a href="mailto:contact@nerochaze.com" className="flex items-center text-gray-300 hover:text-[#64FFDA] mb-4 md:mb-0 transition-colors">
             <FaEnvelope className="mr-2" />
-            <span>email@example.com</span>
+            <span>contact@nerochaze.com</span>
           </a>
           <a href="tel:+1234567890" className="flex items-center text-gray-300 hover:text-[#64FFDA] transition-colors">
             <FaPhone className="mr-2" />
-            <span>+1 (234) 567-890</span>
+            <span>+1 (555) 123-4567</span>
           </a>
         </motion.div>
       </div>

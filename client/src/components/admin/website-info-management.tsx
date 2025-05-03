@@ -73,9 +73,9 @@ export function WebsiteInfoManagement() {
             // Get contact info from database or use defaults matching contact-section.tsx
             const contactData = data.data || [];
             return [
-              { section: 'contact', key: 'email', value: contactData.find(item => item.key === 'email')?.value || 'contact@example.com' },
-              { section: 'contact', key: 'phone', value: contactData.find(item => item.key === 'phone')?.value || '+1 (555) 123-4567' },
-              { section: 'contact', key: 'intro_text', value: contactData.find(item => item.key === 'intro_text')?.value || "I'm always interested in exciting projects and collaborative opportunities. Whether you need a complete web application, technical consultation, or just want to connect, don't hesitate to reach out!" }
+              { section: 'contact', key: 'email', value: contactData.find((item: WebsiteInfo) => item.key.toLowerCase() === 'email')?.value || 'contact@example.com' },
+              { section: 'contact', key: 'phone', value: contactData.find((item: WebsiteInfo) => item.key.toLowerCase() === 'phone')?.value || '+1 (555) 123-4567' },
+              { section: 'contact', key: 'intro_text', value: contactData.find((item: WebsiteInfo) => item.key.toLowerCase() === 'intro_text')?.value || "I'm always interested in exciting projects and collaborative opportunities. Whether you need a complete web application, technical consultation, or just want to connect, don't hesitate to reach out!" }
             ];
           case 'resume':
             return [

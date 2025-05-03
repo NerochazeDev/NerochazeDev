@@ -24,8 +24,10 @@ export const projects = pgTable("projects", {
   description: text("description").notNull(),
   image: text("image").notNull(),
   technologies: text("technologies").array().notNull(),
-  githubLink: text("github_link").notNull(),
+  tags: text("tags").array().notNull(),
+  price: text("price").notNull(),
   liveLink: text("live_link").notNull(),
+  category: text("category").notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
@@ -34,8 +36,10 @@ export const projectSchema = createInsertSchema(projects).pick({
   description: true,
   image: true,
   technologies: true,
-  githubLink: true,
+  tags: true,
+  price: true,
   liveLink: true,
+  category: true,
 });
 
 export type InsertProject = z.infer<typeof projectSchema>;
@@ -114,3 +118,25 @@ export const contactMessageSchema = createInsertSchema(contactMessages).pick({
 
 export type InsertContactMessage = z.infer<typeof contactMessageSchema>;
 export type ContactMessage = typeof contactMessages.$inferSelect;
+
+// Project interest messages schema
+export const projectInterestMessages = pgTable("project_interest_messages", {
+  id: serial("id").primaryKey(),
+  projectId: serial("project_id").notNull(),
+  name: text("name").notNull(),
+  email: text("email").notNull(),
+  phone: text("phone"),
+  message: text("message").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export const projectInterestSchema = createInsertSchema(projectInterestMessages).pick({
+  projectId: true,
+  name: true,
+  email: true,
+  phone: true,
+  message: true,
+});
+
+export type InsertProjectInterest = z.infer<typeof projectInterestSchema>;
+export type ProjectInterest = typeof projectInterestMessages.$inferSelect;

@@ -20,6 +20,8 @@ export interface IStorage {
   createProject(project: InsertProject): Promise<Project>;
   updateProject(id: number, project: Partial<InsertProject>): Promise<Project | undefined>;
   deleteProject(id: number): Promise<boolean>;
+  getProjectsByCategory(category: string): Promise<Project[]>;
+  getProjectsByTag(tag: string): Promise<Project[]>;
   
   // Website info methods
   getWebsiteInfo(section: string, key: string): Promise<WebsiteInfo | undefined>;
@@ -47,6 +49,13 @@ export interface IStorage {
   getContactMessage(id: number): Promise<ContactMessage | undefined>;
   getAllContactMessages(): Promise<ContactMessage[]>;
   deleteContactMessage(id: number): Promise<boolean>;
+  
+  // Project interest methods
+  saveProjectInterest(interest: InsertProjectInterest): Promise<ProjectInterest>;
+  getProjectInterest(id: number): Promise<ProjectInterest | undefined>;
+  getAllProjectInterests(): Promise<ProjectInterest[]>;
+  getProjectInterestsByProject(projectId: number): Promise<ProjectInterest[]>;
+  deleteProjectInterest(id: number): Promise<boolean>;
 }
 
 export class MemStorage implements IStorage {
@@ -56,6 +65,7 @@ export class MemStorage implements IStorage {
   private skills: Map<number, Skill>;
   private socialLinks: Map<number, SocialLink>;
   private contactMessages: Map<number, ContactMessage>;
+  private projectInterests: Map<number, ProjectInterest>;
   
   private userCurrentId: number;
   private projectCurrentId: number;
@@ -63,6 +73,7 @@ export class MemStorage implements IStorage {
   private skillCurrentId: number;
   private socialLinkCurrentId: number;
   private messageCurrentId: number;
+  private interestCurrentId: number;
 
   constructor() {
     this.users = new Map();

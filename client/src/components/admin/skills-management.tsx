@@ -85,12 +85,17 @@ export function SkillsManagement() {
   // Create skill mutation
   const createSkillMutation = useMutation({
     mutationFn: async (data: SkillFormValues) => {
+      // Add order field to the request
+      const skillData = {
+        ...data,
+        order: "0" // Default order, can be adjusted as needed
+      };
       return await apiRequest<Skill>('/api/skills', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify(skillData),
       });
     },
     onSuccess: () => {
@@ -113,12 +118,17 @@ export function SkillsManagement() {
   // Update skill mutation
   const updateSkillMutation = useMutation({
     mutationFn: async ({ id, data }: { id: number; data: SkillFormValues }) => {
+      // Add order field to the request
+      const skillData = {
+        ...data,
+        order: "0" // Default order, can be adjusted as needed
+      };
       return await apiRequest<Skill>(`/api/skills/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify(skillData),
       });
     },
     onSuccess: () => {

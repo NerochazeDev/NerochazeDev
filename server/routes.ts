@@ -7,7 +7,8 @@ import {
   websiteInfoSchema, 
   skillSchema, 
   socialLinkSchema,
-  projectInterestSchema
+  projectInterestSchema,
+  blogPostSchema
 } from "@shared/schema";
 import { ZodError } from "zod";
 import { sendContactMessage, sendProjectInterestMessage } from "./telegram";
@@ -809,6 +810,278 @@ export async function registerRoutes(app: Express): Promise<Server> {
       return res.status(500).json({
         success: false,
         message: "Server error while deleting the project interest"
+      });
+    }
+  });
+  
+  // Blog routes
+  
+  // Get all blog posts (admin)
+  app.get("/api/blog", async (req, res) => {
+    try {
+      const posts = await storage.getAllBlogPosts();
+      return res.status(200).json({
+        success: true,
+        data: posts
+      });
+    } catch (error) {
+      return res.status(500).json({
+        success: false,
+        message: "Server error while fetching blog posts"
+      });
+    }
+  });
+  
+  // Get published blog posts (public)
+  app.get("/api/blog/published", async (req, res) => {
+    try {
+      const posts = await storage.getPublishedBlogPosts();
+      return res.status(200).json({
+        success: true,
+        data: posts
+      });
+    } catch (error) {
+      return res.status(500).json({
+        success: false,
+        message: "Server error while fetching published blog posts"
+      });
+    }
+  });
+  
+  // Get blog post by ID
+  app.get("/api/blog/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      if (isNaN(id)) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid blog post ID"
+        });
+      }
+      
+      const post = await storage.getBlogPostById(id);
+      
+      if (!post) {
+        return res.status(404).json({
+          success: false,
+          message: "Blog post not found"
+        });
+      }
+      
+      return res.status(200).json({
+        success: true,
+        data: post
+      });
+    } catch (error) {
+      return res.status(500).json({
+        success: false,
+        message: "Server error while fetching blog post"
+      });
+    }
+  });
+  
+  // Get blog post by slug (public, for SEO-friendly URLs)
+  app.get("/api/blog/slug/:slug", async (req, res) => {
+    try {
+      const { slug } = req.params;
+      
+      const post = await storage.getBlogPostBySlug(slug);
+      
+      if (!post) {
+        return res.status(404).json({
+          success: false,
+          message: "Blog post not found"
+        });
+      }
+      
+      // For public route, only return published posts
+      if (post.published !== "true") {
+        return res.status(404).json({
+          success: false,
+          message: "Blog post not found"
+        });
+      }
+      
+      return res.status(200).json({
+        success: true,
+        data: post
+      });
+    } catch (error) {
+      return res.status(500).json({
+        success: false,
+        message: "Server error while fetching blog post"
+      });
+    }
+  });
+  
+  // Create new blog post
+  app.post("/api/blog", async (req, res) => {
+    try {
+      const postData = blogPostSchema.parse(req.body);
+      
+      // Create slug if not provided
+      if (!postData.slug) {
+        // Generate slug from title
+        const slug = postData.title
+          .toLowerCase()
+          .replace(/[^\w\s]/gi, '')
+          .replace(/\s+/g, '-');
+        
+        postData.slug = slug;
+      }
+      
+      // Check if slug already exists
+      const existingPost = await storage.getBlogPostBySlug(postData.slug);
+      if (existingPost) {
+        return res.status(400).json({
+          success: false,
+          message: "A blog post with this slug already exists"
+        });
+      }
+      
+      // Convert tags to array if sent as string
+      if (typeof postData.tags === 'string') {
+        postData.tags = postData.tags
+          .split(',')
+          .map(tag => tag.trim())
+          .filter(tag => tag !== '');
+      }
+      
+      const post = await storage.createBlogPost(postData);
+      
+      return res.status(201).json({
+        success: true,
+        message: "Blog post created successfully",
+        data: post
+      });
+    } catch (error) {
+      if (error instanceof ZodError) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid blog post data",
+          errors: error.errors
+        });
+      }
+      
+      return res.status(500).json({
+        success: false,
+        message: "Server error while creating blog post"
+      });
+    }
+  });
+  
+  // Update blog post
+  app.put("/api/blog/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      if (isNaN(id)) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid blog post ID"
+        });
+      }
+      
+      const postData = blogPostSchema.partial().parse(req.body);
+      
+      // Convert tags to array if sent as string
+      if (typeof postData.tags === 'string') {
+        postData.tags = postData.tags
+          .split(',')
+          .map(tag => tag.trim())
+          .filter(tag => tag !== '');
+      }
+      
+      // Check if the new slug (if provided) is already taken by another post
+      if (postData.slug) {
+        const existingPost = await storage.getBlogPostBySlug(postData.slug);
+        if (existingPost && existingPost.id !== id) {
+          return res.status(400).json({
+            success: false,
+            message: "A blog post with this slug already exists"
+          });
+        }
+      }
+      
+      const updatedPost = await storage.updateBlogPost(id, postData);
+      
+      if (!updatedPost) {
+        return res.status(404).json({
+          success: false,
+          message: "Blog post not found"
+        });
+      }
+      
+      return res.status(200).json({
+        success: true,
+        message: "Blog post updated successfully",
+        data: updatedPost
+      });
+    } catch (error) {
+      if (error instanceof ZodError) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid blog post data",
+          errors: error.errors
+        });
+      }
+      
+      return res.status(500).json({
+        success: false,
+        message: "Server error while updating blog post"
+      });
+    }
+  });
+  
+  // Delete blog post
+  app.delete("/api/blog/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      if (isNaN(id)) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid blog post ID"
+        });
+      }
+      
+      const deleted = await storage.deleteBlogPost(id);
+      
+      if (!deleted) {
+        return res.status(404).json({
+          success: false,
+          message: "Blog post not found"
+        });
+      }
+      
+      return res.status(200).json({
+        success: true,
+        message: "Blog post deleted successfully"
+      });
+    } catch (error) {
+      return res.status(500).json({
+        success: false,
+        message: "Server error while deleting blog post"
+      });
+    }
+  });
+  
+  // Get blog posts by tag
+  app.get("/api/blog/tag/:tag", async (req, res) => {
+    try {
+      const { tag } = req.params;
+      
+      const posts = await storage.getBlogPostsByTag(tag);
+      
+      // For public routes, only return published posts
+      const publishedPosts = posts.filter(post => post.published === "true");
+      
+      return res.status(200).json({
+        success: true,
+        data: publishedPosts
+      });
+    } catch (error) {
+      return res.status(500).json({
+        success: false,
+        message: "Server error while fetching blog posts by tag"
       });
     }
   });

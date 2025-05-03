@@ -1,4 +1,5 @@
-import { pgTable, text, serial, timestamp } from "drizzle-orm/pg-core";
+import { pgTable, text, serial, timestamp, boolean } from "drizzle-orm/pg-core";
+import { sql } from "drizzle-orm";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -140,3 +141,30 @@ export const projectInterestSchema = createInsertSchema(projectInterestMessages)
 
 export type InsertProjectInterest = z.infer<typeof projectInterestSchema>;
 export type ProjectInterest = typeof projectInterestMessages.$inferSelect;
+
+// Blog schema
+export const blogPosts = pgTable("blog_posts", {
+  id: serial("id").primaryKey(),
+  title: text("title").notNull(),
+  slug: text("slug").notNull().unique(),
+  content: text("content").notNull(),
+  excerpt: text("excerpt").notNull(),
+  coverImage: text("cover_image").notNull(),
+  tags: text("tags").array().notNull(),
+  published: text("published").notNull().default("false"),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+});
+
+export const blogPostSchema = createInsertSchema(blogPosts).pick({
+  title: true,
+  slug: true,
+  content: true,
+  excerpt: true,
+  coverImage: true,
+  tags: true,
+  published: true,
+});
+
+export type InsertBlogPost = z.infer<typeof blogPostSchema>;
+export type BlogPost = typeof blogPosts.$inferSelect;

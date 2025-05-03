@@ -5,7 +5,8 @@ import {
   type WebsiteInfo, type InsertWebsiteInfo,
   type Skill, type InsertSkill,
   type SocialLink, type InsertSocialLink,
-  type ProjectInterest, type InsertProjectInterest
+  type ProjectInterest, type InsertProjectInterest,
+  type BlogPost, type InsertBlogPost
 } from "@shared/schema";
 
 // Extended storage interface with all methods
@@ -57,6 +58,16 @@ export interface IStorage {
   getAllProjectInterests(): Promise<ProjectInterest[]>;
   getProjectInterestsByProject(projectId: number): Promise<ProjectInterest[]>;
   deleteProjectInterest(id: number): Promise<boolean>;
+  
+  // Blog methods
+  getAllBlogPosts(): Promise<BlogPost[]>;
+  getPublishedBlogPosts(): Promise<BlogPost[]>;
+  getBlogPostById(id: number): Promise<BlogPost | undefined>;
+  getBlogPostBySlug(slug: string): Promise<BlogPost | undefined>;
+  createBlogPost(post: InsertBlogPost): Promise<BlogPost>;
+  updateBlogPost(id: number, post: Partial<InsertBlogPost>): Promise<BlogPost | undefined>;
+  deleteBlogPost(id: number): Promise<boolean>;
+  getBlogPostsByTag(tag: string): Promise<BlogPost[]>;
 }
 
 export class MemStorage implements IStorage {
@@ -67,6 +78,8 @@ export class MemStorage implements IStorage {
   private socialLinks: Map<number, SocialLink>;
   private contactMessages: Map<number, ContactMessage>;
   private projectInterests: Map<number, ProjectInterest>;
+  private blogPosts: Map<number, BlogPost>;
+  private blogSlugs: Map<string, number>; // Map slug to ID for quick lookups
   
   private userCurrentId: number;
   private projectCurrentId: number;
@@ -75,6 +88,7 @@ export class MemStorage implements IStorage {
   private socialLinkCurrentId: number;
   private messageCurrentId: number;
   private interestCurrentId: number;
+  private blogPostCurrentId: number;
 
   constructor() {
     this.users = new Map();
@@ -84,6 +98,8 @@ export class MemStorage implements IStorage {
     this.socialLinks = new Map();
     this.contactMessages = new Map();
     this.projectInterests = new Map();
+    this.blogPosts = new Map();
+    this.blogSlugs = new Map();
     
     this.userCurrentId = 1;
     this.projectCurrentId = 1;
@@ -92,6 +108,7 @@ export class MemStorage implements IStorage {
     this.socialLinkCurrentId = 1;
     this.messageCurrentId = 1;
     this.interestCurrentId = 1;
+    this.blogPostCurrentId = 1;
     
     // Initialize with default website info
     this.initializeDefaultData();
@@ -469,6 +486,90 @@ export class MemStorage implements IStorage {
     }
     
     return this.projectInterests.delete(id);
+  }
+  
+  // Blog methods
+  async getAllBlogPosts(): Promise<BlogPost[]> {
+    return Array.from(this.blogPosts.values()).sort((a, b) => 
+      b.createdAt.getTime() - a.createdAt.getTime()
+    );
+  }
+  
+  async getPublishedBlogPosts(): Promise<BlogPost[]> {
+    return Array.from(this.blogPosts.values())
+      .filter(post => post.published === "true")
+      .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+  }
+  
+  async getBlogPostById(id: number): Promise<BlogPost | undefined> {
+    return this.blogPosts.get(id);
+  }
+  
+  async getBlogPostBySlug(slug: string): Promise<BlogPost | undefined> {
+    const postId = this.blogSlugs.get(slug);
+    if (!postId) return undefined;
+    return this.blogPosts.get(postId);
+  }
+  
+  async createBlogPost(insertPost: InsertBlogPost): Promise<BlogPost> {
+    const id = this.blogPostCurrentId++;
+    const now = new Date();
+    
+    const post: BlogPost = {
+      ...insertPost,
+      id,
+      createdAt: now,
+      updatedAt: now,
+      published: insertPost.published || "false"
+    };
+    
+    this.blogPosts.set(id, post);
+    this.blogSlugs.set(post.slug, id);
+    
+    return post;
+  }
+  
+  async updateBlogPost(id: number, postData: Partial<InsertBlogPost>): Promise<BlogPost | undefined> {
+    const existingPost = this.blogPosts.get(id);
+    
+    if (!existingPost) {
+      return undefined;
+    }
+    
+    // If slug is being updated, need to update the slug mapping
+    if (postData.slug && postData.slug !== existingPost.slug) {
+      this.blogSlugs.delete(existingPost.slug);
+      this.blogSlugs.set(postData.slug, id);
+    }
+    
+    const updatedPost: BlogPost = {
+      ...existingPost,
+      ...postData,
+      updatedAt: new Date()
+    };
+    
+    this.blogPosts.set(id, updatedPost);
+    return updatedPost;
+  }
+  
+  async deleteBlogPost(id: number): Promise<boolean> {
+    const post = this.blogPosts.get(id);
+    
+    if (!post) {
+      return false;
+    }
+    
+    // Remove slug mapping
+    this.blogSlugs.delete(post.slug);
+    
+    // Remove the post
+    return this.blogPosts.delete(id);
+  }
+  
+  async getBlogPostsByTag(tag: string): Promise<BlogPost[]> {
+    return Array.from(this.blogPosts.values())
+      .filter(post => post.tags.includes(tag))
+      .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
   }
 }
 

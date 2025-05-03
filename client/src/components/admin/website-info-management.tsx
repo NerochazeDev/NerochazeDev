@@ -122,6 +122,17 @@ export function WebsiteInfoManagement() {
       key: info.key,
       value: info.value,
     });
+    
+    // Scroll form into view
+    const formElement = document.querySelector('form');
+    if (formElement) {
+      formElement.scrollIntoView({ behavior: 'smooth' });
+    }
+    
+    toast({
+      title: "Editing Content",
+      description: `Now editing "${info.key}" from ${info.section} section`,
+    });
   };
   
   return (

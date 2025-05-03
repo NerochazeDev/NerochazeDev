@@ -121,11 +121,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Create project
   app.post("/api/projects", async (req, res) => {
     try {
+      console.log("Creating new project with data:", req.body);
+      
       // Validate request body
       const projectData = projectSchema.parse(req.body);
+      console.log("Project data validated successfully");
       
       // Create the project
       const newProject = await storage.createProject(projectData);
+      console.log("Project created successfully with ID:", newProject.id);
       
       return res.status(201).json({
         success: true,
@@ -133,7 +137,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
         data: newProject
       });
     } catch (error) {
+      console.error("Error creating project:", error);
+      
       if (error instanceof ZodError) {
+        console.error("Validation errors:", error.errors);
         return res.status(400).json({
           success: false,
           message: "Invalid project data",

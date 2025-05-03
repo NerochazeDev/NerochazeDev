@@ -16,7 +16,9 @@ interface Project {
   description: string;
   image: string;
   technologies: string[];
-  githubLink: string;
+  tags: string[];
+  category: string;
+  price: string;
   liveLink: string;
   createdAt: string;
 }
@@ -148,23 +150,24 @@ export function ProjectManagement() {
                         </span>
                       ))}
                     </div>
-                    <div className="flex space-x-2 text-xs mt-2">
-                      <a
-                        href={project.githubLink}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-[#172A45] hover:underline"
-                      >
-                        GitHub
-                      </a>
-                      <span>•</span>
+                    <div className="grid grid-cols-2 gap-2 text-xs mt-3">
+                      <div>
+                        <span className="font-semibold block">Category:</span>
+                        <span className="text-gray-600">{project.category || "N/A"}</span>
+                      </div>
+                      <div>
+                        <span className="font-semibold block">Price:</span>
+                        <span className="text-gray-600">{project.price || "N/A"}</span>
+                      </div>
+                    </div>
+                    <div className="mt-2">
                       <a
                         href={project.liveLink}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-[#172A45] hover:underline"
+                        className="text-[#172A45] hover:underline text-xs"
                       >
-                        Live Project
+                        View Live Project
                       </a>
                     </div>
                   </div>

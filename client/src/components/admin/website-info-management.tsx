@@ -76,7 +76,7 @@ export function WebsiteInfoManagement() {
   // Setup mutation for updating website info
   const updateWebsiteInfoMutation = useMutation({
     mutationFn: async (data: WebsiteInfoFormValues) => {
-      return await apiRequest<WebsiteInfo>('/api/website-info', {
+      return await apiRequest('/api/website-info', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -89,9 +89,18 @@ export function WebsiteInfoManagement() {
         title: "Success",
         description: "Website information updated successfully",
       });
+      // Invalidate all website info queries to ensure data is refreshed everywhere
       queryClient.invalidateQueries({ queryKey: ['/api/website-info'] });
       queryClient.invalidateQueries({ queryKey: ['/api/website-info', activeSection] });
+      
+      // Force refetch to ensure the latest data is displayed
+      queryClient.refetchQueries({ queryKey: ['/api/website-info'] });
+      queryClient.refetchQueries({ queryKey: ['/api/website-info', activeSection] });
+      
       form.reset({ section: activeSection, key: "", value: "" });
+      
+      // Log success for debugging
+      console.log("Content saved successfully and queries invalidated");
     },
     onError: (error: Error) => {
       toast({

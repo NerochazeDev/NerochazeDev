@@ -1,5 +1,4 @@
-
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -11,8 +10,6 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { FaEnvelope, FaPhone } from "react-icons/fa";
-import { useQuery } from "@tanstack/react-query";
-import { Skeleton } from "@/components/ui/skeleton";
 
 const contactFormSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters" }),
@@ -23,48 +20,9 @@ const contactFormSchema = z.object({
 
 type ContactFormValues = z.infer<typeof contactFormSchema>;
 
-type WebsiteInfo = {
-  id: number;
-  section: string;
-  key: string;
-  value: string;
-};
-
 const ContactSection = () => {
-  const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [contactInfo, setContactInfo] = useState({
-    email: "contact@nerochaze.com",
-    phone: "+1 (555) 123-4567",
-    intro_text: "I'm always interested in exciting projects and collaborative opportunities. Whether you need a complete web application, technical consultation, or just want to connect, don't hesitate to reach out!"
-  });
-
-  const { data: contactData, isLoading: isContactDataLoading } = useQuery({
-    queryKey: ['/api/website-info/contact'],
-    queryFn: async () => {
-      const response = await fetch('/api/website-info/contact');
-      const data = await response.json();
-      if (!data.success) {
-        throw new Error(data.message || "Failed to fetch contact information");
-      }
-      return data.data as WebsiteInfo[];
-    }
-  });
-
-  useEffect(() => {
-    if (contactData) {
-      const contentMap: Record<string, string> = {};
-      contactData.forEach(item => {
-        contentMap[item.key] = item.value;
-      });
-      
-      setContactInfo({
-        email: contentMap.email || contactInfo.email,
-        phone: contentMap.phone || contactInfo.phone,
-        intro_text: contentMap.intro_text || contactInfo.intro_text
-      });
-    }
-  }, [contactData]);
+  const { toast } = useToast();
 
   const form = useForm<ContactFormValues>({
     resolver: zodResolver(contactFormSchema),
@@ -83,16 +41,16 @@ const ContactSection = () => {
         method: "POST",
         body: JSON.stringify(data)
       });
-      
+
       toast({
         title: "Message sent!",
         description: "Thank you for your message! I will get back to you soon.",
       });
-      
+
       form.reset();
     } catch (error) {
       console.error("Contact form submission error:", error);
-      
+
       toast({
         title: "Error",
         description: "Something went wrong. Please try again later.",
@@ -118,14 +76,13 @@ const ContactSection = () => {
             <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-400 to-blue-500 rounded"></div>
           </h2>
           <div className="mt-6 max-w-2xl mx-auto">
-            {isContactDataLoading ? (
-              <div className="h-16 bg-gray-800/50 animate-pulse rounded-md"></div>
-            ) : (
-              <p className="text-gray-300 leading-relaxed">{contactInfo.intro_text}</p>
-            )}
+            <p className="text-gray-300 leading-relaxed">
+              I'm always interested in exciting projects and collaborative opportunities. Whether you need a complete web application, 
+              technical consultation, or just want to connect, don't hesitate to reach out!
+            </p>
           </div>
         </motion.div>
-        
+
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 max-w-6xl mx-auto">
           <motion.div 
             className="lg:col-span-3 bg-gray-800/50 rounded-lg shadow-lg border border-gray-700 p-8 overflow-hidden relative"
@@ -135,7 +92,7 @@ const ContactSection = () => {
             transition={{ duration: 0.5, delay: 0.2 }}
           >
             <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-cyan-500/10 to-blue-500/10 rounded-bl-full"></div>
-            
+
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 relative z-10">
                 <div className="flex flex-col md:flex-row gap-4">
@@ -156,7 +113,7 @@ const ContactSection = () => {
                       </FormItem>
                     )}
                   />
-                  
+
                   <FormField
                     control={form.control}
                     name="email"
@@ -176,7 +133,7 @@ const ContactSection = () => {
                     )}
                   />
                 </div>
-                
+
                 <FormField
                   control={form.control}
                   name="subject"
@@ -194,7 +151,7 @@ const ContactSection = () => {
                     </FormItem>
                   )}
                 />
-                
+
                 <FormField
                   control={form.control}
                   name="message"
@@ -213,7 +170,7 @@ const ContactSection = () => {
                     </FormItem>
                   )}
                 />
-                
+
                 <Button 
                   type="submit" 
                   className="w-full bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white py-3 rounded-md font-medium transition-all duration-300 shadow-lg shadow-cyan-500/10"
@@ -236,7 +193,7 @@ const ContactSection = () => {
               </form>
             </Form>
           </motion.div>
-          
+
           <motion.div 
             className="lg:col-span-2"
             initial={{ opacity: 0, y: 20 }}
@@ -247,38 +204,29 @@ const ContactSection = () => {
             <div className="bg-gray-800/50 rounded-lg shadow-lg border border-gray-700 p-8">
               <h3 className="text-xl font-semibold mb-6">Contact Information</h3>
               <div className="space-y-6">
-                {isContactDataLoading ? (
-                  <div className="space-y-4">
-                    <Skeleton className="h-10 bg-gray-800" />
-                    <Skeleton className="h-10 bg-gray-800" />
+                <div className="flex items-start space-x-4">
+                  <div className="bg-cyan-500/20 p-3 rounded-lg">
+                    <FaEnvelope className="text-cyan-400 h-5 w-5" />
                   </div>
-                ) : (
-                  <>
-                    <div className="flex items-start space-x-4">
-                      <div className="bg-cyan-500/20 p-3 rounded-lg">
-                        <FaEnvelope className="text-cyan-400 h-5 w-5" />
-                      </div>
-                      <div>
-                        <p className="text-gray-400 text-sm mb-1">Email</p>
-                        <a href={`mailto:${contactInfo.email}`} className="text-white hover:text-cyan-400 transition-colors">
-                          {contactInfo.email}
-                        </a>
-                      </div>
-                    </div>
-                    
-                    <div className="flex items-start space-x-4">
-                      <div className="bg-cyan-500/20 p-3 rounded-lg">
-                        <FaPhone className="text-cyan-400 h-5 w-5" />
-                      </div>
-                      <div>
-                        <p className="text-gray-400 text-sm mb-1">Phone</p>
-                        <a href={`tel:${contactInfo.phone.replace(/[^0-9+]/g, '')}`} className="text-white hover:text-cyan-400 transition-colors">
-                          {contactInfo.phone}
-                        </a>
-                      </div>
-                    </div>
-                  </>
-                )}
+                  <div>
+                    <p className="text-gray-400 text-sm mb-1">Email</p>
+                    <a href="mailto:contact@nerochaze.com" className="text-white hover:text-cyan-400 transition-colors">
+                      contact@nerochaze.com
+                    </a>
+                  </div>
+                </div>
+
+                <div className="flex items-start space-x-4">
+                  <div className="bg-cyan-500/20 p-3 rounded-lg">
+                    <FaPhone className="text-cyan-400 h-5 w-5" />
+                  </div>
+                  <div>
+                    <p className="text-gray-400 text-sm mb-1">Phone</p>
+                    <a href="tel:+15551234567" className="text-white hover:text-cyan-400 transition-colors">
+                      +1 (555) 123-4567
+                    </a>
+                  </div>
+                </div>
               </div>
             </div>
           </motion.div>

@@ -1,13 +1,14 @@
-import React from "react";
-import { useQuery } from "@tanstack/react-query";
-import { motion } from "framer-motion";
-import { FaCalendarAlt, FaTags, FaClock } from "react-icons/fa";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Loader2, ArrowRight } from "lucide-react";
-import { Link } from "wouter";
-import { Badge } from "@/components/ui/badge";
+import React, { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { motion } from 'framer-motion';
+import { FaCalendarAlt, FaTags, FaClock, FaSearch } from 'react-icons/fa';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
+import { ArrowRight } from 'lucide-react';
+import { Link } from 'wouter';
+import { Badge } from '@/components/ui/badge';
 
 type BlogPost = {
   id: number;
@@ -22,16 +23,39 @@ type BlogPost = {
   updatedAt: string;
 };
 
-const BlogSection = () => {
+const BlogPage = () => {
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedTag, setSelectedTag] = useState<string | null>(null);
+  
   // Fetch only published blog posts
   const { data, isLoading, isError } = useQuery({
     queryKey: ['/api/blog/published'],
     select: (data: any) => data?.data as BlogPost[] || [],
-    refetchOnMount: true,
-    refetchOnWindowFocus: true,
   });
 
   const blogPosts = data || [];
+  
+  // Get all unique tags
+  const allTags = blogPosts.reduce<string[]>((tags, post) => {
+    post.tags.forEach(tag => {
+      if (!tags.includes(tag)) {
+        tags.push(tag);
+      }
+    });
+    return tags;
+  }, []);
+  
+  // Filter posts by search query and selected tag
+  const filteredPosts = blogPosts.filter(post => {
+    const matchesSearch = searchQuery === '' || 
+      post.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+      post.excerpt.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      post.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
+    
+    const matchesTag = selectedTag === null || post.tags.includes(selectedTag);
+    
+    return matchesSearch && matchesTag;
+  });
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -43,27 +67,68 @@ const BlogSection = () => {
   };
 
   return (
-    <section id="blog" className="py-20 bg-gradient-to-b from-gray-900 to-gray-950 text-white">
+    <div className="min-h-screen bg-gradient-to-b from-gray-900 to-gray-950 text-white pt-32 pb-20">
       <div className="container mx-auto px-4">
         <motion.div
-          className="text-center mb-16"
+          className="text-center mb-12"
           initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <h2 className="text-4xl font-bold mb-4 relative inline-block">
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-500">Blog & Insights</span>
+          <h1 className="text-5xl font-bold mb-4 relative inline-block">
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-500">Blog</span>
             <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-400 to-blue-500 rounded"></div>
-          </h2>
+          </h1>
           <p className="text-gray-400 max-w-3xl mx-auto">
-            Insights, tutorials, and thoughts about technology, development, and industry trends.
+            Technical insights, tutorials, and thoughts on development, blockchain, and technology trends.
           </p>
+        </motion.div>
+        
+        <motion.div 
+          className="mb-12"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+        >
+          <div className="flex flex-col md:flex-row gap-4 mb-6">
+            <div className="relative w-full md:w-1/2 mx-auto">
+              <Input
+                type="text"
+                placeholder="Search posts..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-10 bg-gray-800 border-gray-700 text-white focus-visible:ring-cyan-500"
+              />
+              <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+            </div>
+          </div>
+          
+          {allTags.length > 0 && (
+            <div className="flex flex-wrap gap-2 justify-center mb-8">
+              <Badge 
+                variant={selectedTag === null ? "default" : "outline"}
+                className={`cursor-pointer bg-gray-800 hover:bg-gray-700 ${selectedTag === null ? 'bg-cyan-500 hover:bg-cyan-600 text-gray-900' : 'text-gray-300'}`}
+                onClick={() => setSelectedTag(null)}
+              >
+                All
+              </Badge>
+              {allTags.map(tag => (
+                <Badge 
+                  key={tag}
+                  variant={selectedTag === tag ? "default" : "outline"}
+                  className={`cursor-pointer ${selectedTag === tag ? 'bg-cyan-500 hover:bg-cyan-600 text-gray-900' : 'border-gray-700 hover:bg-gray-700 text-gray-300'}`}
+                  onClick={() => setSelectedTag(tag)}
+                >
+                  {tag}
+                </Badge>
+              ))}
+            </div>
+          )}
         </motion.div>
 
         {isLoading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[1, 2, 3].map((i) => (
+            {[1, 2, 3, 4, 5, 6].map((i) => (
               <Card key={i} className="bg-gray-800 border-gray-700 overflow-hidden flex flex-col h-full shadow-lg shadow-cyan-500/10">
                 <Skeleton className="h-48 w-full bg-gray-700" />
                 <CardHeader className="border-b border-gray-700">
@@ -88,20 +153,34 @@ const BlogSection = () => {
               Try Again
             </Button>
           </div>
-        ) : blogPosts.length === 0 ? (
+        ) : filteredPosts.length === 0 ? (
           <div className="text-center py-10 bg-gray-800 rounded-lg border border-gray-700 p-8">
-            <p className="text-gray-400 mb-4">No blog posts have been published yet.</p>
-            <p className="text-cyan-400 font-semibold">Check back soon for new content!</p>
+            {blogPosts.length === 0 ? (
+              <>
+                <p className="text-gray-400 mb-4">No blog posts have been published yet.</p>
+                <p className="text-cyan-400 font-semibold">Check back soon for new content!</p>
+              </>
+            ) : (
+              <>
+                <p className="text-gray-400 mb-4">No posts match your search criteria.</p>
+                <Button 
+                  variant="outline" 
+                  className="border-cyan-500 text-cyan-400 hover:bg-cyan-500 hover:text-gray-900"
+                  onClick={() => {setSearchQuery(''); setSelectedTag(null);}}
+                >
+                  Reset Filters
+                </Button>
+              </>
+            )}
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {blogPosts.map((post, index) => (
+            {filteredPosts.map((post, index) => (
               <motion.div
                 key={post.id}
                 initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.1 * index }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.1 * Math.min(index, 5) }}
                 className="h-full"
               >
                 <Card className="bg-gray-800 border-gray-700 overflow-hidden h-full flex flex-col shadow-lg hover:shadow-cyan-500/20 transition-all duration-300 group">
@@ -140,7 +219,12 @@ const BlogSection = () => {
                           <Badge 
                             key={idx} 
                             variant="outline" 
-                            className="text-xs border-cyan-500/30 text-cyan-400 bg-cyan-500/10 hover:bg-cyan-500/20 transition-colors"
+                            className="text-xs border-cyan-500/30 text-cyan-400 bg-cyan-500/10 hover:bg-cyan-500/20 transition-colors cursor-pointer"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              setSelectedTag(tag);
+                            }}
                           >
                             {tag}
                           </Badge>
@@ -165,8 +249,8 @@ const BlogSection = () => {
           </div>
         )}
       </div>
-    </section>
+    </div>
   );
 };
 
-export default BlogSection;
+export default BlogPage;

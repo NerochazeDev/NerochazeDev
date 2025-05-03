@@ -6,6 +6,8 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/not-found";
 import Home from "@/pages/home";
 import AdminPage from "@/pages/admin";
+import BlogPage from "@/pages/blog";
+import BlogPost from "@/pages/blog-post";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 
@@ -18,6 +20,8 @@ function Router() {
       {!isAdminPage && <Header />}
       <Switch>
         <Route path="/" component={Home} />
+        <Route path="/blog" component={BlogPage} />
+        <Route path="/blog/:slug" component={BlogPost} />
         <Route path="/Hello10122" component={AdminPage} /> {/* Changed from "/admin" */}
         <Route path="/admin" component={NotFound} /> {/* Redirect old admin path to 404 */}
         <Route component={NotFound} />

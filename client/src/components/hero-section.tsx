@@ -60,8 +60,13 @@ const HeroSection = () => {
   ];
   
   return (
-    <section id="home" className="min-h-screen flex items-center py-20">
-      <div className="container mx-auto px-4">
+    <section id="home" className="min-h-screen flex items-center py-20 bg-gradient-to-b from-gray-900 to-gray-950 text-white">
+      <div className="absolute top-0 left-0 w-full h-full overflow-hidden">
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgiIGhlaWdodD0iMTgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj48ZyBmaWxsPSIjMTkxZDI2IiBmaWxsLW9wYWNpdHk9Ii41Ij48cGF0aCBkPSJNMCAwaDJ2Mkgwek0wIDh2MmgyVjh6TTggMGgydjJIOHpNOCA4djJoMlY4ek00IDRoMnYySDR6TTQgMTJoMnYySDR6TTEyIDRoMnYyaC0yek0xMiAxMmgydjJoLTJ6Ii8+PC9nPjwvZz48L3N2Zz4=')] opacity-10"></div>
+        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-blue-500/5 to-cyan-500/5"></div>
+      </div>
+      
+      <div className="container mx-auto px-4 relative z-10">
         <div className="flex flex-col-reverse md:flex-row items-center">
           <motion.div 
             className="md:w-3/5 mt-10 md:mt-0"
@@ -70,7 +75,7 @@ const HeroSection = () => {
             transition={{ duration: 0.5 }}
           >
             <motion.p 
-              className="text-[#64FFDA] font-medium mb-2"
+              className="text-cyan-400 font-mono mb-2"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.2, duration: 0.5 }}
@@ -80,14 +85,14 @@ const HeroSection = () => {
             
             {isLoading ? (
               <>
-                <Skeleton className="h-16 w-3/4 mb-2" />
-                <Skeleton className="h-12 w-full mb-6" />
-                <Skeleton className="h-24 w-full mb-8" />
+                <Skeleton className="h-16 w-3/4 mb-2 bg-gray-800" />
+                <Skeleton className="h-12 w-full mb-6 bg-gray-800" />
+                <Skeleton className="h-24 w-full mb-8 bg-gray-800" />
               </>
             ) : (
               <>
                 <motion.h1 
-                  className="text-4xl md:text-6xl font-bold mb-2 bg-gradient-to-r from-[#64FFDA] to-[#172A45] text-transparent bg-clip-text"
+                  className="text-4xl md:text-6xl font-bold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-500"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.3, duration: 0.5 }}
@@ -95,7 +100,7 @@ const HeroSection = () => {
                   {heroContent.title}
                 </motion.h1>
                 <motion.h2 
-                  className="text-3xl md:text-5xl font-bold text-[#6c757d] mb-6"
+                  className="text-3xl md:text-5xl font-bold text-gray-300 mb-6"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.4, duration: 0.5 }}
@@ -103,7 +108,7 @@ const HeroSection = () => {
                   {heroContent.subtitle}
                 </motion.h2>
                 <motion.p 
-                  className="text-lg text-[#6c757d] max-w-xl mb-8"
+                  className="text-lg text-gray-400 max-w-xl mb-8"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.5, duration: 0.5 }}
@@ -120,13 +125,13 @@ const HeroSection = () => {
             >
               <a 
                 href="#projects" 
-                className="bg-[#172A45] hover:bg-[#203a61] text-white px-6 py-3 rounded font-medium transition-colors"
+                className="bg-cyan-500 hover:bg-cyan-600 text-gray-900 px-6 py-3 rounded-md font-medium transition-colors"
               >
                 View My Work
               </a>
               <a 
                 href="#contact" 
-                className="border-2 border-[#64FFDA] text-[#64FFDA] hover:bg-[#64FFDA] hover:text-[#172A45] px-6 py-3 rounded font-medium transition-colors"
+                className="border border-cyan-500 text-cyan-400 hover:bg-cyan-500/10 px-6 py-3 rounded-md font-medium transition-colors"
               >
                 Contact Me
               </a>
@@ -141,7 +146,7 @@ const HeroSection = () => {
                 <a
                   key={index}
                   href={link.href}
-                  className="text-[#6c757d] hover:text-[#172A45] transition-colors"
+                  className="text-gray-400 hover:text-cyan-400 transition-colors transform hover:-translate-y-1 duration-200"
                   aria-label={link.label}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -157,16 +162,17 @@ const HeroSection = () => {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5 }}
           >
-            <div className="w-full h-64 md:h-80 relative overflow-hidden rounded-lg shadow-xl">
-              <div className="absolute inset-0 bg-gradient-to-r from-[#172A45] to-[#0A192F] opacity-80"></div>
+            <div className="w-full h-64 md:h-80 relative overflow-hidden rounded-lg shadow-2xl shadow-cyan-500/10 border border-gray-800">
+              <div className="absolute inset-0 bg-gradient-to-br from-gray-800/80 to-gray-900/90 opacity-80"></div>
               <img 
                 src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1600&q=80" 
                 alt="Professional Development Environment"
                 className="w-full h-full object-cover"
               />
-              <div className="absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-[#0A192F] to-transparent">
-                <div className="text-white font-medium">Bringing ideas to life through elegant code</div>
+              <div className="absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-gray-900 to-transparent">
+                <div className="text-cyan-400 font-medium">Bringing ideas to life through elegant code</div>
               </div>
+              <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-cyan-500/20 to-blue-500/20 opacity-30 mix-blend-overlay"></div>
             </div>
           </motion.div>
         </div>

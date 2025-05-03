@@ -34,17 +34,17 @@ const Header = () => {
   ];
 
   return (
-    <header className={`sticky top-0 bg-white z-10 ${isScrolled ? "shadow-sm" : ""}`}>
+    <header className={`sticky top-0 z-50 transition-all duration-300 ${isScrolled ? "bg-gray-900/95 backdrop-blur-sm shadow-lg shadow-black/10" : "bg-transparent"}`}>
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-        <Link href="/" className="text-xl font-bold text-[#172A45] flex items-center">
-          <span className="text-[#64FFDA] mr-1">&lt;</span>
-          <span>Nerochaze</span>
-          <span className="text-[#64FFDA]">/&gt;</span>
+        <Link href="/" className="text-xl font-bold text-white flex items-center group">
+          <span className="text-cyan-400 mr-1 group-hover:text-cyan-300 transition-colors">&lt;</span>
+          <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-500 group-hover:from-cyan-300 group-hover:to-blue-400 transition-all">Nerochaze</span>
+          <span className="text-cyan-400 group-hover:text-cyan-300 transition-colors">/&gt;</span>
         </Link>
         
         {/* Mobile Menu Button */}
         <button 
-          className="md:hidden text-[#333333] focus:outline-none" 
+          className="md:hidden text-gray-300 hover:text-cyan-400 focus:outline-none transition-colors" 
           onClick={toggleMenu}
           aria-label="Toggle menu"
         >
@@ -52,58 +52,79 @@ const Header = () => {
         </button>
         
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex space-x-8">
-          {navLinks.map((link) => (
+        <nav className="hidden md:flex items-center space-x-6">
+          {navLinks.map((link, index) => (
             <a 
               key={link.href} 
               href={link.href} 
-              className="nav-item"
+              className="relative text-gray-300 hover:text-cyan-400 px-1 py-2 text-sm font-medium transition-colors group"
               onClick={() => {
                 if (location !== "/") {
                   window.location.href = "/" + link.href;
                 }
               }}
             >
+              <span className="text-cyan-400 font-mono mr-1 text-xs opacity-70">{(index + 1).toString().padStart(2, '0')}.</span>
               {link.label}
+              <span className="absolute left-0 bottom-0 h-[2px] w-0 bg-cyan-400 transition-all duration-300 group-hover:w-full"></span>
             </a>
           ))}
           <a 
             href="/resume.pdf" 
             target="_blank" 
             rel="noopener noreferrer"
-            className="bg-[#172A45] hover:bg-[#203a61] text-white px-4 py-2 rounded transition-colors"
+            className="relative overflow-hidden border border-cyan-400 text-cyan-400 hover:bg-cyan-400/10 px-5 py-2 rounded-md text-sm font-medium transition-all group ml-2"
           >
-            Resume
+            <span className="relative z-10">Resume</span>
+            <span className="absolute inset-0 bg-cyan-400 transform -translate-y-full group-hover:translate-y-0 transition-transform duration-300 opacity-10"></span>
           </a>
         </nav>
       </div>
       
       {/* Mobile Navigation */}
-      <nav 
-        className={`${isMenuOpen ? "block" : "hidden"} bg-white px-4 py-4 md:hidden`}
+      <div 
+        className={`${
+          isMenuOpen ? "translate-x-0 opacity-100" : "translate-x-full opacity-0"
+        } fixed top-[72px] right-0 bottom-0 w-[70vw] bg-gray-900/95 backdrop-blur-sm shadow-xl transition-all duration-300 ease-in-out md:hidden z-40`}
       >
-        <div className="flex flex-col space-y-4">
-          {navLinks.map((link) => (
-            <a 
-              key={link.href} 
-              href={link.href} 
-              className="font-medium text-[#333333] hover:text-[#172A45]"
-              onClick={closeMenu}
-            >
-              {link.label}
-            </a>
-          ))}
-          <a 
-            href="/resume.pdf" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="bg-[#172A45] hover:bg-[#203a61] text-white px-4 py-2 rounded text-center transition-colors"
-            onClick={closeMenu}
-          >
-            Resume
-          </a>
-        </div>
-      </nav>
+        <nav className="h-full flex flex-col p-6">
+          <div className="flex flex-col space-y-6 mt-4">
+            {navLinks.map((link, index) => (
+              <a 
+                key={link.href} 
+                href={link.href} 
+                className="text-gray-300 hover:text-cyan-400 text-lg font-medium transition-colors transform hover:translate-x-2 duration-300 flex items-center"
+                onClick={closeMenu}
+              >
+                <span className="text-cyan-400 font-mono mr-2 text-sm opacity-80">{(index + 1).toString().padStart(2, '0')}.</span>
+                {link.label}
+              </a>
+            ))}
+            <div className="pt-6 mt-6 border-t border-gray-800">
+              <a 
+                href="/resume.pdf" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="inline-block bg-gray-800 hover:bg-gray-700 border border-cyan-500/30 text-cyan-400 px-5 py-3 rounded-md text-center transition-all"
+                onClick={closeMenu}
+              >
+                Download Resume
+              </a>
+            </div>
+          </div>
+          <div className="mt-auto pt-6 border-t border-gray-800">
+            <p className="text-gray-500 text-sm">© {new Date().getFullYear()} Nerochaze</p>
+          </div>
+        </nav>
+      </div>
+      
+      {/* Overlay for mobile menu */}
+      {isMenuOpen && (
+        <div 
+          className="fixed inset-0 bg-black/70 backdrop-blur-sm z-30 md:hidden"
+          onClick={closeMenu}
+        ></div>
+      )}
     </header>
   );
 };

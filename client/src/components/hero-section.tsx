@@ -29,12 +29,12 @@ const HeroSection = () => {
               Hello, my name is
             </motion.p>
             <motion.h1 
-              className="text-4xl md:text-6xl font-bold mb-2"
+              className="text-4xl md:text-6xl font-bold mb-2 bg-gradient-to-r from-[#64FFDA] to-[#172A45] text-transparent bg-clip-text"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.3, duration: 0.5 }}
             >
-              Jane Doe
+              Nerochaze
             </motion.h1>
             <motion.h2 
               className="text-3xl md:text-5xl font-bold text-[#6c757d] mb-6"
@@ -42,7 +42,7 @@ const HeroSection = () => {
               animate={{ opacity: 1 }}
               transition={{ delay: 0.4, duration: 0.5 }}
             >
-              I build things for the web.
+              Full-Stack Developer & Digital Innovator
             </motion.h2>
             <motion.p 
               className="text-lg text-[#6c757d] max-w-xl mb-8"
@@ -50,8 +50,8 @@ const HeroSection = () => {
               animate={{ opacity: 1 }}
               transition={{ delay: 0.5, duration: 0.5 }}
             >
-              I'm a full-stack developer specializing in building exceptional digital experiences. 
-              Currently, I'm focused on building accessible, human-centered products.
+              I'm an experienced full-stack developer specializing in creating exceptional digital experiences with modern technologies. 
+              My passion is building elegant, responsive, and user-focused applications that solve real-world problems.
             </motion.p>
             <motion.div 
               className="flex flex-wrap gap-4"

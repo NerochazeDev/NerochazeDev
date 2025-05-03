@@ -6,7 +6,10 @@ const AboutSection = () => {
     "React",
     "Node.js",
     "TypeScript",
-    "GraphQL",
+    "Next.js",
+    "Express",
+    "PostgreSQL",
+    "MongoDB",
     "Tailwind CSS",
   ];
 
@@ -34,14 +37,18 @@ const AboutSection = () => {
             transition={{ duration: 0.5, delay: 0.2 }}
           >
             <p className="text-lg mb-4">
-              Hello! I'm Jane, a passionate web developer with a strong background in building 
-              responsive and performant web applications. My journey in programming started 
-              5 years ago when I was studying Computer Science at 
-              University of Technology.
+              Hello! I'm <span className="font-semibold text-[#172A45]">Nerochaze</span>, a passionate full-stack developer with expertise in building
+              modern, scalable web applications. My journey in software development has allowed me to
+              master both frontend and backend technologies to create seamless digital experiences.
             </p>
             <p className="text-lg mb-4">
-              I enjoy creating things that live on the internet, whether that be websites, applications, or anything in between. 
-              My goal is to always build products that provide pixel-perfect, performance experiences.
+              I specialize in crafting elegant solutions for complex problems, with a focus on clean code,
+              performance optimization, and intuitive user interfaces. My goal is to build software that
+              not only works flawlessly but also delivers exceptional user experiences.
+            </p>
+            <p className="text-lg mb-4">
+              Whether it's developing responsive frontends with React or building robust APIs with Node.js,
+              I'm committed to delivering high-quality software that meets business objectives and delights users.
             </p>
             <p className="text-lg mb-6">
               Here are a few technologies I've been working with recently:

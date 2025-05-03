@@ -28,7 +28,7 @@ const Footer = () => {
             ))}
           </div>
           <p className="text-gray-400 text-sm text-center">
-            Designed & Built by Jane Doe &copy; {getCurrentYear()}
+            Designed & Built by <span className="text-[#64FFDA]">Nerochaze</span> &copy; {getCurrentYear()}
           </p>
         </div>
       </div>

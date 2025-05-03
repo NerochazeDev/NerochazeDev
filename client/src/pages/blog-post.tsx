@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useRoute } from 'wouter';
 import { motion } from 'framer-motion';
@@ -7,6 +7,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Link } from 'wouter';
+import { marked } from 'marked';
 
 type BlogPost = {
   id: number;
@@ -24,12 +25,32 @@ type BlogPost = {
 const BlogPost = () => {
   const [, params] = useRoute('/blog/:slug');
   const slug = params?.slug || '';
+  const [htmlContent, setHtmlContent] = useState('');
 
   const { data, isLoading, isError } = useQuery({
     queryKey: [`/api/blog/slug/${slug}`],
     select: (data: any) => data?.data as BlogPost,
     enabled: !!slug,
   });
+  
+  useEffect(() => {
+    if (data?.content) {
+      // Convert markdown to HTML
+      try {
+        const renderedContent = marked.parse(data.content);
+        if (typeof renderedContent === 'string') {
+          setHtmlContent(renderedContent);
+        } else if (renderedContent instanceof Promise) {
+          renderedContent.then(content => setHtmlContent(content));
+        } else {
+          setHtmlContent(data.content);
+        }
+      } catch (error) {
+        console.error('Error parsing markdown:', error);
+        setHtmlContent(data.content);
+      }
+    }
+  }, [data?.content]);
 
   const formatDate = (dateString: string) => {
     if (!dateString) return '';
@@ -142,11 +163,11 @@ const BlogPost = () => {
           )}
           
           <motion.div
-            className="prose prose-lg prose-invert max-w-none prose-headings:text-cyan-400 prose-a:text-blue-400 prose-strong:text-white"
+            className="prose prose-lg prose-invert max-w-none prose-headings:text-cyan-400 prose-a:text-blue-400 prose-strong:text-white prose-code:bg-gray-800 prose-code:text-cyan-300 prose-pre:bg-gray-800/80 prose-pre:border prose-pre:border-gray-700 prose-pre:rounded-lg prose-blockquote:border-cyan-500 prose-blockquote:bg-gray-800/50 prose-blockquote:rounded-r-lg"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            dangerouslySetInnerHTML={{ __html: data.content }}
+            dangerouslySetInnerHTML={{ __html: htmlContent }}
           />
         </div>
       </div>

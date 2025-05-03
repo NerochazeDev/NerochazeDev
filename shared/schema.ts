@@ -64,7 +64,7 @@ export const socialLinks = pgTable("social_links", {
   id: serial("id").primaryKey(),
   platform: text("platform").notNull(), // github, linkedin, twitter, etc.
   url: text("url").notNull(),
-  order: serial("order").notNull(),
+  order: text("order").notNull(),
   isActive: text("is_active").default("true").notNull(),
 });
 
@@ -83,7 +83,7 @@ export const skills = pgTable("skills", {
   name: text("name").notNull(),
   percentage: text("percentage").notNull(),
   category: text("category").notNull(), // primary skills, expertise, etc.
-  order: serial("order").notNull(),
+  order: text("order").notNull(),
 });
 
 export const skillSchema = createInsertSchema(skills).pick({

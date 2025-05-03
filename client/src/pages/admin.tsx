@@ -4,10 +4,11 @@ import { WebsiteInfoManagement } from "@/components/admin/website-info-managemen
 import { SkillsManagement } from "@/components/admin/skills-management";
 import { SocialLinksManagement } from "@/components/admin/social-links-management";
 import { ContactMessagesManagement } from "@/components/admin/contact-messages";
+import { TelegramTest } from "@/components/telegram-test";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
-import { Folders, InfoIcon, BookOpen, ListChecks, Share2, Mail } from "lucide-react";
+import { Folders, InfoIcon, BookOpen, ListChecks, Share2, Mail, MessageSquareShare } from "lucide-react";
 
 export default function AdminPage() {
   const [activeTab, setActiveTab] = useState("content");
@@ -23,7 +24,7 @@ export default function AdminPage() {
         </div>
         
         <Tabs defaultValue="content" value={activeTab} onValueChange={setActiveTab} className="space-y-4">
-          <TabsList className="grid grid-cols-6 md:w-auto w-full">
+          <TabsList className="grid grid-cols-7 md:w-auto w-full">
             <TabsTrigger value="content" className="flex items-center gap-2">
               <InfoIcon className="h-4 w-4" />
               <span className="hidden md:inline">Content</span>
@@ -43,6 +44,10 @@ export default function AdminPage() {
             <TabsTrigger value="messages" className="flex items-center gap-2">
               <Mail className="h-4 w-4" />
               <span className="hidden md:inline">Messages</span>
+            </TabsTrigger>
+            <TabsTrigger value="telegram" className="flex items-center gap-2">
+              <MessageSquareShare className="h-4 w-4" />
+              <span className="hidden md:inline">Telegram</span>
             </TabsTrigger>
           </TabsList>
           
@@ -82,6 +87,19 @@ export default function AdminPage() {
             <Card>
               <CardContent className="p-0">
                 <ContactMessagesManagement />
+              </CardContent>
+            </Card>
+          </TabsContent>
+          
+          <TabsContent value="telegram" className="space-y-4">
+            <Card>
+              <CardContent className="p-6">
+                <h2 className="text-2xl font-bold mb-4">Telegram Integration Testing</h2>
+                <p className="mb-4 text-gray-600">
+                  Use this tool to test if Telegram notifications are working correctly. 
+                  The test button will send a message to your configured Telegram chat.
+                </p>
+                <TelegramTest />
               </CardContent>
             </Card>
           </TabsContent>

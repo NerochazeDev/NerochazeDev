@@ -97,6 +97,8 @@ export function ProjectForm({ onSuccess, initialData }: ProjectFormProps) {
         liveLink: data.liveLink,
       };
       
+      console.log("Submitting project data:", projectData);
+      
       if (initialData?.id) {
         // Update existing project
         await apiRequest({

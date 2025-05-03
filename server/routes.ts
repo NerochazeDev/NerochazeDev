@@ -12,6 +12,7 @@ import {
 } from "@shared/schema";
 import { ZodError } from "zod";
 import { sendContactMessage, sendProjectInterestMessage } from "./telegram";
+import { generateSitemap } from "./sitemap";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Contact form endpoint
@@ -1150,6 +1151,42 @@ export async function registerRoutes(app: Express): Promise<Server> {
         message: "Server error while fetching blog posts by tag"
       });
     }
+  });
+
+  // Sitemap generation endpoint
+  app.get("/api/generate-sitemap", async (req, res) => {
+    try {
+      const result = await generateSitemap();
+      
+      if (result) {
+        return res.status(200).json({
+          success: true,
+          message: "Sitemap generated successfully"
+        });
+      } else {
+        return res.status(500).json({
+          success: false,
+          message: "Failed to generate sitemap"
+        });
+      }
+    } catch (error) {
+      console.error("Error generating sitemap:", error);
+      return res.status(500).json({
+        success: false,
+        message: "Server error while generating sitemap"
+      });
+    }
+  });
+
+  // Generate sitemap on server start
+  generateSitemap().then(result => {
+    if (result) {
+      console.log("Initial sitemap generated successfully on server start");
+    } else {
+      console.error("Failed to generate initial sitemap on server start");
+    }
+  }).catch(error => {
+    console.error("Error generating initial sitemap:", error);
   });
 
   const httpServer = createServer(app);

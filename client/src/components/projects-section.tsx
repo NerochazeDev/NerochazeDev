@@ -191,13 +191,25 @@ const ProjectsSection = () => {
                     ))}
                   </div>
                   
-                  {/* I'm Interested Button */}
-                  <Button 
-                    className="w-full bg-[#172A45] hover:bg-[#203a61] text-white"
-                    onClick={() => handleInterestClick(project)}
-                  >
-                    I'm Interested
-                  </Button>
+                  {/* Project Links and Interest Button */}
+                  <div className="flex flex-col gap-2">
+                    <a 
+                      href={project.liveLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center bg-[#64FFDA] hover:bg-[#53d6b6] text-[#172A45] font-medium py-2 px-4 rounded"
+                    >
+                      <FaExternalLinkAlt className="mr-2" />
+                      View Live Project
+                    </a>
+                    
+                    <Button 
+                      className="w-full bg-[#172A45] hover:bg-[#203a61] text-white"
+                      onClick={() => handleInterestClick(project)}
+                    >
+                      I'm Interested
+                    </Button>
+                  </div>
                 </div>
               </motion.div>
             ))}

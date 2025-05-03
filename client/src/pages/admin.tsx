@@ -15,7 +15,7 @@ export default function AdminPage() {
   const [activeTab, setActiveTab] = useState("content");
   
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 overflow-x-hidden pb-12">
       <div className="container mx-auto px-4 py-8 pt-16">
         <div className="flex justify-between items-center mb-8">
           <div>
@@ -25,7 +25,7 @@ export default function AdminPage() {
         </div>
         
         <Tabs defaultValue="content" value={activeTab} onValueChange={setActiveTab} className="space-y-4">
-          <TabsList className="grid grid-cols-8 md:w-auto w-full">
+          <TabsList className="grid grid-cols-7 md:w-auto w-full sticky top-0 z-10 bg-white shadow-sm">
             <TabsTrigger value="content" className="flex items-center gap-2">
               <InfoIcon className="h-4 w-4" />
               <span className="hidden md:inline">Content</span>

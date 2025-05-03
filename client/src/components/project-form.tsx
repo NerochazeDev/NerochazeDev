@@ -139,144 +139,154 @@ export function ProjectForm({ onSuccess, initialData }: ProjectFormProps) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        <FormField
-          control={form.control}
-          name="title"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Project Title</FormLabel>
-              <FormControl>
-                <Input placeholder="My Awesome Project" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        
-        <FormField
-          control={form.control}
-          name="description"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Description</FormLabel>
-              <FormControl>
-                <Textarea 
-                  placeholder="Describe your project in detail..." 
-                  rows={4}
-                  {...field} 
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        
-        <FormField
-          control={form.control}
-          name="image"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Project Image URL</FormLabel>
-              <FormControl>
-                <Input 
-                  placeholder="https://example.com/my-project-image.jpg" 
-                  {...field} 
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        
-        <FormField
-          control={form.control}
-          name="technologies"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Technologies Used</FormLabel>
-              <FormControl>
-                <Input 
-                  placeholder="React, Node.js, TypeScript (comma separated)" 
-                  {...field} 
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        
-        <FormField
-          control={form.control}
-          name="tags"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Search Tags</FormLabel>
-              <FormControl>
-                <Input 
-                  placeholder="web, mobile, blockchain (comma separated)" 
-                  {...field} 
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        
-        <FormField
-          control={form.control}
-          name="category"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Project Category</FormLabel>
-              <FormControl>
-                <Input 
-                  placeholder="Web Development, Mobile App, etc." 
-                  {...field} 
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        
-        <FormField
-          control={form.control}
-          name="price"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Project Price (USDT TRC20)</FormLabel>
-              <FormControl>
-                <Input 
-                  placeholder="e.g. 500 USDT" 
-                  {...field} 
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        
-        <FormField
-          control={form.control}
-          name="liveLink"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Live Project URL</FormLabel>
-              <FormControl>
-                <Input 
-                  placeholder="https://myproject.com" 
-                  {...field} 
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 max-h-[70vh] overflow-y-auto px-1 py-2">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="md:col-span-2">
+            <FormField
+              control={form.control}
+              name="title"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Project Title</FormLabel>
+                  <FormControl>
+                    <Input placeholder="My Awesome Project" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          
+          <div className="md:col-span-2">
+            <FormField
+              control={form.control}
+              name="description"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Description</FormLabel>
+                  <FormControl>
+                    <Textarea 
+                      placeholder="Describe your project in detail..." 
+                      rows={4}
+                      {...field} 
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          
+          <div className="md:col-span-2">
+            <FormField
+              control={form.control}
+              name="image"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Project Image URL</FormLabel>
+                  <FormControl>
+                    <Input 
+                      placeholder="https://example.com/my-project-image.jpg" 
+                      {...field} 
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          
+          <FormField
+            control={form.control}
+            name="technologies"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Technologies Used</FormLabel>
+                <FormControl>
+                  <Input 
+                    placeholder="React, Node.js, TypeScript (comma separated)" 
+                    {...field} 
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          
+          <FormField
+            control={form.control}
+            name="tags"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Search Tags</FormLabel>
+                <FormControl>
+                  <Input 
+                    placeholder="web, mobile, blockchain (comma separated)" 
+                    {...field} 
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          
+          <FormField
+            control={form.control}
+            name="category"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Project Category</FormLabel>
+                <FormControl>
+                  <Input 
+                    placeholder="Web Development, Mobile App, etc." 
+                    {...field} 
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          
+          <FormField
+            control={form.control}
+            name="price"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Project Price (USDT TRC20)</FormLabel>
+                <FormControl>
+                  <Input 
+                    placeholder="e.g. 500 USDT" 
+                    {...field} 
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          
+          <div className="md:col-span-2">
+            <FormField
+              control={form.control}
+              name="liveLink"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Live Project URL</FormLabel>
+                  <FormControl>
+                    <Input 
+                      placeholder="https://myproject.com" 
+                      {...field} 
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+        </div>
         
         <Button 
           type="submit" 
-          className="w-full bg-[#172A45] hover:bg-[#203a61] text-white"
+          className="w-full bg-[#172A45] hover:bg-[#203a61] text-white mt-6"
           disabled={isSubmitting}
         >
           {isSubmitting ? (

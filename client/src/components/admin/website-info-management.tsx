@@ -54,6 +54,31 @@ export function WebsiteInfoManagement() {
       if (!data.success) {
         throw new Error(data.message || "Failed to fetch website information");
       }
+      // Return default content if no data is found
+      if (!data.data || data.data.length === 0) {
+        switch (activeSection) {
+          case 'hero':
+            return [
+              { section: 'hero', key: 'title', value: 'Nerochaze' },
+              { section: 'hero', key: 'subtitle', value: 'Full Stack Developer & Blockchain Specialist' },
+              { section: 'hero', key: 'introduction', value: 'Experienced developer specializing in cutting-edge web applications' }
+            ];
+          case 'about':
+            return [
+              { section: 'about', key: 'professional_summary', value: 'Highly skilled full-stack developer with expertise in modern web technologies' },
+              { section: 'about', key: 'expertise', value: 'Blockchain Development, Full-Stack Web Applications' },
+              { section: 'about', key: 'experience', value: '5+ years of professional development experience' }
+            ];
+          case 'contact':
+            return [
+              { section: 'contact', key: 'email', value: 'contact@example.com' },
+              { section: 'contact', key: 'phone', value: '+1 (555) 123-4567' },
+              { section: 'contact', key: 'intro_text', value: 'Get in touch for collaboration opportunities' }
+            ];
+          default:
+            return [];
+        }
+      }
       return data.data as WebsiteInfo[];
     }
   });

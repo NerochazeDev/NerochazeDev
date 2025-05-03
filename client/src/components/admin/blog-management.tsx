@@ -18,7 +18,6 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import {
   Form,
@@ -37,8 +36,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { X, Edit, Trash2 } from "lucide-react";
+import { Edit, Trash2 } from "lucide-react";
 
 // Blog post form validation schema
 const blogPostFormSchema = z.object({
@@ -104,7 +102,7 @@ export function BlogManagement() {
       
       return apiRequest('/api/blog', {
         method: 'POST', 
-        data: formattedData
+        body: JSON.stringify(formattedData)
       });
     },
     onSuccess: () => {
@@ -137,7 +135,7 @@ export function BlogManagement() {
       
       return apiRequest(`/api/blog/${id}`, {
         method: 'PUT', 
-        data: formattedData
+        body: JSON.stringify(formattedData)
       });
     },
     onSuccess: () => {

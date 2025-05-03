@@ -67,9 +67,9 @@ const ContactSection = () => {
   };
 
   const [contactInfo, setContactInfo] = useState({
-    email: "",
-    phone: "",
-    intro_text: ""
+    email: "contact@example.com",
+    phone: "+1 (555) 123-4567",
+    intro_text: "I'm always interested in exciting projects and collaborative opportunities."
   });
 
   // Fetch contact section data
@@ -82,10 +82,20 @@ const ContactSection = () => {
         throw new Error(data.message || "Failed to fetch contact information");
       }
       return data.data as WebsiteInfo[];
-    },
-    refetchOnMount: true,
-    refetchOnWindowFocus: true
+    }
   });
+
+  // Update contact info when data is loaded
+  useEffect(() => {
+    if (contactData && contactData.length > 0) {
+      const newContactInfo = {
+        email: contactData.find(item => item.key === 'email')?.value || contactInfo.email,
+        phone: contactData.find(item => item.key === 'phone')?.value || contactInfo.phone,
+        intro_text: contactData.find(item => item.key === 'intro_text')?.value || contactInfo.intro_text
+      };
+      setContactInfo(newContactInfo);
+    }
+  }, [contactData]);
 
   // Update contact info when data is loaded
   useEffect(() => {

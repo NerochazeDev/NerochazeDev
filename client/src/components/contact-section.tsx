@@ -34,11 +34,13 @@ type WebsiteInfo = {
 const ContactSection = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
-  const [contactInfo, setContactInfo] = useState({
+  const defaultContactInfo = {
     email: "contact@nerochaze.com",
     phone: "+1 (555) 123-4567",
     intro_text: "I'm always interested in exciting projects and collaborative opportunities. Whether you need a complete web application, technical consultation, or just want to connect, don't hesitate to reach out!"
-  });
+  };
+  
+  const [contactInfo, setContactInfo] = useState(defaultContactInfo);
   
   // Fetch contact section data
   const { data: contactData, isLoading: isContactDataLoading } = useQuery({
@@ -65,9 +67,9 @@ const ContactSection = () => {
       });
       
       setContactInfo({
-        email: contentMap.email || "contact@nerochaze.com",
-        phone: contentMap.phone || "+1 (555) 123-4567",
-        intro_text: contentMap.intro_text || "I'm always interested in exciting projects and collaborative opportunities."
+        email: contentMap.email || defaultContactInfo.email,
+        phone: contentMap.phone || defaultContactInfo.phone,
+        intro_text: contentMap.intro_text || defaultContactInfo.intro_text
       });
     }
   }, [contactData]);

@@ -888,7 +888,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
   
-  // Get published blog posts (public)
+  // Get published blog posts only (for public display)
   app.get("/api/blog/published", async (req, res) => {
     try {
       const posts = await storage.getPublishedBlogPosts();

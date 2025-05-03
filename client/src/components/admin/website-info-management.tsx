@@ -40,7 +40,6 @@ export function WebsiteInfoManagement() {
   const sections = [
     { id: "hero", label: "Hero Section" },
     { id: "about", label: "About Section" },
-    { id: "contact", label: "Contact Info" },
     { id: "resume", label: "Resume" },
     { id: "custom", label: "Custom Fields" }
   ];

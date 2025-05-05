@@ -100,6 +100,39 @@
   --gold-accent: 47 100% 50%;
 }
 
+/* Direct theme application */
+.light-theme {
+  background-color: #ffffff;
+  color: #0f172a;
+}
+
+.dark-theme {
+  background-color: #0f172a;
+  color: #f8fafc;
+}
+
+.golden-theme {
+  background-color: #fffbf0;
+  color: #1c1810;
+}
+
+/* Header styles for different themes */
+.light-theme header {
+  background-color: #f8fafc !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+}
+
+.dark-theme header {
+  background-color: #0f172a !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) !important;
+}
+
+.golden-theme header {
+  background: linear-gradient(135deg, #fffbf0, #fff8e6) !important;
+  box-shadow: 0 1px 3px rgba(218, 165, 32, 0.2) !important;
+  border-bottom: 1px solid rgba(218, 165, 32, 0.2) !important;
+}
+
 /* Premium UI adjustments for Golden Theme */
 .golden-theme .card {
   background: linear-gradient(135deg, hsla(45, 50%, 98%, 1), hsla(45, 50%, 96%, 1));
@@ -124,6 +157,26 @@
 .golden-theme .border-premium {
   border-color: #daa520;
   border-image: var(--gold-gradient) 1;
+}
+
+/* Project cards in different themes */
+.light-theme .project-card {
+  background-color: white !important;
+  border: 1px solid #e2e8f0 !important;
+  color: #1e293b !important;
+}
+
+.dark-theme .project-card {
+  background-color: #1e293b !important;
+  border: 1px solid #334155 !important;
+  color: #f8fafc !important;
+}
+
+.golden-theme .project-card {
+  background: linear-gradient(135deg, #fffbf0, #fff8e6) !important;
+  border: 1px solid rgba(218, 165, 32, 0.3) !important;
+  box-shadow: 0 4px 15px rgba(218, 165, 32, 0.1) !important;
+  color: #713f12 !important;
 }
 
 /* Special section styling for gold theme */

@@ -3,6 +3,19 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Global theme overrides that take precedence */
+body.light-theme {
+  @apply bg-white text-gray-900;
+}
+
+body.dark-theme {
+  @apply bg-gray-950 text-gray-200;
+}
+
+body.golden-theme {
+  @apply bg-amber-50 text-amber-950;
+}
+
 :root {
   --background: 230 30% 10%;
   --foreground: 210 40% 98%;

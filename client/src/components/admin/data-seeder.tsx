@@ -595,6 +595,9 @@ export const DataSeeder: React.FC = () => {
       for (const project of projectTemplates) {
         await apiRequest('/api/projects', {
           method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
           body: JSON.stringify(project),
         });
       }
@@ -630,6 +633,9 @@ export const DataSeeder: React.FC = () => {
       for (const post of blogPosts) {
         await apiRequest('/api/blog', {
           method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
           body: JSON.stringify(post),
         });
       }

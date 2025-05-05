@@ -8,8 +8,8 @@ async function throwIfResNotOk(res: Response) {
 }
 
 export async function apiRequest(
-  urlOrOptions: string | { url: string; method: string; body?: string },
-  options?: { method: string; body?: string }
+  urlOrOptions: string | { url: string; method: string; body?: string; headers?: Record<string, string> },
+  options?: { method: string; body?: string; headers?: Record<string, string> }
 ): Promise<any> {
   let url: string;
   let fetchOptions: RequestInit = {

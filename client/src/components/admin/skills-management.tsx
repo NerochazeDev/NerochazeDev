@@ -40,20 +40,23 @@ export function SkillsManagement() {
   const [skillToDelete, setSkillToDelete] = useState<Skill | null>(null);
   
   // Fetch all skills
-  const { data: skills, isLoading } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['/api/skills'],
     queryFn: async () => {
       const response = await fetch('/api/skills');
-      const data = await response.json();
-      if (!data.success) {
-        throw new Error(data.message || "Failed to fetch skills");
+      const result = await response.json();
+      if (!result.success) {
+        throw new Error(result.message || "Failed to fetch skills");
       }
-      return data.data as Skill[];
+      return result;
     }
   });
   
+  // Extract skills from response
+  const skills = data?.data as Skill[] || [];
+  
   // Group skills by category
-  const skillsByCategory = skills ? skills.reduce((acc, skill) => {
+  const skillsByCategory = skills.length > 0 ? skills.reduce((acc: Record<string, Skill[]>, skill: Skill) => {
     if (!acc[skill.category]) {
       acc[skill.category] = [];
     }
@@ -90,7 +93,7 @@ export function SkillsManagement() {
         ...data,
         order: "0" // Default order, can be adjusted as needed
       };
-      return await apiRequest<Skill>('/api/skills', {
+      return await apiRequest('/api/skills', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -123,7 +126,7 @@ export function SkillsManagement() {
         ...data,
         order: "0" // Default order, can be adjusted as needed
       };
-      return await apiRequest<Skill>(`/api/skills/${id}`, {
+      return await apiRequest(`/api/skills/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -337,7 +340,7 @@ export function SkillsManagement() {
                   <Skeleton className="h-12 w-full" />
                   <Skeleton className="h-12 w-full" />
                 </div>
-              ) : skills && skills.length > 0 ? (
+              ) : skills.length > 0 ? (
                 <ScrollArea className="h-[500px] pr-4">
                   <div className="space-y-6">
                     {Object.entries(skillsByCategory).map(([category, categorySkills]) => (

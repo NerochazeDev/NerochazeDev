@@ -5,6 +5,7 @@ import { SkillsManagement } from "@/components/admin/skills-management";
 import { SocialLinksManagement } from "@/components/admin/social-links-management";
 import { ContactMessagesManagement } from "@/components/admin/contact-messages";
 import { BlogManagement } from "@/components/admin/blog-management";
+import { DataSeeder } from "@/components/admin/data-seeder";
 import { TelegramTest } from "@/components/telegram-test";
 import { useQuery } from "@tanstack/react-query";
 
@@ -23,7 +24,8 @@ import {
   BarChart3,
   Settings,
   User,
-  Shield
+  Shield,
+  Database
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
@@ -202,6 +204,18 @@ export default function AdminPage() {
                 <MessageSquareShare className="h-4 w-4" />
                 <span>Telegram</span>
               </button>
+
+              <button
+                onClick={() => setActiveTab("seeder")}
+                className={`w-full flex items-center gap-3 px-3 py-2 text-sm rounded-md transition-colors ${
+                  activeTab === "seeder" 
+                    ? "bg-cyan-500/20 text-cyan-400" 
+                    : "text-gray-400 hover:bg-gray-800 hover:text-gray-300"
+                }`}
+              >
+                <Database className="h-4 w-4" />
+                <span>Data Tools</span>
+              </button>
             </div>
           </nav>
           
@@ -260,6 +274,7 @@ export default function AdminPage() {
                   {activeTab === "social" && "Social Links"}
                   {activeTab === "messages" && "Contact Messages"}
                   {activeTab === "telegram" && "Telegram Integration"}
+                  {activeTab === "seeder" && "Data Management Tools"}
                 </h1>
                 <p className="text-gray-400 mt-1">{formatDate(currentTime)} • {formatTime(currentTime)}</p>
               </div>
@@ -474,6 +489,27 @@ export default function AdminPage() {
                 <TelegramTest />
               </CardContent>
             </Card>
+          )}
+          
+          {activeTab === "seeder" && (
+            <div className="space-y-6">
+              <div className="p-4 mb-6 bg-indigo-500/10 border border-indigo-500/20 rounded-lg">
+                <div className="flex items-start">
+                  <div className="p-2 bg-indigo-500/20 rounded mr-3 mt-1">
+                    <Database className="h-5 w-5 text-indigo-400" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-medium text-white mb-1">Demo Data Tools</h3>
+                    <p className="text-gray-300 text-sm">
+                      Use these tools to quickly populate your portfolio website with professional demo content.
+                      The tools will add 5 project templates (Tailor, Photographer, Hairdresser, Freelancer, Personal) and 6 blog posts.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              
+              <DataSeeder />
+            </div>
           )}
         </div>
       </div>

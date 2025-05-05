@@ -187,16 +187,20 @@ const ProjectsSection = () => {
                 
                 <div className="p-6">
                   <div className="flex justify-between items-start mb-3">
-                    <h3 className="text-xl font-bold text-white">{project.title}</h3>
+                    <Link href={`/project/${project.id}`}>
+                      <h3 className="text-xl font-bold text-white hover:text-cyan-400 transition-colors cursor-pointer">{project.title}</h3>
+                    </Link>
                     <div className="bg-cyan-400/10 text-cyan-400 px-3 py-1 rounded-full flex items-center text-sm font-medium border border-cyan-500/20">
                       <FaDollarSign className="mr-1" />
                       <span>{project.price}</span>
                     </div>
                   </div>
                   
-                  <p className="text-gray-400 mb-5 line-clamp-3">
-                    {project.description}
-                  </p>
+                  <Link href={`/project/${project.id}`}>
+                    <p className="text-gray-400 mb-5 line-clamp-3 hover:text-gray-300 transition-colors cursor-pointer">
+                      {project.description}
+                    </p>
+                  </Link>
                   
                   {/* Technologies */}
                   <div className="flex flex-wrap text-sm gap-2 mb-4">
@@ -228,13 +232,23 @@ const ProjectsSection = () => {
                       View Live Project
                     </a>
                     
-                    <Button 
-                      className="w-full bg-gray-800 hover:bg-gray-700 text-white border border-gray-700 hover:border-cyan-500/30"
-                      onClick={() => handleInterestClick(project)}
-                    >
-                      <span className="mr-2">I'm Interested</span>
-                      <span className="text-cyan-400">→</span>
-                    </Button>
+                    <div className="flex gap-2">
+                      <Button 
+                        className="flex-1 bg-gray-800 hover:bg-gray-700 text-white border border-gray-700 hover:border-cyan-500/30"
+                        onClick={() => handleInterestClick(project)}
+                      >
+                        <span className="mr-2">I'm Interested</span>
+                        <span className="text-cyan-400">→</span>
+                      </Button>
+                      
+                      <Link href={`/project/${project.id}`}>
+                        <Button 
+                          className="bg-gray-800 hover:bg-gray-700 text-white border border-gray-700 hover:border-cyan-500/30 hover:text-cyan-400 min-w-[120px]"
+                        >
+                          <span>Read More</span>
+                        </Button>
+                      </Link>
+                    </div>
                   </div>
                 </div>
               </motion.div>

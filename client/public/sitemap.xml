@@ -50,6 +50,168 @@
     <priority>0.9</priority>
   </url>
   <url>
+    <loc>https://nerochaze.replit.app/blog/ux-design-trends-future-web</loc>
+    <lastmod>2025-05-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    
+    <image:image>
+      <image:loc>https://images.unsplash.com/photo-1586717791821-3f44a563fa4c?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=600</image:loc>
+      <image:title>UX Design Trends Shaping the Future of Web</image:title>
+      <image:caption>Explore the cutting-edge UX design trends that are transforming the web, from voice interfaces and AR to ethical design principles and biometric integration.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://nerochaze.replit.app/blog/optimizing-website-performance-seo</loc>
+    <lastmod>2025-05-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    
+    <image:image>
+      <image:loc>https://images.unsplash.com/photo-1563986768609-322da13575f3?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=600</image:loc>
+      <image:title>Optimizing Website Performance for SEO</image:title>
+      <image:caption>Learn how website performance impacts SEO and discover practical techniques to optimize Core Web Vitals for better search engine rankings.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://nerochaze.replit.app/blog/essential-web-design-principles-2025</loc>
+    <lastmod>2025-05-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    
+    <image:image>
+      <image:loc>https://images.unsplash.com/photo-1522542550221-31fd19575a2d?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=600</image:loc>
+      <image:title>Essential Web Design Principles for 2025</image:title>
+      <image:caption>Discover the key web design principles that will define successful websites in 2025, from accessibility to sustainability and everything in between.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://nerochaze.replit.app/blog/tag/ux%20design</loc>
+    <lastmod>2025-05-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://nerochaze.replit.app/blog/tag/trends</loc>
+    <lastmod>2025-05-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://nerochaze.replit.app/blog/tag/user%20experience</loc>
+    <lastmod>2025-05-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://nerochaze.replit.app/blog/tag/seo</loc>
+    <lastmod>2025-05-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://nerochaze.replit.app/blog/tag/performance</loc>
+    <lastmod>2025-05-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://nerochaze.replit.app/blog/tag/web%20development</loc>
+    <lastmod>2025-05-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://nerochaze.replit.app/blog/tag/web%20design</loc>
+    <lastmod>2025-05-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://nerochaze.replit.app/blog/tag/ux</loc>
+    <lastmod>2025-05-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://nerochaze.replit.app/project/5</loc>
+    <lastmod>2025-05-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    
+    <image:image>
+      <image:loc>https://images.unsplash.com/photo-1488190211105-8b0e65b80b4e?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=600</image:loc>
+      <image:title>Personal Website Theme</image:title>
+      <image:caption>Clean and minimal personal website theme with about, resume, and contact sections. Perfect for individuals looking to establish their online presence.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://nerochaze.replit.app/project/4</loc>
+    <lastmod>2025-05-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    
+    <image:image>
+      <image:loc>https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=600</image:loc>
+      <image:title>Freelancer Portfolio</image:title>
+      <image:caption>Modern portfolio website for freelancers with project showcase, client testimonials, and contact form. Designed to highlight your skills and attract new clients.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://nerochaze.replit.app/project/3</loc>
+    <lastmod>2025-05-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    
+    <image:image>
+      <image:loc>https://images.unsplash.com/photo-1560066984-138dadb4c035?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=600</image:loc>
+      <image:title>Hairdresser Booking System</image:title>
+      <image:caption>Complete website solution for hairdressers and salons with online booking, staff management, and customer reviews. Includes a responsive design that works on all devices.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://nerochaze.replit.app/project/2</loc>
+    <lastmod>2025-05-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    
+    <image:image>
+      <image:loc>https://images.unsplash.com/photo-1516035069371-29a1b244cc32?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=600</image:loc>
+      <image:title>Photographer Portfolio Theme</image:title>
+      <image:caption>A stunning portfolio theme for photographers with gallery layouts, client area, and booking system. Perfect for showcasing your best work with high-resolution images.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://nerochaze.replit.app/project/1</loc>
+    <lastmod>2025-05-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    
+    <image:image>
+      <image:loc>https://images.unsplash.com/photo-1550009158-9ebf69173e03?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=600</image:loc>
+      <image:title>Tailor Website Template</image:title>
+      <image:caption>A professional website template for tailors and fashion designers. Features include portfolio showcase, appointment booking, and custom measurement tracking.</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://nerochaze.replit.app/portfolio/category/personal</loc>
+    <lastmod>2025-05-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://nerochaze.replit.app/portfolio/category/small%20business</loc>
+    <lastmod>2025-05-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://nerochaze.replit.app/portfolio/category/creative</loc>
+    <lastmod>2025-05-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://nerochaze.replit.app/skills</loc>
     <lastmod>2025-05-05</lastmod>
     <changefreq>monthly</changefreq>

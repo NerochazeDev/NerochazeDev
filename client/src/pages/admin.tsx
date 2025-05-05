@@ -230,59 +230,142 @@ export default function AdminPage() {
           </div>
         </div>
         
-        {/* Mobile tabs - only visible on small screens */}
+        {/* Mobile navigation - only visible on small screens */}
         <div className="md:hidden w-full sticky top-0 z-10 bg-gray-900 border-b border-gray-800">
-          <Tabs defaultValue={activeTab} value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="grid grid-cols-7 w-full bg-gray-950/80 backdrop-blur-sm shadow-lg p-1">
-              <TabsTrigger value="dashboard" className="flex items-center px-1 data-[state=active]:bg-gray-800 data-[state=active]:text-cyan-400">
-                <LayoutDashboard className="h-4 w-4" />
-              </TabsTrigger>
-              <TabsTrigger value="content" className="flex items-center px-1 data-[state=active]:bg-gray-800 data-[state=active]:text-cyan-400">
-                <InfoIcon className="h-4 w-4" />
-              </TabsTrigger>
-              <TabsTrigger value="projects" className="flex items-center px-1 data-[state=active]:bg-gray-800 data-[state=active]:text-cyan-400">
-                <Folders className="h-4 w-4" />
-              </TabsTrigger>
-              <TabsTrigger value="blog" className="flex items-center px-1 data-[state=active]:bg-gray-800 data-[state=active]:text-cyan-400">
-                <FileText className="h-4 w-4" />
-              </TabsTrigger>
-              <TabsTrigger value="skills" className="flex items-center px-1 data-[state=active]:bg-gray-800 data-[state=active]:text-cyan-400">
-                <ListChecks className="h-4 w-4" />
-              </TabsTrigger>
-              <TabsTrigger value="social" className="flex items-center px-1 data-[state=active]:bg-gray-800 data-[state=active]:text-cyan-400">
-                <Share2 className="h-4 w-4" />
-              </TabsTrigger>
-              <TabsTrigger value="messages" className="flex items-center px-1 data-[state=active]:bg-gray-800 data-[state=active]:text-cyan-400">
-                <Mail className="h-4 w-4" />
-              </TabsTrigger>
-            </TabsList>
-          </Tabs>
+          <div className="p-3 border-b border-gray-800 flex items-center justify-between">
+            <div>
+              <h1 className="text-lg font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-500">Admin Portal</h1>
+            </div>
+            <Badge className="bg-green-500/20 text-green-400 text-xs border-green-600">Secured</Badge>
+          </div>
+          
+          {/* Mobile menu - scrollable horizontally */}
+          <div className="overflow-x-auto">
+            <div className="flex p-2 pb-1 space-x-2 min-w-max">
+              <button
+                onClick={() => setActiveTab("dashboard")}
+                className={`flex flex-col items-center px-4 py-2 rounded-md transition-colors ${
+                  activeTab === "dashboard" 
+                    ? "bg-cyan-500/20 text-cyan-400" 
+                    : "text-gray-400 hover:bg-gray-800 hover:text-gray-300"
+                }`}
+              >
+                <LayoutDashboard className="h-5 w-5 mb-1" />
+                <span className="text-xs whitespace-nowrap">Dashboard</span>
+              </button>
+              
+              <button
+                onClick={() => setActiveTab("content")}
+                className={`flex flex-col items-center px-4 py-2 rounded-md transition-colors ${
+                  activeTab === "content" 
+                    ? "bg-cyan-500/20 text-cyan-400" 
+                    : "text-gray-400 hover:bg-gray-800 hover:text-gray-300"
+                }`}
+              >
+                <InfoIcon className="h-5 w-5 mb-1" />
+                <span className="text-xs whitespace-nowrap">Content</span>
+              </button>
+              
+              <button
+                onClick={() => setActiveTab("projects")}
+                className={`flex flex-col items-center px-4 py-2 rounded-md transition-colors ${
+                  activeTab === "projects" 
+                    ? "bg-cyan-500/20 text-cyan-400" 
+                    : "text-gray-400 hover:bg-gray-800 hover:text-gray-300"
+                }`}
+              >
+                <Folders className="h-5 w-5 mb-1" />
+                <span className="text-xs whitespace-nowrap">Projects</span>
+              </button>
+              
+              <button
+                onClick={() => setActiveTab("blog")}
+                className={`flex flex-col items-center px-4 py-2 rounded-md transition-colors ${
+                  activeTab === "blog" 
+                    ? "bg-cyan-500/20 text-cyan-400" 
+                    : "text-gray-400 hover:bg-gray-800 hover:text-gray-300"
+                }`}
+              >
+                <FileText className="h-5 w-5 mb-1" />
+                <span className="text-xs whitespace-nowrap">Blog</span>
+              </button>
+              
+              <button
+                onClick={() => setActiveTab("skills")}
+                className={`flex flex-col items-center px-4 py-2 rounded-md transition-colors ${
+                  activeTab === "skills" 
+                    ? "bg-cyan-500/20 text-cyan-400" 
+                    : "text-gray-400 hover:bg-gray-800 hover:text-gray-300"
+                }`}
+              >
+                <ListChecks className="h-5 w-5 mb-1" />
+                <span className="text-xs whitespace-nowrap">Skills</span>
+              </button>
+              
+              <button
+                onClick={() => setActiveTab("social")}
+                className={`flex flex-col items-center px-4 py-2 rounded-md transition-colors ${
+                  activeTab === "social" 
+                    ? "bg-cyan-500/20 text-cyan-400" 
+                    : "text-gray-400 hover:bg-gray-800 hover:text-gray-300"
+                }`}
+              >
+                <Share2 className="h-5 w-5 mb-1" />
+                <span className="text-xs whitespace-nowrap">Social</span>
+              </button>
+              
+              <button
+                onClick={() => setActiveTab("messages")}
+                className={`flex flex-col items-center px-4 py-2 rounded-md transition-colors ${
+                  activeTab === "messages" 
+                    ? "bg-cyan-500/20 text-cyan-400" 
+                    : "text-gray-400 hover:bg-gray-800 hover:text-gray-300"
+                }`}
+              >
+                <Mail className="h-5 w-5 mb-1" />
+                <span className="text-xs whitespace-nowrap">Messages</span>
+              </button>
+              
+              <button
+                onClick={() => setActiveTab("seeder")}
+                className={`flex flex-col items-center px-4 py-2 rounded-md transition-colors ${
+                  activeTab === "seeder" 
+                    ? "bg-cyan-500/20 text-cyan-400" 
+                    : "text-gray-400 hover:bg-gray-800 hover:text-gray-300"
+                }`}
+              >
+                <Database className="h-5 w-5 mb-1" />
+                <span className="text-xs whitespace-nowrap">Data</span>
+              </button>
+            </div>
+          </div>
         </div>
         
         {/* Main content */}
-        <div className="w-full md:ml-64 p-6">
+        <div className="w-full md:ml-64 p-4 md:p-6">
           {/* Page header */}
-          <div className="mb-8">
+          <div className="mb-6 md:mb-8">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between">
               <div>
-                <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-500">
-                  {activeTab === "dashboard" && "Dashboard Overview"}
+                <h1 className="text-2xl md:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-500">
+                  {activeTab === "dashboard" && "Dashboard"}
                   {activeTab === "content" && "Website Content"}
-                  {activeTab === "projects" && "Project Management"}
-                  {activeTab === "blog" && "Blog Management"}
-                  {activeTab === "skills" && "Skills Management"}
+                  {activeTab === "projects" && "Projects"}
+                  {activeTab === "blog" && "Blog Posts"}
+                  {activeTab === "skills" && "Skills"}
                   {activeTab === "social" && "Social Links"}
-                  {activeTab === "messages" && "Contact Messages"}
-                  {activeTab === "telegram" && "Telegram Integration"}
-                  {activeTab === "seeder" && "Data Management Tools"}
+                  {activeTab === "messages" && "Messages"}
+                  {activeTab === "telegram" && "Telegram"}
+                  {activeTab === "seeder" && "Data Tools"}
                 </h1>
-                <p className="text-gray-400 mt-1">{formatDate(currentTime)} • {formatTime(currentTime)}</p>
+                <p className="text-gray-400 mt-1 text-sm">{formatDate(currentTime)} • {formatTime(currentTime)}</p>
               </div>
               
               <div className="mt-4 md:mt-0 flex items-center gap-3">
-                <Badge variant="outline" className="bg-gray-800/50 text-gray-300 border-gray-700 flex gap-2 px-3 py-1">
+                <Badge variant="outline" className="bg-gray-800/50 text-gray-300 border-gray-700 flex gap-2 px-3 py-1 text-xs">
                   <Shield className="h-4 w-4 text-green-400" />
-                  <span>Secure Admin Session</span>
+                  <span className="hidden sm:inline">Secure Admin Session</span>
+                  <span className="sm:hidden">Secured</span>
                 </Badge>
               </div>
             </div>

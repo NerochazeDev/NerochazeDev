@@ -664,24 +664,24 @@ export const DataSeeder: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
         {/* Project Templates Seeder */}
-        <Card className="p-6 bg-gradient-to-br from-gray-900 to-gray-800 border-gray-700">
-          <div className="flex items-center mb-4">
+        <Card className="p-4 sm:p-6 bg-gradient-to-br from-gray-900 to-gray-800 border-gray-700">
+          <div className="flex items-center mb-3 sm:mb-4">
             <div className="p-2 bg-blue-500/20 rounded mr-3">
               <Folders className="h-5 w-5 text-blue-400" />
             </div>
-            <h3 className="text-xl font-medium text-white">Project Templates</h3>
+            <h3 className="text-lg sm:text-xl font-medium text-white">Project Templates</h3>
           </div>
           
-          <p className="text-gray-300 mb-5">
+          <p className="text-gray-300 mb-4 sm:mb-5 text-sm sm:text-base">
             Add 5 professional project templates to your portfolio website. Templates include designs for tailors, photographers, hairdressers, freelancers, and personal websites.
           </p>
           
-          <div className="mb-6 space-y-3">
+          <div className="mb-4 sm:mb-6">
             <div className="flex flex-wrap gap-2">
               {projectTemplates.map((project, index) => (
-                <Badge key={index} className="bg-blue-500/20 text-blue-300 border-blue-500">
+                <Badge key={index} className="bg-blue-500/20 text-blue-300 border-blue-500 text-xs">
                   {project.title.split(' ')[0]}
                 </Badge>
               ))}
@@ -689,52 +689,57 @@ export const DataSeeder: React.FC = () => {
           </div>
           
           <Button 
-            className="w-full font-medium bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white"
+            className="w-full font-medium bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white text-sm sm:text-base"
             onClick={addProjectTemplates}
             disabled={projectsLoading || projectsSuccess}
           >
             {projectsLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             {projectsSuccess && <CheckCircle className="mr-2 h-4 w-4" />}
             {projectsSuccess 
-              ? "Projects Added Successfully" 
+              ? "Projects Added" 
               : projectsLoading 
-                ? "Adding Project Templates..." 
+                ? "Adding Projects..." 
                 : "Add Project Templates"}
           </Button>
         </Card>
 
         {/* Blog Posts Seeder */}
-        <Card className="p-6 bg-gradient-to-br from-gray-900 to-gray-800 border-gray-700">
-          <div className="flex items-center mb-4">
+        <Card className="p-4 sm:p-6 bg-gradient-to-br from-gray-900 to-gray-800 border-gray-700">
+          <div className="flex items-center mb-3 sm:mb-4">
             <div className="p-2 bg-cyan-500/20 rounded mr-3">
               <FileText className="h-5 w-5 text-cyan-400" />
             </div>
-            <h3 className="text-xl font-medium text-white">Blog Posts</h3>
+            <h3 className="text-lg sm:text-xl font-medium text-white">Blog Posts</h3>
           </div>
           
-          <p className="text-gray-300 mb-5">
+          <p className="text-gray-300 mb-4 sm:mb-5 text-sm sm:text-base">
             Add 6 professionally written blog posts about web design, performance optimization, UX trends, AI in web development, accessibility, and typography.
           </p>
           
-          <div className="mb-6 space-y-3">
+          <div className="mb-4 sm:mb-6">
             <div className="flex flex-wrap gap-2">
-              {blogPosts.map((post, index) => (
-                <Badge key={index} className="bg-cyan-500/20 text-cyan-300 border-cyan-500">
+              {blogPosts.slice(0, 5).map((post, index) => (
+                <Badge key={index} className="bg-cyan-500/20 text-cyan-300 border-cyan-500 text-xs">
                   {post.tags[0]}
                 </Badge>
               ))}
+              {blogPosts.length > 5 && (
+                <Badge className="bg-cyan-500/20 text-cyan-300 border-cyan-500 text-xs">
+                  +{blogPosts.length - 5} more
+                </Badge>
+              )}
             </div>
           </div>
           
           <Button 
-            className="w-full font-medium bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-600 hover:to-cyan-700 text-white"
+            className="w-full font-medium bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-600 hover:to-cyan-700 text-white text-sm sm:text-base"
             onClick={addBlogPosts}
             disabled={blogLoading || blogSuccess}
           >
             {blogLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             {blogSuccess && <CheckCircle className="mr-2 h-4 w-4" />}
             {blogSuccess 
-              ? "Blog Posts Added Successfully" 
+              ? "Blog Posts Added" 
               : blogLoading 
                 ? "Adding Blog Posts..." 
                 : "Add Blog Posts"}
@@ -743,21 +748,21 @@ export const DataSeeder: React.FC = () => {
       </div>
 
       {/* Reset Database Button */}
-      <Card className="p-5 bg-gradient-to-br from-gray-900 to-gray-800 border-gray-700">
-        <div className="flex items-center justify-between">
+      <Card className="p-4 sm:p-5 bg-gradient-to-br from-gray-900 to-gray-800 border-gray-700">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-0">
           <div className="flex items-center">
             <div className="p-2 bg-purple-500/20 rounded mr-3">
               <Database className="h-5 w-5 text-purple-400" />
             </div>
             <div>
               <h3 className="text-lg font-medium text-white">Database Tools</h3>
-              <p className="text-gray-300 text-sm">Reset or refresh your database to fix issues.</p>
+              <p className="text-gray-300 text-xs sm:text-sm">Reset or refresh your database to fix issues.</p>
             </div>
           </div>
           
           <Button 
             variant="outline" 
-            className="border-gray-700 hover:bg-gray-800 text-gray-300 flex items-center gap-2"
+            className="border-gray-700 hover:bg-gray-800 text-gray-300 flex items-center gap-2 text-sm w-full sm:w-auto"
             onClick={() => {
               // Invalidate all queries to force a refresh
               queryClient.invalidateQueries();

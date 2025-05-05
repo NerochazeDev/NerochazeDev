@@ -1,8 +1,7 @@
+@import './styles/themes.css';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@import './styles/themes.css';
 
 :root {
   --background: 230 30% 10%;

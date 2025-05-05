@@ -12,6 +12,7 @@ import BlogPost from "@/pages/blog-post";
 import ProjectDetail from "@/pages/project-detail";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
+import { ThemeProvider } from "@/contexts/theme-context";
 
 function Router() {
   const [location] = useLocation();
@@ -38,14 +39,16 @@ function App() {
   return (
     <HelmetProvider>
       <QueryClientProvider client={queryClient}>
-        <TooltipProvider>
-          <div className="flex flex-col min-h-screen">
-            <main className="flex-grow">
-              <Router />
-            </main>
-          </div>
-          <Toaster />
-        </TooltipProvider>
+        <ThemeProvider>
+          <TooltipProvider>
+            <div className="flex flex-col min-h-screen">
+              <main className="flex-grow">
+                <Router />
+              </main>
+            </div>
+            <Toaster />
+          </TooltipProvider>
+        </ThemeProvider>
       </QueryClientProvider>
     </HelmetProvider>
   );

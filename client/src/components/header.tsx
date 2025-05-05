@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import { Menu, X } from "lucide-react";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -108,6 +109,10 @@ const Header: React.FC = () => {
           >
             Resume
           </a>
+          
+          <div className="ml-2">
+            <ThemeToggle />
+          </div>
         </nav>
       </div>
 
@@ -159,7 +164,7 @@ const Header: React.FC = () => {
               );
             })}
             
-            <div className="pt-6 mt-4 border-t border-gray-800">
+            <div className="pt-6 mt-4 border-t border-gray-800 space-y-4">
               <a
                 href="/resume.pdf"
                 target="_blank"
@@ -169,6 +174,10 @@ const Header: React.FC = () => {
               >
                 Download Resume
               </a>
+              
+              <div className="flex justify-center pt-2">
+                <ThemeToggle />
+              </div>
             </div>
           </div>
           

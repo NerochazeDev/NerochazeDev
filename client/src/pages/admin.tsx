@@ -5,7 +5,7 @@ import { SkillsManagement } from "@/components/admin/skills-management";
 import { SocialLinksManagement } from "@/components/admin/social-links-management";
 import { ContactMessagesManagement } from "@/components/admin/contact-messages";
 import { BlogManagement } from "@/components/admin/blog-management";
-import { DataSeeder } from "@/components/admin/data-seeder";
+import DataSeeder from "@/components/admin/data-seeder";
 import { TelegramTest } from "@/components/telegram-test";
 import { useQuery } from "@tanstack/react-query";
 

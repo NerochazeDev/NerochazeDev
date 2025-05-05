@@ -1,586 +1,774 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { apiRequest } from "@/lib/queryClient";
+import { Card } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Loader2, Database, CheckCircle2 } from "lucide-react";
-
-export function DataSeeder() {
-  const [isAddingProjects, setIsAddingProjects] = useState(false);
-  const [isAddingBlogs, setIsAddingBlogs] = useState(false);
-  const [projectsAdded, setProjectsAdded] = useState(false);
-  const [blogsAdded, setBlogsAdded] = useState(false);
-  const { toast } = useToast();
-  const queryClient = useQueryClient();
-
-  // Project templates data
-  const projectTemplates = [
-    {
-      title: "Elegance - Premium Tailor Shop Template",
-      description: "A sophisticated website template for tailors and bespoke clothing businesses. Features appointment booking, measurement tracking, and a fabric gallery. The elegant design showcases your craftsmanship and creates a premium online presence for your tailoring business.",
-      image: "https://images.unsplash.com/photo-1564859228273-274232fdb516?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2574&q=80",
-      technologies: ["React", "Node.js", "Express", "MongoDB", "Stripe", "Tailwind CSS"],
-      tags: ["tailor", "fashion", "e-commerce", "appointment", "premium", "bespoke"],
-      category: "Tailor Shop Website",
-      price: "1,299 USDT",
-      liveLink: "https://tailorshop-template.example.com",
-    },
-    {
-      title: "Aperture - Professional Photographer Portfolio",
-      description: "A visually stunning portfolio website template for photographers. Featuring fullscreen galleries, client proofing areas, and integrated booking system. Optimized for displaying high-resolution images with minimal loading times and interactive galleries to showcase your best work.",
-      image: "https://images.unsplash.com/photo-1452587925148-ce544e77e70d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2574&q=80",
-      technologies: ["React", "Next.js", "MongoDB", "AWS S3", "Cloudinary", "Framer Motion"],
-      tags: ["photography", "portfolio", "gallery", "booking", "creative"],
-      category: "Photographer Website",
-      price: "999 USDT",
-      liveLink: "https://aperture-portfolio.example.com",
-    },
-    {
-      title: "Gloss - Modern Hair Salon & Spa Template",
-      description: "A stylish and feature-rich website template for hair salons, barbershops, and spas. Includes appointment scheduling, service catalog with pricing, staff profiles, and before/after galleries. The design combines modern aesthetics with practical features to help grow your beauty business.",
-      image: "https://images.unsplash.com/photo-1560066984-138dadb4c035?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2574&q=80",
-      technologies: ["React", "Firebase", "Stripe", "Google Calendar API", "Tailwind CSS", "Redux"],
-      tags: ["salon", "hairdresser", "beauty", "spa", "appointment", "booking"],
-      category: "Salon & Spa Website",
-      price: "899 USDT",
-      liveLink: "https://gloss-salon.example.com",
-    },
-    {
-      title: "Freelance Pro - Digital Nomad Portfolio",
-      description: "A comprehensive portfolio website template for freelancers and digital nomads. Features project showcases, testimonials, service listings, and integrated contact forms. Designed to help freelancers convert visitors into clients with persuasive content sections and clear calls to action.",
-      image: "https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2570&q=80",
-      technologies: ["React", "Express", "MongoDB", "Nodemailer", "Framer Motion", "Tailwind CSS"],
-      tags: ["freelancer", "portfolio", "services", "digital-nomad", "remote-work"],
-      category: "Freelancer Portfolio",
-      price: "799 USDT",
-      liveLink: "https://freelance-pro.example.com",
-    },
-    {
-      title: "Personal Brand - Professional Bio Website",
-      description: "An elegant personal website template for professionals, consultants, and thought leaders. Highlights your expertise, blog content, speaking engagements, and media appearances. Perfect for building your personal brand and establishing authority in your field with a professional online presence.",
-      image: "https://images.unsplash.com/photo-1487017159836-4e23ece2e4cf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2574&q=80",
-      technologies: ["React", "Next.js", "Sanity CMS", "Vercel", "Tailwind CSS", "TypeScript"],
-      tags: ["personal-brand", "professional", "bio", "consultant", "speaker"],
-      category: "Personal Website",
-      price: "699 USDT",
-      liveLink: "https://personal-brand.example.com",
-    }
-  ];
-
-  // Blog posts data
-  const blogPosts = [
-    {
-      title: "The Evolution of Web Design: Trends to Watch in 2025",
-      slug: "web-design-trends-2025",
-      excerpt: "An exploration of the latest web design trends that are shaping the digital landscape in 2025, from AI-driven personalization to immersive 3D experiences.",
-      content: `
-# The Evolution of Web Design: Trends to Watch in 2025
-
-In the fast-paced world of web design, staying ahead of trends isn't just about aesthetics—it's about creating experiences that resonate with users and drive engagement. As we move through 2025, several key trends are reshaping how we approach web design.
-
-## AI-Driven Personalization
-
-Artificial intelligence has transcended being just a buzzword and is now a fundamental component of advanced web design. In 2025, websites are increasingly leveraging AI to:
-
-- Create dynamically personalized user experiences based on behavior patterns
-- Adjust content layout and presentation according to individual preferences
-- Predict user needs and present relevant information proactively
-
-This level of personalization makes users feel understood and valued, significantly boosting engagement metrics and conversion rates.
-
-## Immersive 3D Experiences
-
-The line between digital and physical continues to blur with the rise of immersive 3D elements in web design. Rather than simple animations, websites are now incorporating:
-
-- Interactive 3D models that users can manipulate
-- Spatial interfaces that create depth and dimension
-- Virtual showrooms for products that mimic in-person shopping experiences
-
-These elements transform passive browsing into active exploration, keeping users engaged for longer periods.
-
-## Minimalism 2.0
-
-Minimalism has evolved from stark simplicity to thoughtful restraint. The updated approach focuses on:
-
-- Strategic use of whitespace to guide attention
-- Limited color palettes with occasional bold accents
-- Typography as a central design element
-- Subtle micro-interactions that add delight without distraction
+import { Loader2, CheckCircle, Database, FileText, Folders, RefreshCw } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { apiRequest } from "@/lib/queryClient";
+import { useQueryClient } from "@tanstack/react-query";
+
+// Project templates data
+const projectTemplates = [
+  {
+    title: "Tailor Website Template",
+    description: "A professional website template for tailors and fashion designers. Features include portfolio showcase, appointment booking, and custom measurement tracking.",
+    image: "https://images.unsplash.com/photo-1550009158-9ebf69173e03?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=600",
+    technologies: ["React", "Node.js", "TailwindCSS", "Express"],
+    tags: ["Fashion", "Tailor", "Website"],
+    price: "$499",
+    liveLink: "https://tailor-template.example.com",
+    category: "Small Business"
+  },
+  {
+    title: "Photographer Portfolio Theme",
+    description: "A stunning portfolio theme for photographers with gallery layouts, client area, and booking system. Perfect for showcasing your best work with high-resolution images.",
+    image: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=600",
+    technologies: ["React", "Firebase", "TailwindCSS", "Framer Motion"],
+    tags: ["Photography", "Portfolio", "Creative"],
+    price: "$599",
+    liveLink: "https://photographer-theme.example.com",
+    category: "Creative"
+  },
+  {
+    title: "Hairdresser Booking System",
+    description: "Complete website solution for hairdressers and salons with online booking, staff management, and customer reviews. Includes a responsive design that works on all devices.",
+    image: "https://images.unsplash.com/photo-1560066984-138dadb4c035?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=600",
+    technologies: ["React", "Express", "MongoDB", "TailwindCSS"],
+    tags: ["Salon", "Booking", "Beauty"],
+    price: "$699",
+    liveLink: "https://hairdresser-booking.example.com",
+    category: "Small Business"
+  },
+  {
+    title: "Freelancer Portfolio",
+    description: "Modern portfolio website for freelancers with project showcase, client testimonials, and contact form. Designed to highlight your skills and attract new clients.",
+    image: "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=600",
+    technologies: ["React", "NextJS", "TailwindCSS", "Prisma"],
+    tags: ["Freelance", "Portfolio", "Professional"],
+    price: "$399",
+    liveLink: "https://freelancer-portfolio.example.com",
+    category: "Personal"
+  },
+  {
+    title: "Personal Website Theme",
+    description: "Clean and minimal personal website theme with about, resume, and contact sections. Perfect for individuals looking to establish their online presence.",
+    image: "https://images.unsplash.com/photo-1488190211105-8b0e65b80b4e?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=600",
+    technologies: ["React", "Gatsby", "TailwindCSS", "Contentful"],
+    tags: ["Personal", "Resume", "Minimal"],
+    price: "$299",
+    liveLink: "https://personal-theme.example.com",
+    category: "Personal"
+  }
+];
+
+// Blog posts data
+const blogPosts = [
+  {
+    title: "Essential Web Design Principles for 2025",
+    slug: "essential-web-design-principles-2025",
+    content: `
+# Essential Web Design Principles for 2025
+
+In the ever-evolving landscape of web design, staying ahead of trends and best practices is crucial for creating effective and engaging websites. As we move into 2025, certain design principles have become essential for delivering exceptional user experiences.
+
+## 1. Accessibility-First Design
+
+Accessibility is no longer optional. Websites need to be usable by everyone, regardless of abilities or disabilities. This means:
+
+- Proper contrast ratios for text and background
+- Keyboard navigation support
+- Semantic HTML structure
+- ARIA attributes where necessary
+- Screen reader compatibility
+
+## 2. Performance Optimization
+
+With users expecting near-instant loading times, performance has become a critical factor in web design:
+
+- Lazy loading for images and videos
+- Code splitting and tree shaking
+- Efficient asset delivery and caching
+- Server-side rendering where appropriate
+- Core Web Vitals optimization
+
+## 3. Responsive and Adaptive Design
+
+With the proliferation of devices, responsive design has evolved to be more sophisticated:
+
+- Container and layout queries
+- Fluid typography and spacing
+- Context-aware UI components
+- Feature detection and progressive enhancement
+- Device-specific optimizations
+
+## 4. Minimalism with Personality
+
+Clean designs continue to dominate, but with increased focus on brand personality:
 
-This refined minimalism creates interfaces that feel clean and uncluttered while still offering rich functionality.
+- Strategic use of color and white space
+- Purposeful animations and micro-interactions
+- Custom illustrations and iconography
+- Brand-specific design systems
+- Thoughtful typography choices
 
-## Dark Mode by Default
+## 5. Sustainable Web Design
 
-Dark mode has transitioned from an alternative option to the primary design choice for many sites. Benefits include:
+Environmental impact is increasingly important:
 
-- Reduced eye strain, especially in low-light environments
-- Energy savings on OLED displays
-- Enhanced visual hierarchy and content focus
-- Sophisticated, premium aesthetic
+- Reduced data transfer
+- Green hosting options
+- Efficient code and assets
+- Optimized user journeys to reduce unnecessary page loads
+- Energy-efficient color schemes and designs
 
-Smart implementations now automatically adjust to user preferences and environmental conditions.
+By embracing these principles, you'll create websites that not only look great but also perform well, are accessible to all users, and have a reduced environmental impact. The key is finding the right balance between aesthetics, functionality, and sustainability for your specific project needs.
+    `,
+    excerpt: "Discover the key web design principles that will define successful websites in 2025, from accessibility to sustainability and everything in between.",
+    coverImage: "https://images.unsplash.com/photo-1522542550221-31fd19575a2d?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=600",
+    tags: ["Web Design", "UX", "Trends"],
+    published: "true"
+  },
+  {
+    title: "Optimizing Website Performance for SEO",
+    slug: "optimizing-website-performance-seo",
+    content: `
+# Optimizing Website Performance for SEO
 
-## Voice User Interfaces
+Website performance is no longer just about providing a good user experience—it's a critical factor in search engine rankings. Google's Core Web Vitals have made performance metrics a key component of SEO strategy. In this guide, we'll explore practical steps to optimize your website performance for better SEO results.
 
-As voice search and commands become ubiquitous, web designs are adapting to accommodate these interactions:
+## Understanding Core Web Vitals
 
-- Voice-activated navigation options
-- Audio feedback for interactions
-- Content structured to answer spoken queries
-- Multimodal interfaces that combine voice with traditional inputs
+Core Web Vitals are a set of specific metrics that Google considers important for user experience:
 
-This trend is making websites more accessible and convenient across a broader range of contexts.
+- **Largest Contentful Paint (LCP)**: Measures loading performance. Aim for under 2.5 seconds.
+- **First Input Delay (FID)**: Measures interactivity. Aim for under 100ms.
+- **Cumulative Layout Shift (CLS)**: Measures visual stability. Aim for under 0.1.
 
-## Microinteractions with Purpose
-
-Subtle animations and interactive elements now serve specific functional purposes:
-
-- Providing feedback on user actions
-- Guiding attention to important elements
-- Communicating system status
-- Creating moments of delight that strengthen brand connection
-
-These purposeful microinteractions enhance usability while adding personality to digital experiences.
-
-## Conclusion
-
-The web design landscape of 2025 blends technological advancement with human-centered design principles. By thoughtfully implementing these trends, designers can create websites that not only look contemporary but also deliver meaningful, engaging experiences that serve both users and business goals.
-
-Whether you're refreshing an existing site or building something new, consider how these trends might enhance your digital presence and connect with your audience in more effective ways.`,
-      coverImage: "https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2670&q=80",
-      tags: ["web design", "design trends", "UX/UI", "technology"],
-      published: "true",
-    },
-    {
-      title: "Building a High-Converting E-commerce Website: Essential Elements",
-      slug: "high-converting-ecommerce-essentials",
-      excerpt: "Discover the critical components that transform an ordinary online store into a high-converting e-commerce powerhouse that drives sales and customer loyalty.",
-      content: `
-# Building a High-Converting E-commerce Website: Essential Elements
-
-In today's competitive digital marketplace, having an e-commerce website is just the starting point. The real challenge lies in creating an online store that consistently converts visitors into customers. This guide explores the essential elements that separate high-performing e-commerce sites from the rest.
-
-## Streamlined Navigation
-
-The foundation of any successful e-commerce site is intuitive navigation that helps customers find products quickly:
-
-- Implement a logical category structure that reflects how customers think about your products
-- Utilize breadcrumbs to help users track their location within your site
-- Create persistent navigation elements that remain accessible throughout the shopping journey
-- Use mega menus for stores with large product catalogs
-
-A well-designed navigation system reduces friction and keeps potential customers engaged with your offerings.
-
-## Search Functionality That Works
-
-Even with excellent navigation, many users prefer to search directly for what they want:
-
-- Implement robust search with autocomplete suggestions
-- Enable filtering by product attributes (size, color, price range, etc.)
-- Incorporate synonym recognition to account for different search terms
-- Provide useful results for misspelled queries
-
-High-quality search functionality can significantly increase conversion rates, especially for stores with extensive inventories.
-
-## Compelling Product Pages
-
-Your product pages are where purchase decisions happen, making them critical conversion points:
-
-- Feature high-quality, zoomable product images from multiple angles
-- Include detailed, scannable product descriptions that address common questions
-- Display clear pricing information and any available discounts
-- Showcase genuine customer reviews and ratings
-- Implement size guides and comparison tools when relevant
-- Use prominent, distinctively styled call-to-action buttons
-
-Remember that each product page is potentially a landing page, so it needs to tell a complete story about the item.
-
-## Transparent Checkout Process
-
-Shopping cart abandonment often happens during checkout. Combat this with:
-
-- A progress indicator showing how many steps remain
-- Guest checkout options that don't force account creation
-- Multiple payment methods to accommodate different preferences
-- Clear display of all costs, including shipping, before the final step
-- Persistent order summary throughout the checkout flow
-- Trust signals like security badges and guarantees
-
-The checkout process should feel safe, straightforward, and respectfully efficient.
-
-## Conclusion
-
-Building a high-converting e-commerce website requires careful attention to both user experience and technical details. While these elements provide a foundation, continuous testing and refinement based on analytics and customer feedback will help you maximize your conversion potential over time.
-
-The most successful e-commerce sites are those that evolve with changing consumer expectations while maintaining a consistent focus on making the shopping experience as frictionless and enjoyable as possible.`,
-      coverImage: "https://images.unsplash.com/photo-1472851294608-062f824d29cc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2670&q=80",
-      tags: ["e-commerce", "web development", "conversion optimization", "UX/UI"],
-      published: "true",
-    },
-    {
-      title: "The Rise of Headless CMS: Revolutionizing Content Management",
-      slug: "headless-cms-revolution",
-      excerpt: "Learn how headless CMS architecture is transforming content management and enabling more flexible, future-proof digital experiences across multiple platforms.",
-      content: `
-# The Rise of Headless CMS: Revolutionizing Content Management
-
-Content management systems (CMS) have been the backbone of websites for decades, but traditional monolithic CMS platforms are increasingly being challenged by a more flexible approach: headless CMS. This architectural shift is revolutionizing how organizations create, manage, and deploy content across digital channels.
-
-## What Is a Headless CMS?
-
-Unlike traditional CMS platforms that combine content management with content presentation, a headless CMS:
-
-- Decouples the content repository (the "body") from the presentation layer (the "head")
-- Delivers content via APIs rather than rendering web pages directly
-- Allows content to be published to any device or channel, from websites to mobile apps, IoT devices, and beyond
-- Treats content as structured data rather than page elements
-
-This approach represents a fundamental shift from page-centric to content-centric digital experiences.
-
-## Key Benefits of Going Headless
-
-The growing adoption of headless architecture is driven by several compelling advantages:
-
-### Future-Proof Flexibility
-
-With content separated from presentation, organizations can:
-
-- Adapt to new devices and channels as they emerge without rearchitecting their content
-- Update the design and user experience independently from content updates
-- Implement new front-end technologies without migrating content
-
-This separation creates significant long-term flexibility as digital channels continue to evolve.
-
-### Developer Experience
-
-Modern development teams particularly benefit from headless architecture:
-
-- Freedom to use preferred front-end frameworks (React, Vue, Angular, etc.)
-- Ability to implement JAMstack architectures for improved performance and security
-- Streamlined development workflows with familiar tools
-- Easier integration with other systems and services
-
-These factors often lead to faster development cycles and greater innovation.
-
-## Conclusion
-
-The headless CMS revolution represents a broader shift toward composable digital experiences, where organizations assemble best-of-breed components rather than relying on monolithic platforms.
-
-As digital channels continue to multiply and consumer expectations rise, the flexibility and scalability of headless architecture will likely become increasingly valuable for organizations of all sizes.`,
-      coverImage: "https://images.unsplash.com/photo-1456406644174-8ddd4cd52a06?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2568&q=80",
-      tags: ["CMS", "headless", "content management", "web development", "architecture"],
-      published: "true",
-    },
-    {
-      title: "Optimizing Website Performance: Speed Matters More Than Ever",
-      slug: "website-performance-optimization",
-      excerpt: "A comprehensive guide to improving website speed and performance, covering everything from image optimization to advanced caching strategies.",
-      content: `
-# Optimizing Website Performance: Speed Matters More Than Ever
-
-In today's digital landscape, website performance isn't just a technical consideration—it's a critical business factor that affects everything from user experience to search rankings and conversion rates. This guide explores practical strategies for optimizing website speed and performance.
-
-## Why Performance Matters
-
-Before diving into optimization techniques, it's worth understanding the impact of performance:
-
-- **User Experience**: 53% of mobile users abandon sites that take longer than 3 seconds to load
-- **Conversion Rates**: A 1-second delay in page load time can reduce conversions by 7%
-- **SEO Rankings**: Site speed is a ranking factor for search engines
-- **Brand Perception**: Fast, responsive sites create an impression of quality and reliability
-
-These factors make performance optimization one of the highest-ROI improvements you can make to your website.
-
-## Core Web Vitals: The New Performance Baseline
-
-Google's Core Web Vitals have established standardized metrics for measuring user experience:
-
-### Largest Contentful Paint (LCP)
-Measures loading performance—how quickly the largest content element becomes visible.
-- **Goal**: LCP should occur within 2.5 seconds of page load
-
-### First Input Delay (FID)
-Measures interactivity—how quickly the page responds to user interactions.
-- **Goal**: FID should be less than 100 milliseconds
-
-### Cumulative Layout Shift (CLS)
-Measures visual stability—how much elements move around during page load.
-- **Goal**: CLS should be less than 0.1
-
-Optimizing for these metrics creates a solid foundation for overall performance.
-
-## Image Optimization Strategies
+## Image Optimization Techniques
 
 Images often account for the largest portion of page weight:
 
-- **Format Selection**: Use WebP with JPEG/PNG fallbacks for broader compatibility
-- **Responsive Images**: Implement \`srcset\` and \`sizes\` attributes to serve appropriate image sizes
-- **Lazy Loading**: Defer off-screen images with \`loading="lazy"\` or Intersection Observer
+1. **Use modern formats**: Convert images to WebP or AVIF for better compression.
+2. **Implement responsive images**: Use srcset and size attributes.
+3. **Lazy load images**: Only load images as they enter the viewport.
+4. **Properly size images**: Never serve larger images than needed.
+5. **Use CDNs**: Deliver images from edge servers closer to users.
 
-Properly optimized images can reduce page weight by 50% or more in many cases.
+## JavaScript Optimization
 
-## Conclusion
+JavaScript can significantly impact performance:
 
-Website performance optimization has evolved from a technical nice-to-have to a business-critical practice. The strategies outlined here provide a framework for improvement, but each site will have unique optimization opportunities.
+1. **Code splitting**: Only load the JavaScript needed for the current page.
+2. **Tree shaking**: Remove unused code.
+3. **Defer non-critical JavaScript**: Use async and defer attributes.
+4. **Minimize third-party scripts**: Each external script can impact performance.
+5. **Monitor JavaScript execution time**: Identify and optimize slow functions.
 
-By approaching performance as an ongoing priority rather than a one-time project, you can create experiences that satisfy both users and search engines while supporting your business objectives.`,
-      coverImage: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2669&q=80",
-      tags: ["performance", "web development", "optimization", "Core Web Vitals", "speed"],
-      published: "true",
-    },
-    {
-      title: "Effective UI/UX Principles for Non-Designers",
-      slug: "ui-ux-principles-for-non-designers",
-      excerpt: "Learn the fundamental UI/UX design principles that every developer, product manager, and business owner should understand to create better digital products.",
-      content: `
-# Effective UI/UX Principles for Non-Designers
+## CSS Optimization
 
-You don't need to be a professional designer to create better digital experiences. Understanding fundamental UI/UX principles can help developers, product managers, and business owners make more informed decisions about their digital products. This guide covers the essential concepts that non-designers should know.
+Efficient CSS improves rendering performance:
 
-## Understanding the Difference: UI vs. UX
+1. **Minimize CSS**: Remove unused styles.
+2. **Critical CSS**: Inline critical styles in the head.
+3. **Reduce CSS complexity**: Simplify selectors.
+4. **Avoid render-blocking CSS**: Load non-critical CSS asynchronously.
 
-Before diving into principles, it's important to clarify the distinction:
+## Server-Side Optimization
 
-- **User Interface (UI)** refers to the visual elements users interact with—buttons, input fields, navigation menus, typography, colors, and layouts.
-- **User Experience (UX)** encompasses the entire journey and how users feel when interacting with a product or service, including ease of use, efficiency, and emotional response.
+Backend optimizations are equally important:
 
-While interconnected, these disciplines focus on different aspects of product design.
+1. **Implement caching**: Browser caching, CDN caching, and server caching.
+2. **Use HTTP/2 or HTTP/3**: These protocols improve connection efficiency.
+3. **Enable compression**: Use Gzip or Brotli compression.
+4. **Optimize time to first byte (TTFB)**: Improve server response time.
 
-## The Hierarchy of User Needs
+## Regular Auditing and Monitoring
 
-Digital products, like physical ones, must satisfy fundamental needs before addressing higher-level concerns:
+Maintaining performance requires ongoing attention:
 
-1. **Functionality**: Does it work reliably?
-2. **Usability**: Is it easy to use?
-3. **Comfort**: Is it pleasant to use?
-4. **Delight**: Does it provide unexpected value or joy?
+1. **Use Lighthouse**: Regular audits help identify issues.
+2. **Monitor real user metrics (RUM)**: Understand actual user experiences.
+3. **Set up alerts**: Be notified when performance degrades.
+4. **A/B test optimizations**: Verify improvements with data.
 
-This hierarchy (adapted from Aarron Walter's work) helps prioritize improvements: fix functional issues before polishing aesthetics.
+Optimizing website performance is an ongoing process, not a one-time task. By regularly implementing these best practices, you'll not only improve your search rankings but also provide a better experience for your users—leading to higher engagement, lower bounce rates, and better conversion metrics.
+    `,
+    excerpt: "Learn how website performance impacts SEO and discover practical techniques to optimize Core Web Vitals for better search engine rankings.",
+    coverImage: "https://images.unsplash.com/photo-1563986768609-322da13575f3?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=600",
+    tags: ["SEO", "Performance", "Web Development"],
+    published: "true"
+  },
+  {
+    title: "UX Design Trends Shaping the Future of Web",
+    slug: "ux-design-trends-future-web",
+    content: `
+# UX Design Trends Shaping the Future of Web
 
-## Essential UI Principles
+User experience (UX) design continues to evolve rapidly, driven by technological advancements, changing user expectations, and the need for more intuitive and accessible digital experiences. Here's a look at the UX design trends that are shaping the future of the web.
 
-### Visual Hierarchy
+## 1. Voice User Interfaces (VUI)
 
-Not all elements deserve equal attention. Visual hierarchy guides users through content in order of importance:
+As voice technology becomes more sophisticated, VUIs are increasingly integrated into web experiences:
 
-- Use size, contrast, color, and space to indicate importance
-- Place critical elements where users naturally look first (typically top-left in Western cultures)
-- Limit the number of "important" elements to avoid overwhelming users
+- **Multimodal interfaces**: Combining voice with touch and visual elements
+- **Voice-optimized content**: Creating content that works well for both reading and listening
+- **Conversational design**: Natural language interactions that feel human-like
+- **Voice search optimization**: Adapting UX for voice-based queries
 
-Effective hierarchy ensures users notice what matters most.
+## 2. Immersive Experiences with AR and VR
 
-## Conclusion
+Augmented and virtual reality are creating new possibilities for web experiences:
 
-While mastering design takes years of practice, understanding these fundamental principles can significantly improve the quality of digital products created by non-designers. Remember that good design often feels invisible—users notice when something is difficult or confusing, but rarely recognize when it works perfectly.
+- **WebAR**: AR experiences without requiring app downloads
+- **Virtual showrooms**: 3D product demonstrations and virtual tours
+- **Spatial interfaces**: Designing for three-dimensional space
+- **Mixed reality navigation**: Combining the physical and digital worlds
 
-By focusing on user needs, reducing friction, maintaining consistency, and learning from observation, anyone involved in product development can contribute to better user experiences.`,
-      coverImage: "https://images.unsplash.com/photo-1561070791-2526d30994b5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2664&q=80",
-      tags: ["UI/UX", "design principles", "web design", "product development"],
-      published: "true",
-    },
-    {
-      title: "The Strategic Value of Custom Web Development for Growing Businesses",
-      slug: "custom-web-development-value",
-      excerpt: "Explore how custom web development delivers long-term business value beyond off-the-shelf solutions, enabling scalability, competitive differentiation, and better customer experiences.",
-      content: `
-# The Strategic Value of Custom Web Development for Growing Businesses
+## 3. Adaptive and Predictive UX
 
-In a digital landscape crowded with templated websites and SaaS platforms, growing businesses face critical decisions about their web presence. While off-the-shelf solutions offer quick deployment and lower upfront costs, custom web development provides strategic advantages that can deliver superior long-term value. This article explores when and why businesses should consider custom development as a strategic investment.
+Using AI to personalize and anticipate user needs:
 
-## Beyond Templates: When Custom Development Makes Business Sense
+- **Predictive interfaces**: Anticipating user actions before they occur
+- **Adaptive content**: Content that changes based on user behavior and preferences
+- **Smart forms**: Forms that adjust based on user inputs
+- **Contextual experiences**: Interfaces that adapt to location, time, and user context
 
-Custom web development isn't necessary for every business, but certain scenarios make it particularly valuable:
+## 4. Advanced Micro-interactions
 
-### Complex Business Processes
+Small animations and feedback mechanisms that enhance usability:
 
-When your business operates with unique workflows or specialized processes:
+- **State communication**: Clearly indicating system status
+- **Guided actions**: Subtle hints about available interactions
+- **Playful feedback**: Making routine tasks more engaging
+- **Emotional design**: Creating moments of delight
 
-- **Integration Capabilities**: Custom solutions can seamlessly connect with existing business systems
-- **Process Optimization**: Digital workflows can be designed to match your exact business procedures
-- **Automation Opportunities**: Repetitive tasks specific to your business can be automated
+## 5. Ethical and Inclusive Design
 
-These benefits are difficult to achieve with generic solutions that assume standardized operations.
+Designing with consideration for all users and ethical implications:
 
-### Competitive Differentiation
+- **Accessibility by default**: Building inclusivity into every aspect of design
+- **Privacy-conscious UX**: Transparent data practices and user control
+- **Reducing cognitive load**: Simplifying complex interactions
+- **Cultural inclusivity**: Designing for global audiences
 
-In crowded markets, your digital presence is increasingly part of your competitive advantage:
+## 6. Biometric Integration
 
-- **Unique User Experiences**: Create interactions that align precisely with your brand and value proposition
-- **Proprietary Features**: Build functionality that supports your specific competitive advantages
-- **Brand Expression**: Implement design that truly represents your brand rather than conforming to templates
+Using biometric data to enhance user experiences:
 
-Custom development allows you to extend your differentiation strategy into the digital realm rather than forcing digital conformity.
+- **Facial recognition**: For personalization and authentication
+- **Emotion detection**: Adapting content based on user emotions
+- **Gesture controls**: Intuitive interactions without clicks
+- **Health-aware designs**: Interfaces that adapt to user wellness
 
-## The Business Value Proposition of Custom Development
+## 7. Zero UI and Invisible Interfaces
 
-Beyond addressing specific scenarios, custom development creates tangible business value:
+Moving beyond traditional visual interfaces:
 
-### Enhanced Customer Experience
+- **Ambient computing**: Technology that works in the background
+- **Seamless integrations**: Services that connect without visible interfaces
+- **IoT interactions**: Web experiences that connect with physical devices
+- **Friction-free automation**: Reducing steps needed to complete tasks
 
-Customer experience has become a primary competitive differentiator:
+The future of UX design is focused on creating more natural, intuitive, and human-centered experiences. By embracing these trends, designers can create web experiences that not only meet current user expectations but also adapt to the rapidly changing technological landscape.
+    `,
+    excerpt: "Explore the cutting-edge UX design trends that are transforming the web, from voice interfaces and AR to ethical design principles and biometric integration.",
+    coverImage: "https://images.unsplash.com/photo-1586717791821-3f44a563fa4c?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=600",
+    tags: ["UX Design", "Trends", "User Experience"],
+    published: "true"
+  },
+  {
+    title: "The Impact of AI on Web Development",
+    slug: "impact-ai-web-development",
+    content: `
+# The Impact of AI on Web Development
 
-- **Streamlined Journeys**: Design user flows specifically optimized for your customer needs
-- **Reduced Friction**: Eliminate unnecessary steps or information required from users
-- **Personalization Capabilities**: Build systems that recognize and respond to individual user preferences
+Artificial Intelligence (AI) is revolutionizing web development, transforming how websites are designed, built, and maintained. From automated coding to intelligent user experiences, AI is reshaping the web development landscape. Here's how AI is making an impact and what developers should know to stay ahead.
 
-## Conclusion
+## Code Generation and Automation
 
-For growing businesses with unique processes, differentiation needs, or scalability concerns, custom web development represents a strategic investment rather than merely a technical expense. By creating digital assets that precisely align with business goals and customer needs, custom development can deliver superior long-term value despite higher initial costs.`,
-      coverImage: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2670&q=80",
-      tags: ["web development", "custom development", "business strategy", "digital transformation"],
-      published: "true",
-    }
-  ];
+AI is streamlining the coding process:
 
-  // Add projects mutation
-  const addProjectsMutation = useMutation({
-    mutationFn: async () => {
-      setIsAddingProjects(true);
-      
+- **AI code assistants**: Tools like GitHub Copilot and ChatGPT that generate code based on natural language descriptions
+- **Automated debugging**: AI systems that can identify and fix bugs
+- **Code optimization**: Algorithms that improve performance and efficiency
+- **Low-code/no-code platforms**: AI-powered platforms that enable development without traditional coding
+
+## Intelligent Design Systems
+
+AI is changing how we approach web design:
+
+- **Automated design generation**: Creating layouts based on content and brand guidelines
+- **Design adaptation**: Automatically adjusting designs for different devices and contexts
+- **A/B testing automation**: Intelligently testing and optimizing design variations
+- **Accessibility improvements**: Automatically enhancing designs for better accessibility
+
+## Personalized User Experiences
+
+AI enables deeper personalization:
+
+- **Dynamic content**: Content that adapts based on user preferences and behavior
+- **Recommendation engines**: Suggesting relevant content and products
+- **Behavior prediction**: Anticipating user needs and actions
+- **Contextual interfaces**: Adapting the interface based on user context
+
+## Natural Language Processing (NLP)
+
+NLP is enhancing how users interact with websites:
+
+- **Advanced search capabilities**: Understanding complex queries and intent
+- **Chatbots and virtual assistants**: More natural and helpful conversational interfaces
+- **Content generation**: AI-written content that adapts to user interests
+- **Sentiment analysis**: Understanding user feedback and emotions
+
+## Intelligent Testing and Quality Assurance
+
+AI is improving how we test web applications:
+
+- **Automated testing**: Generating test cases and executing them without human intervention
+- **Visual regression testing**: Detecting visual UI issues automatically
+- **Performance optimization**: Identifying and resolving performance bottlenecks
+- **Security vulnerability detection**: Finding potential security issues before they're exploited
+
+## DevOps and Infrastructure
+
+AI is optimizing how we deploy and maintain web applications:
+
+- **Predictive maintenance**: Anticipating server issues before they cause problems
+- **Intelligent scaling**: Automatically adjusting resources based on predicted demand
+- **Anomaly detection**: Identifying unusual patterns that might indicate problems
+- **Automated deployment optimization**: Finding the best deployment strategies
+
+## Ethical Considerations and Challenges
+
+The rise of AI in web development brings important considerations:
+
+- **Bias in AI systems**: Ensuring AI doesn't perpetuate existing biases
+- **Privacy concerns**: Balancing personalization with user privacy
+- **Transparency**: Making AI decision-making processes understandable
+- **Job transformation**: Changing roles for web developers
+
+## Preparing for an AI-Enhanced Future
+
+To stay relevant in this evolving landscape:
+
+- **Develop AI literacy**: Understand how AI works and its capabilities
+- **Focus on creative and strategic skills**: Areas where humans still excel
+- **Learn to collaborate with AI**: Use AI as a tool to enhance your work
+- **Stay adaptable**: Be ready to learn new skills as the field evolves
+
+AI is not replacing web developers but transforming how they work. By embracing these changes and developing complementary skills, developers can leverage AI to create more sophisticated, user-friendly, and efficient web experiences than ever before.
+    `,
+    excerpt: "Discover how artificial intelligence is transforming web development, from automated coding and design to personalized user experiences and intelligent testing.",
+    coverImage: "https://images.unsplash.com/photo-1677442135167-8d9d6b84be79?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=600",
+    tags: ["AI", "Web Development", "Technology"],
+    published: "true"
+  },
+  {
+    title: "Building Accessible Websites: A Comprehensive Guide",
+    slug: "building-accessible-websites-comprehensive-guide",
+    content: `
+# Building Accessible Websites: A Comprehensive Guide
+
+Web accessibility is about creating websites that can be used by everyone, including people with disabilities. It's not just a legal requirement in many countries—it's a fundamental aspect of good web design that benefits all users. This comprehensive guide will help you understand and implement accessibility best practices in your websites.
+
+## Understanding Web Accessibility
+
+Accessibility encompasses a wide range of considerations:
+
+- **Visual impairments**: From low vision to complete blindness
+- **Hearing impairments**: From difficulty hearing to complete deafness
+- **Motor disabilities**: Affecting the ability to use a mouse or keyboard
+- **Cognitive disabilities**: Affecting comprehension and focus
+
+## WCAG Guidelines: The Foundation of Accessibility
+
+The Web Content Accessibility Guidelines (WCAG) provide the standards for accessibility:
+
+- **Perceivable**: Information must be presentable to users in ways they can perceive
+- **Operable**: User interface components must be operable by a variety of methods
+- **Understandable**: Information and operation must be understandable
+- **Robust**: Content must be robust enough to work with current and future technologies
+
+## Semantic HTML: The Building Blocks
+
+Proper HTML structure is the foundation of accessibility:
+
+- **Use appropriate elements**: \`<button>\` for buttons, \`<a>\` for links, etc.
+- **Heading structure**: Use \`<h1>\` through \`<h6>\` correctly for document outline
+- **Lists**: Use \`<ul>\`, \`<ol>\`, and \`<dl>\` for proper list structures
+- **Tables**: Use \`<th>\`, \`<caption>\`, and other table elements correctly
+- **Forms**: Label fields properly and provide clear error messages
+
+## Focus Management
+
+Ensure keyboard navigation works smoothly:
+
+- **Logical tab order**: Interactive elements should be accessible in a logical sequence
+- **Focus styles**: Make focus indicators visible and clear
+- **Skip links**: Allow users to bypass repetitive navigation
+- **Managing focus in SPAs**: Ensure focus is managed when content changes
+
+## Visual Design Considerations
+
+Design with accessibility in mind:
+
+- **Color contrast**: Ensure sufficient contrast between text and background
+- **Don't rely solely on color**: Use additional indicators like icons or patterns
+- **Text sizing**: Allow text to be resized without breaking layouts
+- **Responsive design**: Ensure accessibility across all screen sizes
+- **Dark mode**: Implement properly for users sensitive to bright screens
+
+## Images and Media
+
+Make multimedia content accessible:
+
+- **Alt text**: Provide descriptive alternative text for images
+- **Captions and transcripts**: For audio and video content
+- **Audio descriptions**: Describe visual content for blind users
+- **Avoid auto-playing**: Give users control over media playback
+- **Avoid flashing content**: Prevent seizure risks
+
+## ARIA When Necessary
+
+Accessible Rich Internet Applications (ARIA) enhances accessibility:
+
+- **Use native HTML when possible**: Only use ARIA when HTML alone is insufficient
+- **Landmarks**: Mark regions of the page with appropriate roles
+- **State information**: Communicate the state of interactive elements
+- **Live regions**: Announce dynamic content changes
+- **Common ARIA patterns**: Follow established patterns for complex widgets
+
+## Testing for Accessibility
+
+Regular testing is essential:
+
+- **Automated testing**: Tools like Lighthouse, Axe, and WAVE
+- **Manual testing**: Keyboard navigation, screen reader testing
+- **User testing**: Get feedback from users with disabilities
+- **Accessibility audits**: Regular comprehensive reviews
+- **Browser extensions**: Tools to check specific aspects of accessibility
+
+## Organizational Approach
+
+Embed accessibility into your development process:
+
+- **Start early**: Consider accessibility from the design phase
+- **Educate your team**: Ensure everyone understands accessibility principles
+- **Design system integration**: Build accessibility into your components
+- **Documentation**: Create accessibility guidelines specific to your organization
+- **Continuous improvement**: Regularly review and enhance accessibility
+
+Building accessible websites is an ongoing process, not a one-time task. By incorporating these practices into your development workflow, you'll create websites that are more usable for everyone while meeting legal requirements and improving SEO and user experience for all users.
+    `,
+    excerpt: "Learn how to create websites that are accessible to all users, including those with disabilities, with this in-depth guide to web accessibility principles and practices.",
+    coverImage: "https://images.unsplash.com/photo-1592771121889-0a4e8b81de2d?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=600",
+    tags: ["Accessibility", "Web Development", "Inclusive Design"],
+    published: "true"
+  },
+  {
+    title: "Typography in Web Design: Principles and Best Practices",
+    slug: "typography-web-design-principles-best-practices",
+    content: `
+# Typography in Web Design: Principles and Best Practices
+
+Typography is one of the most powerful tools in a web designer's arsenal. It's not just about choosing attractive fonts—it's about creating hierarchy, improving readability, establishing brand identity, and enhancing user experience. This guide explores the essential principles and best practices for typography in web design.
+
+## Fundamentals of Web Typography
+
+Understanding the building blocks:
+
+- **Font families**: Serif, sans-serif, monospace, display, and script
+- **Type anatomy**: Baseline, x-height, cap height, ascenders, and descenders
+- **Font weight**: From thin (100) to black (900)
+- **Font style**: Regular, italic, oblique
+- **Line height**: The space between lines of text
+- **Letter spacing**: Adjusting the space between characters
+- **Word spacing**: Controlling the space between words
+
+## Choosing Fonts for the Web
+
+Strategic font selection:
+
+- **Web safe fonts**: Fonts that are widely available across operating systems
+- **Web fonts**: Custom fonts loaded from services like Google Fonts, Adobe Fonts
+- **Variable fonts**: Single font files that offer multiple variations
+- **Font loading**: Strategies to optimize performance
+- **Font pairing**: Combining fonts that complement each other
+
+## Creating Typographic Hierarchy
+
+Guiding users through content:
+
+- **Size contrast**: Differentiating elements through font size
+- **Weight contrast**: Using bold or light weights to create emphasis
+- **Style contrast**: Combining different styles within a font family
+- **Color contrast**: Using color to create distinction
+- **Spacing**: Using white space to separate hierarchical elements
+
+## Responsive Typography
+
+Adapting type for all screen sizes:
+
+- **Fluid typography**: Scaling text size based on viewport width
+- **Minimum and maximum sizes**: Setting boundaries for text scaling
+- **Breakpoints**: Adjusting typography at specific screen sizes
+- **Line length control**: Maintaining optimal characters per line
+- **Vertical rhythm**: Consistent spacing between elements
+
+## Readability and Legibility
+
+Making content easy to read:
+
+- **Font size**: Appropriately sized text for different content types
+- **Line height**: Proper spacing between lines (generally 1.5-2 times the font size)
+- **Line length**: Keeping lines to 45-75 characters for optimal reading
+- **Paragraph spacing**: Clear distinction between blocks of text
+- **Contrast**: Sufficient contrast between text and background
+- **Font weight**: Appropriate weight for body text vs. headings
+
+## Typographic Details
+
+Refining your typography:
+
+- **Proper punctuation**: Using the right quotes, dashes, and other punctuation
+- **Widows and orphans**: Avoiding single words on lines of their own
+- **Hyphenation**: Strategic use of hyphenation for more even text blocks
+- **Kerning**: Adjusting space between specific character pairs
+- **Small caps and alternates**: Using special characters appropriately
+- **Ligatures**: Special combined characters for better appearance
+
+## Performance Considerations
+
+Balancing aesthetics and speed:
+
+- **Font subsetting**: Including only the characters you need
+- **Font formats**: Using modern formats like WOFF2
+- **Font loading strategies**: Font display properties and loading techniques
+- **System font stacks**: Using default system fonts for better performance
+- **Limiting font weights**: Using only the weights you need
+
+## Typography for Branding
+
+Building brand identity through type:
+
+- **Consistent usage**: Maintaining typographic consistency across platforms
+- **Custom fonts**: When to invest in custom typography
+- **Typographic voice**: Choosing fonts that reflect brand personality
+- **Fallback strategies**: Ensuring brand integrity when custom fonts fail
+- **Typographic signatures**: Creating recognizable textual brand elements
+
+## Accessibility in Typography
+
+Making type accessible to all:
+
+- **Text scaling**: Ensuring text can be resized by users
+- **Font choices for readability**: Selecting fonts that are clear for all users
+- **Contrast ratios**: Meeting WCAG guidelines for text contrast
+- **Line spacing**: Providing sufficient spacing for users with reading difficulties
+- **Text alternatives**: Ensuring decorative text has proper alternatives
+
+By applying these principles and best practices, you'll create more effective, readable, and beautiful web typography. Remember that typography is both an art and a science—it requires both aesthetic sensibility and technical knowledge to implement effectively on the web.
+    `,
+    excerpt: "Master the art and science of web typography with this guide to choosing fonts, creating hierarchy, improving readability, and enhancing user experience through effective text design.",
+    coverImage: "https://images.unsplash.com/photo-1563212034-a3c52118cce2?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=600",
+    tags: ["Typography", "Design", "Web Design"],
+    published: "true"
+  }
+];
+
+// Main component
+export const DataSeeder: React.FC = () => {
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+  const [projectsLoading, setProjectsLoading] = useState(false);
+  const [projectsSuccess, setProjectsSuccess] = useState(false);
+  const [blogLoading, setBlogLoading] = useState(false);
+  const [blogSuccess, setBlogSuccess] = useState(false);
+
+  // Add all project templates
+  const addProjectTemplates = async () => {
+    try {
+      setProjectsLoading(true);
+      setProjectsSuccess(false);
+
       // Add each project sequentially
       for (const project of projectTemplates) {
-        await apiRequest({
-          url: "/api/projects",
-          method: "POST",
-          body: JSON.stringify(project)
+        await apiRequest('/api/projects', {
+          method: 'POST',
+          body: JSON.stringify(project),
         });
       }
-      
-      return true;
-    },
-    onSuccess: () => {
-      toast({
-        title: "Success",
-        description: "Projects added successfully",
-      });
-      setProjectsAdded(true);
-      setIsAddingProjects(false);
-      queryClient.invalidateQueries({ queryKey: ['/api/projects'] });
-    },
-    onError: (error: any) => {
-      toast({
-        title: "Error",
-        description: `Failed to add projects: ${error.message}`,
-        variant: "destructive",
-      });
-      setIsAddingProjects(false);
-    }
-  });
 
-  // Add blog posts mutation
-  const addBlogPostsMutation = useMutation({
-    mutationFn: async () => {
-      setIsAddingBlogs(true);
+      // Invalidate projects cache to refresh the UI
+      queryClient.invalidateQueries({ queryKey: ['/api/projects'] });
       
-      // Add each blog post sequentially
-      for (const blog of blogPosts) {
-        await apiRequest({
-          url: "/api/blog",
-          method: "POST",
-          body: JSON.stringify(blog)
-        });
-      }
-      
-      return true;
-    },
-    onSuccess: () => {
+      setProjectsSuccess(true);
       toast({
-        title: "Success",
-        description: "Blog posts added successfully",
+        title: "Success!",
+        description: `Added ${projectTemplates.length} project templates to your portfolio.`,
+        variant: "default",
       });
-      setBlogsAdded(true);
-      setIsAddingBlogs(false);
-      queryClient.invalidateQueries({ queryKey: ['/api/blog'] });
-    },
-    onError: (error: any) => {
+    } catch (error) {
+      console.error("Error adding project templates:", error);
       toast({
         title: "Error",
-        description: `Failed to add blog posts: ${error.message}`,
+        description: "Failed to add project templates. Please try again.",
         variant: "destructive",
       });
-      setIsAddingBlogs(false);
+    } finally {
+      setProjectsLoading(false);
     }
-  });
+  };
+
+  // Add all blog posts
+  const addBlogPosts = async () => {
+    try {
+      setBlogLoading(true);
+      setBlogSuccess(false);
+
+      // Add each blog post sequentially
+      for (const post of blogPosts) {
+        await apiRequest('/api/blog', {
+          method: 'POST',
+          body: JSON.stringify(post),
+        });
+      }
+
+      // Invalidate blog posts cache to refresh the UI
+      queryClient.invalidateQueries({ queryKey: ['/api/blog'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/blog/published'] });
+      
+      setBlogSuccess(true);
+      toast({
+        title: "Success!",
+        description: `Added ${blogPosts.length} blog posts to your website.`,
+        variant: "default",
+      });
+    } catch (error) {
+      console.error("Error adding blog posts:", error);
+      toast({
+        title: "Error",
+        description: "Failed to add blog posts. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setBlogLoading(false);
+    }
+  };
 
   return (
-    <Card className="border-gray-800 bg-gray-900">
-      <CardHeader>
-        <CardTitle className="text-xl font-semibold text-white flex items-center">
-          <Database className="mr-2 h-5 w-5 text-cyan-400" /> 
-          Data Management Tools
-        </CardTitle>
-        <CardDescription className="text-gray-400">
-          Add demo data to your portfolio website
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-6">
-        <div className="bg-gray-800/50 p-4 rounded-lg border border-gray-700">
-          <div className="flex justify-between items-center mb-4">
-            <div>
-              <h3 className="text-lg font-medium text-white">Project Templates</h3>
-              <p className="text-sm text-gray-400">Add 5 website template projects to your portfolio</p>
+    <div className="space-y-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Project Templates Seeder */}
+        <Card className="p-6 bg-gradient-to-br from-gray-900 to-gray-800 border-gray-700">
+          <div className="flex items-center mb-4">
+            <div className="p-2 bg-blue-500/20 rounded mr-3">
+              <Folders className="h-5 w-5 text-blue-400" />
             </div>
-            <div>
-              {projectsAdded ? (
-                <div className="flex items-center text-green-400">
-                  <CheckCircle2 className="h-5 w-5 mr-2" />
-                  <span>Added</span>
-                </div>
-              ) : (
-                <Button 
-                  onClick={() => addProjectsMutation.mutate()}
-                  disabled={isAddingProjects || projectsAdded}
-                  className="bg-cyan-600 hover:bg-cyan-700"
-                >
-                  {isAddingProjects ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Adding...
-                    </>
-                  ) : "Add Projects"}
-                </Button>
-              )}
+            <h3 className="text-xl font-medium text-white">Project Templates</h3>
+          </div>
+          
+          <p className="text-gray-300 mb-5">
+            Add 5 professional project templates to your portfolio website. Templates include designs for tailors, photographers, hairdressers, freelancers, and personal websites.
+          </p>
+          
+          <div className="mb-6 space-y-3">
+            <div className="flex flex-wrap gap-2">
+              {projectTemplates.map((project, index) => (
+                <Badge key={index} className="bg-blue-500/20 text-blue-300 border-blue-500">
+                  {project.title.split(' ')[0]}
+                </Badge>
+              ))}
             </div>
           </div>
-          <div className="text-xs text-gray-400">
-            <p>Includes templates for: Tailor, Photographer, Hairdresser, Freelancer and Personal websites</p>
+          
+          <Button 
+            className="w-full font-medium bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white"
+            onClick={addProjectTemplates}
+            disabled={projectsLoading || projectsSuccess}
+          >
+            {projectsLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            {projectsSuccess && <CheckCircle className="mr-2 h-4 w-4" />}
+            {projectsSuccess 
+              ? "Projects Added Successfully" 
+              : projectsLoading 
+                ? "Adding Project Templates..." 
+                : "Add Project Templates"}
+          </Button>
+        </Card>
+
+        {/* Blog Posts Seeder */}
+        <Card className="p-6 bg-gradient-to-br from-gray-900 to-gray-800 border-gray-700">
+          <div className="flex items-center mb-4">
+            <div className="p-2 bg-cyan-500/20 rounded mr-3">
+              <FileText className="h-5 w-5 text-cyan-400" />
+            </div>
+            <h3 className="text-xl font-medium text-white">Blog Posts</h3>
           </div>
+          
+          <p className="text-gray-300 mb-5">
+            Add 6 professionally written blog posts about web design, performance optimization, UX trends, AI in web development, accessibility, and typography.
+          </p>
+          
+          <div className="mb-6 space-y-3">
+            <div className="flex flex-wrap gap-2">
+              {blogPosts.map((post, index) => (
+                <Badge key={index} className="bg-cyan-500/20 text-cyan-300 border-cyan-500">
+                  {post.tags[0]}
+                </Badge>
+              ))}
+            </div>
+          </div>
+          
+          <Button 
+            className="w-full font-medium bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-600 hover:to-cyan-700 text-white"
+            onClick={addBlogPosts}
+            disabled={blogLoading || blogSuccess}
+          >
+            {blogLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            {blogSuccess && <CheckCircle className="mr-2 h-4 w-4" />}
+            {blogSuccess 
+              ? "Blog Posts Added Successfully" 
+              : blogLoading 
+                ? "Adding Blog Posts..." 
+                : "Add Blog Posts"}
+          </Button>
+        </Card>
+      </div>
+
+      {/* Reset Database Button */}
+      <Card className="p-5 bg-gradient-to-br from-gray-900 to-gray-800 border-gray-700">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center">
+            <div className="p-2 bg-purple-500/20 rounded mr-3">
+              <Database className="h-5 w-5 text-purple-400" />
+            </div>
+            <div>
+              <h3 className="text-lg font-medium text-white">Database Tools</h3>
+              <p className="text-gray-300 text-sm">Reset or refresh your database to fix issues.</p>
+            </div>
+          </div>
+          
+          <Button 
+            variant="outline" 
+            className="border-gray-700 hover:bg-gray-800 text-gray-300 flex items-center gap-2"
+            onClick={() => {
+              // Invalidate all queries to force a refresh
+              queryClient.invalidateQueries();
+              toast({
+                title: "Cache Refreshed",
+                description: "All data has been refreshed from the database.",
+                variant: "default",
+              });
+            }}
+          >
+            <RefreshCw className="h-4 w-4" />
+            Refresh Data
+          </Button>
         </div>
-        
-        <div className="bg-gray-800/50 p-4 rounded-lg border border-gray-700">
-          <div className="flex justify-between items-center mb-4">
-            <div>
-              <h3 className="text-lg font-medium text-white">Blog Content</h3>
-              <p className="text-sm text-gray-400">Add 6 professional blog posts to your website</p>
-            </div>
-            <div>
-              {blogsAdded ? (
-                <div className="flex items-center text-green-400">
-                  <CheckCircle2 className="h-5 w-5 mr-2" />
-                  <span>Added</span>
-                </div>
-              ) : (
-                <Button 
-                  onClick={() => addBlogPostsMutation.mutate()}
-                  disabled={isAddingBlogs || blogsAdded}
-                  className="bg-purple-600 hover:bg-purple-700"
-                >
-                  {isAddingBlogs ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Adding...
-                    </>
-                  ) : "Add Blog Posts"}
-                </Button>
-              )}
-            </div>
-          </div>
-          <div className="text-xs text-gray-400">
-            <p>Topics include: Web Design, E-commerce, Headless CMS, Website Performance, UI/UX Principles, and Custom Development</p>
-          </div>
-        </div>
-      </CardContent>
-    </Card>
+      </Card>
+    </div>
   );
-}
+};
+
+export default DataSeeder;

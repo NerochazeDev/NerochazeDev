@@ -155,7 +155,7 @@ export function SkillsManagement() {
   // Delete skill mutation
   const deleteSkillMutation = useMutation({
     mutationFn: async (id: number) => {
-      return await apiRequest<void>(`/api/skills/${id}`, {
+      return await apiRequest(`/api/skills/${id}`, {
         method: 'DELETE',
       });
     },

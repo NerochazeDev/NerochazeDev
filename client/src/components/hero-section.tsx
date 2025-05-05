@@ -21,7 +21,7 @@ const HeroSection = () => {
   });
   
   // Fetch hero section data
-  const { data: heroData, isLoading } = useQuery({
+  const { data: heroData, isLoading: heroLoading } = useQuery({
     queryKey: ['/api/website-info/hero'],
     queryFn: async () => {
       const response = await fetch('/api/website-info/hero');
@@ -34,6 +34,22 @@ const HeroSection = () => {
     refetchOnMount: true,
     refetchOnWindowFocus: true
   });
+  
+  // Fetch social links data
+  const { data: socialLinksData, isLoading: socialLinksLoading } = useQuery({
+    queryKey: ['/api/social-links'],
+    queryFn: async () => {
+      const response = await fetch('/api/social-links');
+      const data = await response.json();
+      if (!data.success) {
+        throw new Error(data.message || "Failed to fetch social links");
+      }
+      return data.data;
+    }
+  });
+  
+  // Combined loading state
+  const isLoading = heroLoading || socialLinksLoading;
   
   // Update hero content when data is loaded
   useEffect(() => {
@@ -52,12 +68,40 @@ const HeroSection = () => {
     }
   }, [heroData]);
   
-  const socialLinks = [
-    { icon: <FaGithub className="text-2xl" />, href: "https://github.com/nerochaze", label: "GitHub" },
-    { icon: <FaLinkedin className="text-2xl" />, href: "https://linkedin.com/in/nerochaze", label: "LinkedIn" },
-    { icon: <FaTwitter className="text-2xl" />, href: "https://twitter.com/nerochaze", label: "Twitter" },
-    { icon: <FaCodepen className="text-2xl" />, href: "https://codepen.io/nerochaze", label: "CodePen" },
+  // Map platform names to react icons
+  const getIconForPlatform = (platform: string) => {
+    switch (platform.toLowerCase()) {
+      case 'github':
+        return <FaGithub className="text-2xl" />;
+      case 'linkedin':
+        return <FaLinkedin className="text-2xl" />;
+      case 'twitter':
+        return <FaTwitter className="text-2xl" />;
+      case 'codepen':
+        return <FaCodepen className="text-2xl" />;
+      default:
+        return <FaGithub className="text-2xl" />;
+    }
+  };
+  
+  // Default social links in case API fails or returns empty array
+  const defaultSocialLinks = [
+    { icon: <FaGithub className="text-2xl" />, href: "https://github.com", label: "GitHub" },
+    { icon: <FaLinkedin className="text-2xl" />, href: "https://linkedin.com", label: "LinkedIn" },
+    { icon: <FaTwitter className="text-2xl" />, href: "https://twitter.com", label: "Twitter" },
+    { icon: <FaCodepen className="text-2xl" />, href: "https://codepen.io", label: "CodePen" },
   ];
+  
+  // Transform API data into the format we need, or use defaults if no data
+  const socialLinks = socialLinksData && socialLinksData.length > 0
+    ? socialLinksData
+        .filter((link: any) => link.isActive === "true") // Only active links
+        .map((link: any) => ({
+          icon: getIconForPlatform(link.platform),
+          href: link.url,
+          label: link.platform.charAt(0).toUpperCase() + link.platform.slice(1) // Capitalize platform name
+        }))
+    : defaultSocialLinks;
   
   return (
     <section id="home" className="min-h-screen flex items-center py-20 bg-gradient-to-b from-gray-900 to-gray-950 text-white">

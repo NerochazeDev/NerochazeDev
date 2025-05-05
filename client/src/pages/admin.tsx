@@ -231,7 +231,7 @@ export default function AdminPage() {
         </div>
         
         {/* Mobile navigation - only visible on small screens */}
-        <div className="md:hidden w-full sticky top-0 z-10 bg-gray-900 border-b border-gray-800">
+        <div className="md:hidden w-full fixed top-0 left-0 right-0 z-50 bg-gray-900/95 backdrop-blur-md border-b border-gray-800 shadow-lg">
           <div className="p-3 border-b border-gray-800 flex items-center justify-between">
             <div>
               <h1 className="text-lg font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-500">Admin Portal</h1>
@@ -239,110 +239,110 @@ export default function AdminPage() {
             <Badge className="bg-green-500/20 text-green-400 text-xs border-green-600">Secured</Badge>
           </div>
           
-          {/* Mobile menu - scrollable horizontally */}
-          <div className="overflow-x-auto">
-            <div className="flex p-2 pb-1 space-x-2 min-w-max">
+          {/* Mobile menu - scrollable horizontally with improved touch target sizes */}
+          <div className="overflow-x-auto scrollbar-hide">
+            <div className="flex p-2 pb-1 space-x-1 min-w-max">
               <button
                 onClick={() => setActiveTab("dashboard")}
-                className={`flex flex-col items-center px-4 py-2 rounded-md transition-colors ${
+                className={`flex flex-col items-center px-3 py-2 rounded-md transition-colors ${
                   activeTab === "dashboard" 
                     ? "bg-cyan-500/20 text-cyan-400" 
                     : "text-gray-400 hover:bg-gray-800 hover:text-gray-300"
                 }`}
               >
                 <LayoutDashboard className="h-5 w-5 mb-1" />
-                <span className="text-xs whitespace-nowrap">Dashboard</span>
+                <span className="text-[10px] whitespace-nowrap">Dashboard</span>
               </button>
               
               <button
                 onClick={() => setActiveTab("content")}
-                className={`flex flex-col items-center px-4 py-2 rounded-md transition-colors ${
+                className={`flex flex-col items-center px-3 py-2 rounded-md transition-colors ${
                   activeTab === "content" 
                     ? "bg-cyan-500/20 text-cyan-400" 
                     : "text-gray-400 hover:bg-gray-800 hover:text-gray-300"
                 }`}
               >
                 <InfoIcon className="h-5 w-5 mb-1" />
-                <span className="text-xs whitespace-nowrap">Content</span>
+                <span className="text-[10px] whitespace-nowrap">Content</span>
               </button>
               
               <button
                 onClick={() => setActiveTab("projects")}
-                className={`flex flex-col items-center px-4 py-2 rounded-md transition-colors ${
+                className={`flex flex-col items-center px-3 py-2 rounded-md transition-colors ${
                   activeTab === "projects" 
                     ? "bg-cyan-500/20 text-cyan-400" 
                     : "text-gray-400 hover:bg-gray-800 hover:text-gray-300"
                 }`}
               >
                 <Folders className="h-5 w-5 mb-1" />
-                <span className="text-xs whitespace-nowrap">Projects</span>
+                <span className="text-[10px] whitespace-nowrap">Projects</span>
               </button>
               
               <button
                 onClick={() => setActiveTab("blog")}
-                className={`flex flex-col items-center px-4 py-2 rounded-md transition-colors ${
+                className={`flex flex-col items-center px-3 py-2 rounded-md transition-colors ${
                   activeTab === "blog" 
                     ? "bg-cyan-500/20 text-cyan-400" 
                     : "text-gray-400 hover:bg-gray-800 hover:text-gray-300"
                 }`}
               >
                 <FileText className="h-5 w-5 mb-1" />
-                <span className="text-xs whitespace-nowrap">Blog</span>
+                <span className="text-[10px] whitespace-nowrap">Blog</span>
               </button>
               
               <button
                 onClick={() => setActiveTab("skills")}
-                className={`flex flex-col items-center px-4 py-2 rounded-md transition-colors ${
+                className={`flex flex-col items-center px-3 py-2 rounded-md transition-colors ${
                   activeTab === "skills" 
                     ? "bg-cyan-500/20 text-cyan-400" 
                     : "text-gray-400 hover:bg-gray-800 hover:text-gray-300"
                 }`}
               >
                 <ListChecks className="h-5 w-5 mb-1" />
-                <span className="text-xs whitespace-nowrap">Skills</span>
+                <span className="text-[10px] whitespace-nowrap">Skills</span>
               </button>
               
               <button
                 onClick={() => setActiveTab("social")}
-                className={`flex flex-col items-center px-4 py-2 rounded-md transition-colors ${
+                className={`flex flex-col items-center px-3 py-2 rounded-md transition-colors ${
                   activeTab === "social" 
                     ? "bg-cyan-500/20 text-cyan-400" 
                     : "text-gray-400 hover:bg-gray-800 hover:text-gray-300"
                 }`}
               >
                 <Share2 className="h-5 w-5 mb-1" />
-                <span className="text-xs whitespace-nowrap">Social</span>
+                <span className="text-[10px] whitespace-nowrap">Social</span>
               </button>
               
               <button
                 onClick={() => setActiveTab("messages")}
-                className={`flex flex-col items-center px-4 py-2 rounded-md transition-colors ${
+                className={`flex flex-col items-center px-3 py-2 rounded-md transition-colors ${
                   activeTab === "messages" 
                     ? "bg-cyan-500/20 text-cyan-400" 
                     : "text-gray-400 hover:bg-gray-800 hover:text-gray-300"
                 }`}
               >
                 <Mail className="h-5 w-5 mb-1" />
-                <span className="text-xs whitespace-nowrap">Messages</span>
+                <span className="text-[10px] whitespace-nowrap">Messages</span>
               </button>
               
               <button
                 onClick={() => setActiveTab("seeder")}
-                className={`flex flex-col items-center px-4 py-2 rounded-md transition-colors ${
+                className={`flex flex-col items-center px-3 py-2 rounded-md transition-colors ${
                   activeTab === "seeder" 
                     ? "bg-cyan-500/20 text-cyan-400" 
                     : "text-gray-400 hover:bg-gray-800 hover:text-gray-300"
                 }`}
               >
                 <Database className="h-5 w-5 mb-1" />
-                <span className="text-xs whitespace-nowrap">Data</span>
+                <span className="text-[10px] whitespace-nowrap">Data</span>
               </button>
             </div>
           </div>
         </div>
         
         {/* Main content */}
-        <div className="w-full md:ml-64 p-4 md:p-6">
+        <div className="w-full md:ml-64 p-4 md:p-6 mt-24 md:mt-0">
           {/* Page header */}
           <div className="mb-6 md:mb-8">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between">

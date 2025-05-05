@@ -1,5 +1,8 @@
 import { motion } from "framer-motion";
-import { FaGithub, FaLinkedin, FaTwitter, FaCodepen } from "react-icons/fa";
+import { 
+  FaGithub, FaLinkedin, FaTwitter, FaCodepen, FaFacebook,
+  FaInstagram, FaDribbble, FaBehance, FaMedium, FaYoutube, FaStackOverflow 
+} from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -70,7 +73,10 @@ const HeroSection = () => {
   
   // Map platform names to react icons
   const getIconForPlatform = (platform: string) => {
-    switch (platform.toLowerCase()) {
+    const platformLower = platform.toLowerCase();
+    console.log(`Getting icon for platform: ${platformLower}`);
+    
+    switch (platformLower) {
       case 'github':
         return <FaGithub className="text-2xl" />;
       case 'linkedin':
@@ -79,7 +85,22 @@ const HeroSection = () => {
         return <FaTwitter className="text-2xl" />;
       case 'codepen':
         return <FaCodepen className="text-2xl" />;
+      case 'facebook':
+        return <FaFacebook className="text-2xl" />;
+      case 'instagram':
+        return <FaInstagram className="text-2xl" />;
+      case 'dribbble':
+        return <FaDribbble className="text-2xl" />;
+      case 'behance':
+        return <FaBehance className="text-2xl" />;
+      case 'medium':
+        return <FaMedium className="text-2xl" />;
+      case 'youtube':
+        return <FaYoutube className="text-2xl" />;
+      case 'stackoverflow':
+        return <FaStackOverflow className="text-2xl" />;
       default:
+        console.warn(`No icon found for platform: ${platformLower}, using default icon`);
         return <FaGithub className="text-2xl" />;
     }
   };

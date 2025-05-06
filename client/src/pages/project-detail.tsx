@@ -271,8 +271,16 @@ export default function ProjectDetail() {
               <div className="mt-6">
                 <Button 
                   onClick={() => {
-                    // Use a different approach - use URL parameters instead of localStorage and DOM manipulation
-                    navigate(`/?quote=true&project=${encodeURIComponent(data.title)}&id=${data.id}&price=${encodeURIComponent(data.price)}#contact`);
+                    // Navigate first, then scroll to contact section after a delay to ensure component is loaded
+                    navigate(`/?quote=true&project=${encodeURIComponent(data.title)}&id=${data.id}&price=${encodeURIComponent(data.price)}`);
+                    
+                    // Allow time for navigation and contact section to load before scrolling
+                    setTimeout(() => {
+                      const contactSection = document.getElementById('contact');
+                      if (contactSection) {
+                        contactSection.scrollIntoView({ behavior: 'smooth' });
+                      }
+                    }, 500);
                   }}
                   className="w-full bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600"
                 >

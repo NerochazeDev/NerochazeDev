@@ -43,7 +43,7 @@ const ContactSection = () => {
     },
   });
   
-  // Then use the form in the effect after it's initialized
+  // Then use the form in the effect after it's initialized - only run once on mount
   useEffect(() => {
     // Get quote project from URL parameters if they exist
     const urlParams = new URLSearchParams(window.location.search);
@@ -64,9 +64,16 @@ const ContactSection = () => {
         // Pre-fill the form data with project information
         form.setValue('subject', `Quote Request: ${projectTitle}`);
         form.setValue('message', `I'm interested in getting a quote for the ${projectTitle} project (starting at ${projectPrice}). Please provide detailed pricing and timeline information.`);
+        
+        // Clean up URL parameters to avoid issues with future form submissions
+        // Create a new URL without the query parameters but maintain the hash
+        const cleanUrl = window.location.pathname + window.location.hash;
+        // Use history.replaceState to update the URL without triggering a page reload
+        window.history.replaceState({}, document.title, cleanUrl);
       }
     }
-  }, [form]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Empty dependency array means this effect runs once on mount
 
   const onSubmit = async (data: ContactFormValues) => {
     setIsSubmitting(true);

@@ -271,16 +271,9 @@ export default function ProjectDetail() {
               <div className="mt-6">
                 <Button 
                   onClick={() => {
-                    // Navigate first, then scroll to contact section after a delay to ensure component is loaded
-                    navigate(`/?quote=true&project=${encodeURIComponent(data.title)}&id=${data.id}&price=${encodeURIComponent(data.price)}`);
-                    
-                    // Allow time for navigation and contact section to load before scrolling
-                    setTimeout(() => {
-                      const contactSection = document.getElementById('contact');
-                      if (contactSection) {
-                        contactSection.scrollIntoView({ behavior: 'smooth' });
-                      }
-                    }, 500);
+                    // Use window.location.href for full page navigation with parameters
+                    // This ensures the contact component fully reinitializes with the parameters
+                    window.location.href = `/?quote=true&project=${encodeURIComponent(data.title)}&id=${data.id}&price=${encodeURIComponent(data.price)}#contact`;
                   }}
                   className="w-full bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600"
                 >

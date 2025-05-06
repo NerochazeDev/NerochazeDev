@@ -32,48 +32,60 @@ const ContactSection = () => {
   // Check if there's a quote request in URL parameters
   const [quoteProject, setQuoteProject] = useState<{id: number, title: string, price: string} | null>(null);
   
-  // Initialize the form first
+  // Check URL for quote request parameters first, before initializing the form
+  const urlParams = new URLSearchParams(window.location.search);
+  const isQuoteRequest = urlParams.get('quote') === 'true';
+  
+  // Get project details from URL if available
+  const projectTitle = urlParams.get('project');
+  const projectId = urlParams.get('id');
+  const projectPrice = urlParams.get('price');
+  
+  // Set initial form values
+  let initialSubject = "";
+  let initialMessage = "";
+  
+  if (isQuoteRequest && projectTitle && projectId && projectPrice) {
+    initialSubject = `Quote Request: ${projectTitle}`;
+    initialMessage = `I'm interested in getting a quote for the ${projectTitle} project (starting at ${projectPrice}). Please provide detailed pricing and timeline information.`;
+  }
+  
+  // Initialize the form with pre-populated values if available
   const form = useForm<ContactFormValues>({
     resolver: zodResolver(contactFormSchema),
     defaultValues: {
       name: "",
       email: "",
-      subject: "",
-      message: "",
+      subject: initialSubject,
+      message: initialMessage,
     },
   });
   
-  // Then use the form in the effect after it's initialized - only run once on mount
+  // Set quoteProject state and clean up URL parameters after component mounts
   useEffect(() => {
-    // Get quote project from URL parameters if they exist
-    const urlParams = new URLSearchParams(window.location.search);
-    const isQuoteRequest = urlParams.get('quote') === 'true';
-    
-    if (isQuoteRequest) {
-      const projectTitle = urlParams.get('project');
-      const projectId = urlParams.get('id');
-      const projectPrice = urlParams.get('price');
+    if (isQuoteRequest && projectTitle && projectId && projectPrice) {
+      // Set quoteProject for UI display (the banner notification)
+      setQuoteProject({
+        id: parseInt(projectId),
+        title: projectTitle,
+        price: projectPrice
+      });
       
-      if (projectTitle && projectId && projectPrice) {
-        setQuoteProject({
-          id: parseInt(projectId),
-          title: projectTitle,
-          price: projectPrice
-        });
-        
-        // Pre-fill the form data with project information
-        form.setValue('subject', `Quote Request: ${projectTitle}`);
-        form.setValue('message', `I'm interested in getting a quote for the ${projectTitle} project (starting at ${projectPrice}). Please provide detailed pricing and timeline information.`);
-        
-        // Clean up URL parameters to avoid issues with future form submissions
-        // Create a new URL without the query parameters but maintain the hash
-        const cleanUrl = window.location.pathname + window.location.hash;
-        // Use history.replaceState to update the URL without triggering a page reload
-        window.history.replaceState({}, document.title, cleanUrl);
+      // Clean up URL parameters to avoid issues with future form submissions
+      // Create a new URL without the query parameters but maintain the hash
+      const cleanUrl = window.location.pathname + window.location.hash;
+      // Use history.replaceState to update the URL without triggering a page reload
+      window.history.replaceState({}, document.title, cleanUrl);
+      
+      // Scroll to contact section
+      const contactSection = document.getElementById('contact');
+      if (contactSection) {
+        setTimeout(() => {
+          contactSection.scrollIntoView({ behavior: 'smooth' });
+        }, 300);
       }
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // Empty dependency array means this effect runs once on mount
+  }, [isQuoteRequest, projectTitle, projectId, projectPrice]);
 
   const onSubmit = async (data: ContactFormValues) => {
     setIsSubmitting(true);

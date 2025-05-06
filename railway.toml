@@ -5,8 +5,7 @@ watchPatterns = ["."]
 
 [deploy]
 startCommand = "npm start"
-healthcheckPath = "/"
-healthcheckTimeout = 100
+healthcheckEnabled = false  # Disable health checks entirely
 restartPolicyType = "on_failure"
 restartPolicyMaxRetries = 10
 

@@ -29,8 +29,8 @@ const ContactSection = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
 
-  // Check if there's a quote request or interest in URL parameters
-  const [quoteProject, setQuoteProject] = useState<{id: number, title: string, price: string, type: 'quote' | 'interest'} | null>(null);
+  // Check if there's a quote request in URL parameters
+  const [quoteProject, setQuoteProject] = useState<{id: number, title: string, price: string} | null>(null);
   
   // Initialize the form first
   const form = useForm<ContactFormValues>({
@@ -45,12 +45,11 @@ const ContactSection = () => {
   
   // Then use the form in the effect after it's initialized - only run once on mount
   useEffect(() => {
-    // Get project parameters from URL
+    // Get quote project from URL parameters if they exist
     const urlParams = new URLSearchParams(window.location.search);
     const isQuoteRequest = urlParams.get('quote') === 'true';
-    const isInterestRequest = urlParams.get('interest') === 'true';
     
-    if (isQuoteRequest || isInterestRequest) {
+    if (isQuoteRequest) {
       const projectTitle = urlParams.get('project');
       const projectId = urlParams.get('id');
       const projectPrice = urlParams.get('price');
@@ -59,18 +58,12 @@ const ContactSection = () => {
         setQuoteProject({
           id: parseInt(projectId),
           title: projectTitle,
-          price: projectPrice,
-          type: isQuoteRequest ? 'quote' : 'interest'
+          price: projectPrice
         });
         
-        // Pre-fill the form data with project information based on request type
-        if (isQuoteRequest) {
-          form.setValue('subject', `Quote Request: ${projectTitle}`);
-          form.setValue('message', `I'm interested in getting a quote for the ${projectTitle} project (starting at ${projectPrice}). Please provide detailed pricing and timeline information.`);
-        } else {
-          form.setValue('subject', `Interest in ${projectTitle} Project`);
-          form.setValue('message', `I'd like to learn more about the ${projectTitle} project (priced at ${projectPrice}). I'm interested in this project and would appreciate more information.`);
-        }
+        // Pre-fill the form data with project information
+        form.setValue('subject', `Quote Request: ${projectTitle}`);
+        form.setValue('message', `I'm interested in getting a quote for the ${projectTitle} project (starting at ${projectPrice}). Please provide detailed pricing and timeline information.`);
         
         // Clean up URL parameters to avoid issues with future form submissions
         // Create a new URL without the query parameters but maintain the hash
@@ -176,15 +169,9 @@ const ContactSection = () => {
 
             {quoteProject && (
               <div className="mb-6 p-4 bg-cyan-500/10 border border-cyan-500/20 rounded-md text-cyan-400">
-                <h4 className="font-semibold mb-2">
-                  {quoteProject.type === 'quote' 
-                    ? `Quote Request for ${quoteProject.title}` 
-                    : `Interest in ${quoteProject.title} Project`}
-                </h4>
+                <h4 className="font-semibold mb-2">Quote Request for {quoteProject.title}</h4>
                 <p className="text-sm">
-                  {quoteProject.type === 'quote'
-                    ? "We've pre-filled some details about your quote request. Feel free to add any specific requirements or questions."
-                    : "We've pre-filled some details based on your interest in this project. Feel free to add any specific questions you have."}
+                  We've pre-filled some details about your quote request. Feel free to add any specific requirements or questions.
                 </p>
               </div>
             )}

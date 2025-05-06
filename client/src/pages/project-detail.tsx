@@ -268,7 +268,7 @@ export default function ProjectDetail() {
               <p className="mt-4 text-gray-400">
                 Contact us for custom requirements and detailed pricing options.
               </p>
-              <div className="mt-6">
+              <div className="mt-6 space-y-2">
                 <Button 
                   onClick={() => {
                     // Navigate first, then scroll to contact section after a delay to ensure component is loaded
@@ -285,6 +285,25 @@ export default function ProjectDetail() {
                   className="w-full bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600"
                 >
                   Get a Quote
+                </Button>
+
+                <Button 
+                  onClick={() => {
+                    // Navigate with interest parameters instead of quote parameters
+                    navigate(`/?interest=true&project=${encodeURIComponent(data.title)}&id=${data.id}&price=${encodeURIComponent(data.price)}`);
+                    
+                    // Allow time for navigation and contact section to load before scrolling
+                    setTimeout(() => {
+                      const contactSection = document.getElementById('contact');
+                      if (contactSection) {
+                        contactSection.scrollIntoView({ behavior: 'smooth' });
+                      }
+                    }, 500);
+                  }}
+                  variant="outline"
+                  className="w-full border-cyan-500 text-cyan-400 hover:bg-cyan-500/10"
+                >
+                  I'm Interested
                 </Button>
               </div>
             </div>

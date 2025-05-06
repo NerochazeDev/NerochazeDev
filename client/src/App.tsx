@@ -10,6 +10,7 @@ import AdminPage from "@/pages/admin";
 import BlogPage from "@/pages/blog";
 import BlogPost from "@/pages/blog-post";
 import ProjectDetail from "@/pages/project-detail";
+import Resume from "@/pages/resume";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import { ThemeProvider } from "@/contexts/theme-context";
@@ -26,6 +27,7 @@ function Router() {
         <Route path="/blog" component={BlogPage} />
         <Route path="/blog/:slug" component={BlogPost} />
         <Route path="/project/:id" component={ProjectDetail} />
+        <Route path="/resume" component={Resume} />
         <Route path="/Hello10122" component={AdminPage} /> {/* Changed from "/admin" */}
         <Route path="/admin" component={NotFound} /> {/* Redirect old admin path to 404 */}
         <Route component={NotFound} />

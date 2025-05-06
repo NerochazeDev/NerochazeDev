@@ -29,13 +29,27 @@ const ContactSection = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
 
+  // Check if there's a quote request in localStorage
+  const [quoteProject, setQuoteProject] = useState<{id: number, title: string, price: string} | null>(null);
+  
+  useEffect(() => {
+    // Get quote project from localStorage if exists
+    const storedQuoteProject = localStorage.getItem('quoteProject');
+    if (storedQuoteProject) {
+      const projectData = JSON.parse(storedQuoteProject);
+      setQuoteProject(projectData);
+      // Clear it from localStorage to avoid persistence across page refreshes
+      localStorage.removeItem('quoteProject');
+    }
+  }, []);
+
   const form = useForm<ContactFormValues>({
     resolver: zodResolver(contactFormSchema),
     defaultValues: {
       name: "",
       email: "",
-      subject: "",
-      message: "",
+      subject: quoteProject ? `Quote Request: ${quoteProject.title}` : "",
+      message: quoteProject ? `I'm interested in getting a quote for the ${quoteProject.title} project (starting at ${quoteProject.price}). Please provide detailed pricing and timeline information.` : "",
     },
   });
 
@@ -131,6 +145,15 @@ const ContactSection = () => {
           >
             <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-cyan-500/10 to-blue-500/10 rounded-bl-full"></div>
 
+            {quoteProject && (
+              <div className="mb-6 p-4 bg-cyan-500/10 border border-cyan-500/20 rounded-md text-cyan-400">
+                <h4 className="font-semibold mb-2">Quote Request for {quoteProject.title}</h4>
+                <p className="text-sm">
+                  We've pre-filled some details about your quote request. Feel free to add any specific requirements or questions.
+                </p>
+              </div>
+            )}
+            
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 relative z-10">
                 <div className="flex flex-col md:flex-row gap-4">

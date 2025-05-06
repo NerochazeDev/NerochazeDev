@@ -270,7 +270,30 @@ export default function ProjectDetail() {
               </p>
               <div className="mt-6">
                 <Button 
-                  onClick={() => navigate("/#contact")}
+                  onClick={() => {
+                    // Store the project info in localStorage to use in the contact form
+                    localStorage.setItem('quoteProject', JSON.stringify({
+                      id: data.id,
+                      title: data.title,
+                      price: data.price
+                    }));
+                    // Navigate to contact section
+                    navigate("/#contact");
+                    // Add a small delay before scrolling to ensure the page has loaded
+                    setTimeout(() => {
+                      const contactSection = document.getElementById('contact');
+                      if (contactSection) {
+                        contactSection.scrollIntoView({ behavior: 'smooth' });
+                        // Set the subject field if the form is available
+                        const subjectField = document.querySelector('input[name="subject"]') as HTMLInputElement;
+                        if (subjectField) {
+                          subjectField.value = `Quote Request: ${data.title}`;
+                          // Trigger input event to notify React Hook Form of the change
+                          subjectField.dispatchEvent(new Event('input', { bubbles: true }));
+                        }
+                      }
+                    }, 500);
+                  }}
                   className="w-full bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600"
                 >
                   Get a Quote

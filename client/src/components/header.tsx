@@ -101,14 +101,12 @@ const Header: React.FC = () => {
             );
           })}
           
-          <a
-            href="/resume.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            href="/resume"
             className="border border-cyan-400 text-cyan-400 hover:bg-cyan-400/10 px-4 py-2 rounded-md text-sm"
           >
             Resume
-          </a>
+          </Link>
           
           <div className="ml-2">
             <ThemeToggle />
@@ -165,15 +163,13 @@ const Header: React.FC = () => {
             })}
             
             <div className="pt-6 mt-4 border-t border-gray-800 space-y-4">
-              <a
-                href="/resume.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
+              <Link
+                href="/resume"
                 className="inline-block bg-gray-800 hover:bg-gray-700 border border-cyan-500/30 text-cyan-400 px-5 py-3 rounded-md text-center w-full"
                 onClick={closeMenu}
               >
-                Download Resume
-              </a>
+                View Resume
+              </Link>
               
               <div className="flex justify-center pt-2">
                 <ThemeToggle />

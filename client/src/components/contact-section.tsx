@@ -29,29 +29,44 @@ const ContactSection = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
 
-  // Check if there's a quote request in localStorage
+  // Check if there's a quote request in URL parameters
   const [quoteProject, setQuoteProject] = useState<{id: number, title: string, price: string} | null>(null);
   
-  useEffect(() => {
-    // Get quote project from localStorage if exists
-    const storedQuoteProject = localStorage.getItem('quoteProject');
-    if (storedQuoteProject) {
-      const projectData = JSON.parse(storedQuoteProject);
-      setQuoteProject(projectData);
-      // Clear it from localStorage to avoid persistence across page refreshes
-      localStorage.removeItem('quoteProject');
-    }
-  }, []);
-
+  // Initialize the form first
   const form = useForm<ContactFormValues>({
     resolver: zodResolver(contactFormSchema),
     defaultValues: {
       name: "",
       email: "",
-      subject: quoteProject ? `Quote Request: ${quoteProject.title}` : "",
-      message: quoteProject ? `I'm interested in getting a quote for the ${quoteProject.title} project (starting at ${quoteProject.price}). Please provide detailed pricing and timeline information.` : "",
+      subject: "",
+      message: "",
     },
   });
+  
+  // Then use the form in the effect after it's initialized
+  useEffect(() => {
+    // Get quote project from URL parameters if they exist
+    const urlParams = new URLSearchParams(window.location.search);
+    const isQuoteRequest = urlParams.get('quote') === 'true';
+    
+    if (isQuoteRequest) {
+      const projectTitle = urlParams.get('project');
+      const projectId = urlParams.get('id');
+      const projectPrice = urlParams.get('price');
+      
+      if (projectTitle && projectId && projectPrice) {
+        setQuoteProject({
+          id: parseInt(projectId),
+          title: projectTitle,
+          price: projectPrice
+        });
+        
+        // Pre-fill the form data with project information
+        form.setValue('subject', `Quote Request: ${projectTitle}`);
+        form.setValue('message', `I'm interested in getting a quote for the ${projectTitle} project (starting at ${projectPrice}). Please provide detailed pricing and timeline information.`);
+      }
+    }
+  }, [form]);
 
   const onSubmit = async (data: ContactFormValues) => {
     setIsSubmitting(true);
